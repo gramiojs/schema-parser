@@ -125,7 +125,7 @@ describe("Type Parser", () => {
 			const row: TableRow = {
 				name: "photo",
 				type: {
-					text: "InputFile or String",
+					text: "<a href='#inputfile'>InputFile</a> or String",
 					href: "#inputfile",
 				},
 				description: "Photo to send",
@@ -155,7 +155,7 @@ describe("Type Parser", () => {
 		test("should parse array of union types", () => {
 			const row: TableRow = {
 				name: "media",
-				type: { text: "Array of InputFile or String" },
+				type: { text: "Array of <a href='#inputfile'>InputFile</a> or String" },
 				description: "Media to send",
 			};
 

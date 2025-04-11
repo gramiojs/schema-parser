@@ -1,3 +1,4 @@
+import * as cheerio from "cheerio";
 import type { TableRow, TypeInfo } from "./archor.ts";
 
 export type TypeUnion =
@@ -44,7 +45,7 @@ export interface Reference {
 
 export interface FieldReference extends FieldBasic {
 	type: "reference";
-	reference?: Reference;
+	reference: Reference;
 }
 
 export interface FieldOneOf extends FieldBasic {
@@ -61,31 +62,51 @@ export type Field =
 	| FieldReference
 	| FieldOneOf;
 
-function parseTypeText(typeInfo: TypeInfo): Field {
-	const text = typeInfo.text.trim();
+function extractTypeAndRef(html: string): { text: string; href?: string } {
+	const $ = cheerio.load(html);
+	const link = $("a").first();
 
-	const arrayMatch = text.match(/^Array of (.+)$/i);
+	const text = $.root().text().trim();
+
+	if (link.length) {
+		return {
+			text: link.text().trim(),
+			href: link.attr("href"),
+		};
+	}
+
+	return { text };
+}
+
+function parseTypeText(typeInfo: TypeInfo): Field {
+	const arrayMatch = typeInfo.text.match(/^Array of (.+)$/i);
 	if (arrayMatch) {
+		const innerTypeText = arrayMatch[1];
 		return {
 			type: "array",
-			arrayOf: parseTypeText({ text: arrayMatch[1], href: typeInfo.href }),
+			arrayOf: parseTypeText({ text: innerTypeText }),
 		} as FieldArray;
 	}
 
-	if (text.includes(" or ")) {
+	if (typeInfo.text.includes(" or ")) {
+		const parts = typeInfo.text.split(" or ").map((part) => part.trim());
+		const variants = parts.map((part) => {
+			const { text, href } = extractTypeAndRef(part);
+			return href
+				? parseTypeText({ text, href })
+				: parseTypeText({ text: part });
+		});
+
 		return {
 			type: "one_of",
-			variants: text.split(" or ").map((part) =>
-				parseTypeText({
-					text: part,
-					href:
-						typeInfo.href && part === typeInfo.text ? typeInfo.href : undefined,
-				}),
-			),
+			variants,
 		} as FieldOneOf;
 	}
 
-	switch (text) {
+	const { text, href } = extractTypeAndRef(typeInfo.text);
+	const finalHref = href || typeInfo.href;
+
+	switch (text.trim()) {
 		case "Integer":
 			return { type: "number" } as FieldNumber;
 		case "Float":
@@ -99,19 +120,15 @@ function parseTypeText(typeInfo: TypeInfo): Field {
 		case "False":
 			return { type: "boolean", const: false } as FieldBoolean;
 		default:
-			if (typeInfo.href) {
+			if (finalHref) {
 				return {
 					type: "reference",
 					reference: {
 						name: text,
-						anchor: typeInfo.href,
+						anchor: finalHref,
 					},
 				} as FieldReference;
 			}
-
-			// TODO: Handle unknown types
-			debugger;
-
 			return { type: "string" } as FieldString;
 	}
 }
