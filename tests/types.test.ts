@@ -312,6 +312,32 @@ describe("Type Parser", () => {
 				],
 			});
 		});
+
+		test("should parse ReactionTypeEmoji with img alt texts", () => {
+			const row: TableRow = {
+				name: "emoji",
+				type: { text: "String" },
+				description: `Reaction emoji. Currently, it can be one of \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F918D.png\" width=\"20\" height=\"20\" alt=\"👍\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F918E.png\" width=\"20\" height=\"20\" alt=\"👎\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/E29DA4.png\" width=\"20\" height=\"20\" alt=\"❤\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F94A5.png\" width=\"20\" height=\"20\" alt=\"🔥\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09FA5B0.png\" width=\"20\" height=\"20\" alt=\"🥰\">\",`,
+			};
+
+			const result = tableRowToField(row) as FieldString;
+			expect(result.enum).toEqual(["👍", "👎", "❤", "🔥", "🥰"]);
+		});
+
+		test("should parse numeric enum from description", () => {
+			const row: TableRow = {
+				name: "icon_color",
+				type: { text: "Integer" },
+				description:
+					"Must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "integer",
+				enum: [7322096, 16766590, 13338331, 9367192, 16749490, 16478047],
+			});
+		});
 	});
 
 	describe("Enum Detection", () => {
@@ -329,7 +355,7 @@ describe("Type Parser", () => {
 			});
 		});
 
-		test("should not add enum for non-string types", () => {
+		test("should add enum for integer types", () => {
 			const row: TableRow = {
 				name: "count",
 				type: { text: "Integer" },
@@ -337,7 +363,10 @@ describe("Type Parser", () => {
 			};
 
 			const result = tableRowToField(row);
-			expect(result).not.toHaveProperty("enum");
+			expect(result).toMatchObject({
+				type: "integer",
+				enum: [1, 2, 3],
+			});
 		});
 	});
 });

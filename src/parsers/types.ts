@@ -17,10 +17,14 @@ export interface FieldBasic {
 
 export interface FieldInteger extends FieldBasic {
 	type: "integer";
+	const?: number;
+	enum?: number[];
 }
 
 export interface FieldFloat extends FieldBasic {
 	type: "float";
+	const?: number;
+	enum?: number[];
 }
 
 export interface FieldString extends FieldBasic {
@@ -68,7 +72,21 @@ const ENUM_PATTERNS = [
 	/(?:can be|possible values are|available options are) (["'])([^"']+)\1(?:, (["'])([^"']+)\3)*/gi,
 ];
 
-function detectEnum(description: string): string[] | undefined {
+function detectEnum(
+	description: string,
+	type: "string" | "number",
+): (string | number)[] | undefined {
+	const $ = cheerio.load(description);
+
+	const emojiAlts = $("img.emoji[alt]")
+		.map((_, el) => $(el).attr("alt"))
+		.get()
+		.filter(Boolean);
+
+	if (emojiAlts.length > 0) {
+		return emojiAlts as string[];
+	}
+
 	const cleanDescription = description
 		.replace(/<img[^>]+>/g, "")
 		.replace(/<[^>]+>/g, " ")
@@ -90,9 +108,18 @@ function detectEnum(description: string): string[] | undefined {
 		}
 	}
 
+	if (type === "number") {
+		const numberMatches = Array.from(
+			description.matchAll(/(\d+)(?:\s*\([^)]+\))?/g),
+		)
+			.map((m) => Number(m[1]))
+			.filter((n) => !Number.isNaN(n));
+
+		if (numberMatches.length > 1) return numberMatches;
+	}
+
 	return undefined;
 }
-
 function extractTypeAndRef(html: string): { text: string; href?: string } {
 	const $ = cheerio.load(html);
 	const link = $("a").first();
@@ -138,12 +165,30 @@ function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 	const finalHref = href || typeInfo.href;
 
 	switch (text.trim()) {
-		case "Integer":
-			return { type: "integer" } as FieldInteger;
-		case "Float":
-			return { type: "float" } as FieldFloat;
+		case "Integer": {
+			const enumValues = description
+				? detectEnum(description, "number")?.map(Number)
+				: undefined;
+
+			return {
+				type: "integer",
+				...(enumValues?.length ? { enum: enumValues } : {}),
+			} as FieldInteger;
+		}
+		case "Float": {
+			const enumValues = description
+				? detectEnum(description, "number")?.map(Number)
+				: undefined;
+
+			return {
+				type: "float",
+				...(enumValues?.length ? { enum: enumValues } : {}),
+			} as FieldFloat;
+		}
 		case "String": {
-			const enumValues = description ? detectEnum(description) : undefined;
+			const enumValues = description
+				? detectEnum(description, "string")
+				: undefined;
 
 			return {
 				type: "string",
