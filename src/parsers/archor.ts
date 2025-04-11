@@ -1,12 +1,12 @@
 import type { Cheerio, CheerioAPI } from "cheerio";
 import type { Element } from "domhandler";
 
-interface TypeInfo {
+export interface TypeInfo {
 	text: string;
 	href?: string;
 }
 
-interface TableRow {
+export interface TableRow {
 	name: string;
 	type: TypeInfo;
 	required?: string;
@@ -16,7 +16,7 @@ interface TableRow {
 interface ParsedSection {
 	anchor: string;
 	title: string;
-	sectionType: "Method" | "Object" | "Unknown";
+	type: "Method" | "Object" | "Unknown";
 	description?: string;
 	table?: TableRow[];
 	oneOf?: TypeInfo[];
@@ -132,7 +132,7 @@ export function parseAnchor(
 					row = {
 						name: cells.eq(0).text().trim(),
 						type: {
-							text: cells.eq(1).text().trim(),
+							text: cells.eq(1).html()?.trim() ?? "",
 							href: typeLink.attr("href") ?? undefined,
 						},
 						required: cells.eq(2).text().trim(),
@@ -143,7 +143,7 @@ export function parseAnchor(
 					row = {
 						name: cells.eq(0).text().trim(),
 						type: {
-							text: cells.eq(1).text().trim(),
+							text: cells.eq(1).html()?.trim() ?? "",
 							href: typeLink.attr("href") ?? undefined,
 						},
 						description: cells.eq(2).html()?.trim() ?? "",
@@ -153,7 +153,7 @@ export function parseAnchor(
 					row = {
 						name: cells.eq(0).text().trim(),
 						type: {
-							text: cells.eq(1).text().trim(),
+							text: cells.eq(1).html()?.trim() ?? "",
 							href: typeLink.attr("href") ?? undefined,
 						},
 						description: cells.eq(2).html()?.trim() ?? "",
@@ -195,7 +195,7 @@ export function parseAnchor(
 	return {
 		anchor: anchorName,
 		title,
-		sectionType,
+		type: sectionType,
 		description: finalDescription,
 		table: tableData,
 		oneOf: oneOfData,
