@@ -42,6 +42,6 @@ export function getTelegramBotAPIContentFromFile() {
 	return $;
 }
 
-function isFirstLetterLowercase(str: string) {
+export function isFirstLetterLowercase(str: string) {
 	return str[0] === str[0].toLowerCase();
 }
