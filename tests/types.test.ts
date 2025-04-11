@@ -5,7 +5,7 @@ import { type Field, tableRowToField } from "../src/parsers/types.ts";
 describe("Type Parser", () => {
 	describe("Basic Types", () => {
 		const testCases: [string, Partial<Field>][] = [
-			["Integer", { type: "number" }],
+			["Integer", { type: "integer" }],
 			["Float", { type: "float" }],
 			["String", { type: "string" }],
 			["Boolean", { type: "boolean" }],
@@ -88,7 +88,7 @@ describe("Type Parser", () => {
 				arrayOf: {
 					type: "array",
 					arrayOf: {
-						type: "number",
+						type: "integer",
 					},
 				},
 			});
@@ -192,6 +192,120 @@ describe("Type Parser", () => {
 				key: "unknown_field",
 				type: "string",
 				description: "Field with unknown type",
+			});
+		});
+	});
+
+	describe("Special cases from documentation", () => {
+		test("should parse message entity array with nested references", () => {
+			const row: TableRow = {
+				name: "entities",
+				type: { text: 'Array of <a href="#messageentity">MessageEntity</a>' },
+				description: "Special entities in the text",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "array",
+				arrayOf: {
+					type: "reference",
+					reference: {
+						name: "MessageEntity",
+						anchor: "#messageentity",
+					},
+				},
+			});
+		});
+
+		test("should parse complex inputmedia type", () => {
+			const row: TableRow = {
+				name: "media",
+				type: {
+					text: '<a href="#inputmedia">InputMedia</a> or String',
+					href: "#inputmedia",
+				},
+				description: "Media to send",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "one_of",
+				variants: [
+					{
+						type: "reference",
+						reference: {
+							name: "InputMedia",
+							anchor: "#inputmedia",
+						},
+					},
+					{ type: "string" },
+				],
+			});
+		});
+
+		test("should parse nested array in reply_markup", () => {
+			const row: TableRow = {
+				name: "keyboard",
+				type: {
+					text: 'Array of Array of <a href="#keyboardbutton">KeyboardButton</a>',
+				},
+				description: "Array of button rows",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "array",
+				arrayOf: {
+					type: "array",
+					arrayOf: {
+						type: "reference",
+						reference: {
+							name: "KeyboardButton",
+							anchor: "#keyboardbutton",
+						},
+					},
+				},
+			});
+		});
+
+		test("should parse message_id as integer", () => {
+			const row: TableRow = {
+				name: "message_id",
+				type: { text: "Integer" },
+				description: "Unique message identifier",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "integer",
+			});
+		});
+
+		test("should parse complex inlinekeyboardbutton", () => {
+			const row: TableRow = {
+				name: "button",
+				type: {
+					text: '<a href="#inlinekeyboardbutton">InlineKeyboardButton</a> or String or Boolean or True',
+					href: "#inlinekeyboardbutton",
+				},
+				description: "Button configuration",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "one_of",
+				variants: [
+					{
+						type: "reference",
+						reference: {
+							name: "InlineKeyboardButton",
+							anchor: "#inlinekeyboardbutton",
+						},
+					},
+					{ type: "string" },
+					{ type: "boolean" },
+					{ type: "boolean", const: true },
+				],
 			});
 		});
 	});

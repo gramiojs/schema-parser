@@ -2,7 +2,7 @@ import * as cheerio from "cheerio";
 import type { TableRow, TypeInfo } from "./archor.ts";
 
 export type TypeUnion =
-	| "number"
+	| "integer"
 	| "float"
 	| "string"
 	| "boolean"
@@ -15,8 +15,8 @@ export interface FieldBasic {
 	description: string;
 }
 
-export interface FieldNumber extends FieldBasic {
-	type: "number";
+export interface FieldInteger extends FieldBasic {
+	type: "integer";
 }
 
 export interface FieldFloat extends FieldBasic {
@@ -54,7 +54,7 @@ export interface FieldOneOf extends FieldBasic {
 }
 
 export type Field =
-	| FieldNumber
+	| FieldInteger
 	| FieldFloat
 	| FieldString
 	| FieldBoolean
@@ -108,7 +108,7 @@ function parseTypeText(typeInfo: TypeInfo): Field {
 
 	switch (text.trim()) {
 		case "Integer":
-			return { type: "number" } as FieldNumber;
+			return { type: "integer" } as FieldInteger;
 		case "Float":
 			return { type: "float" } as FieldFloat;
 		case "String":
