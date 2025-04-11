@@ -19,6 +19,7 @@ interface ParsedSection {
 	sectionType: "Method" | "Object" | "Unknown";
 	description?: string;
 	table?: TableRow[];
+	oneOf?: TypeInfo[];
 	descriptionAfterTable?: string;
 }
 
@@ -55,87 +56,115 @@ export function parseAnchor(
 		.trim();
 	if (!title) return null;
 
-	let description = "";
+	let descriptionHtml = "";
 	let currentDescriptionNode: Cheerio<Element> | null = parentH4;
 	let nextElementAfterDescription: Cheerio<Element> | null = null;
+	let descriptionLastPText = "";
 
 	let currentNode = parentH4.next();
 	while (currentNode.length && currentNode.is("p")) {
-		description += $.html(currentNode);
+		descriptionHtml += $.html(currentNode);
+		descriptionLastPText = currentNode.text();
 		currentDescriptionNode = currentNode;
 		currentNode = currentNode.next();
 	}
 	nextElementAfterDescription = currentNode.length ? currentNode : null;
-	const finalDescription = description.trim() || undefined;
-
-	let tableElement: Cheerio<Element>;
-	if (nextElementAfterDescription?.is("table.table")) {
-		tableElement = nextElementAfterDescription;
-	} else {
-		const searchStartNode = currentDescriptionNode ?? parentH4;
-		tableElement = searchStartNode
-			.nextUntil("h4")
-			.filter("table.table")
-			.first();
-	}
+	const finalDescription = descriptionHtml.trim() || undefined;
 
 	let tableData: TableRow[] | undefined = undefined;
+	let oneOfData: TypeInfo[] | undefined = undefined;
 	let sectionType: "Method" | "Object" | "Unknown" = "Unknown";
+	let mainDefinitionElement: Cheerio<Element> | null = null;
 
-	if (tableElement?.length) {
-		tableData = [];
-		const headers = tableElement
-			.find("thead th")
-			.map((_, th) => $(th).text().trim())
-			.get();
+	const isNextUl = nextElementAfterDescription?.is("ul");
+	const suggestsOneOf = descriptionLastPText.includes("can be one of");
+	const noImmediateTable = !nextElementAfterDescription?.is("table.table");
 
-		if (headers[0] === "Parameter") {
-			sectionType = "Method";
-		} else if (headers[0] === "Field") {
-			sectionType = "Object";
-		}
-
-		tableElement.find("tbody tr").each((_, tr) => {
-			const cells = $(tr).find("td");
-			let row: TableRow | null = null;
-
-			if (sectionType === "Method" && cells.length >= 3) {
-				const typeLink = cells.eq(1).find("a");
-				row = {
-					name: cells.eq(0).text().trim(),
-					type: {
-						text: cells.eq(1).text().trim(),
-						href: typeLink.attr("href") ?? undefined,
-					},
-					required: cells.eq(2).text().trim(),
-					description: cells.eq(3).html()?.trim() ?? "",
-				};
-			} else if (sectionType === "Object" && cells.length >= 2) {
-				const typeLink = cells.eq(1).find("a");
-				row = {
-					name: cells.eq(0).text().trim(),
-					type: {
-						text: cells.eq(1).text().trim(),
-						href: typeLink.attr("href") ?? undefined,
-					},
-					description: cells.eq(2).html()?.trim() ?? "",
-				};
-			} else if (sectionType === "Unknown" && cells.length >= 2) {
-				const typeLink = cells.eq(1).find("a");
-				row = {
-					name: cells.eq(0).text().trim(),
-					type: {
-						text: cells.eq(1).text().trim(),
-						href: typeLink.attr("href") ?? undefined,
-					},
-					description: cells.eq(2).html()?.trim() ?? "",
-				};
-			}
-
-			if (row) {
-				tableData?.push(row);
+	if (
+		isNextUl &&
+		suggestsOneOf &&
+		noImmediateTable &&
+		nextElementAfterDescription
+	) {
+		mainDefinitionElement = nextElementAfterDescription;
+		oneOfData = [];
+		mainDefinitionElement.find("> li > a").each((_, a) => {
+			const link = $(a);
+			const text = link.text().trim();
+			const href = link.attr("href");
+			if (text) {
+				oneOfData?.push({ text, href: href ?? undefined });
 			}
 		});
+		sectionType = "Object";
+	} else {
+		let tableElement: Cheerio<Element>;
+		if (nextElementAfterDescription?.is("table.table")) {
+			tableElement = nextElementAfterDescription;
+		} else {
+			const searchStartNode = currentDescriptionNode ?? parentH4;
+			tableElement = searchStartNode
+				.nextUntil("h4")
+				.filter("table.table")
+				.first();
+		}
+
+		if (tableElement?.length) {
+			mainDefinitionElement = tableElement;
+			tableData = [];
+			const headers = tableElement
+				.find("thead th")
+				.map((_, th) => $(th).text().trim())
+				.get();
+
+			if (headers[0] === "Parameter") {
+				sectionType = "Method";
+			} else if (headers[0] === "Field") {
+				sectionType = "Object";
+			}
+
+			tableElement.find("tbody tr").each((_, tr) => {
+				const cells = $(tr).find("td");
+				let row: TableRow | null = null;
+
+				if (sectionType === "Method" && cells.length >= 3) {
+					const typeLink = cells.eq(1).find("a");
+					row = {
+						name: cells.eq(0).text().trim(),
+						type: {
+							text: cells.eq(1).text().trim(),
+							href: typeLink.attr("href") ?? undefined,
+						},
+						required: cells.eq(2).text().trim(),
+						description: cells.eq(3).html()?.trim() ?? "",
+					};
+				} else if (sectionType === "Object" && cells.length >= 2) {
+					const typeLink = cells.eq(1).find("a");
+					row = {
+						name: cells.eq(0).text().trim(),
+						type: {
+							text: cells.eq(1).text().trim(),
+							href: typeLink.attr("href") ?? undefined,
+						},
+						description: cells.eq(2).html()?.trim() ?? "",
+					};
+				} else if (sectionType === "Unknown" && cells.length >= 2) {
+					const typeLink = cells.eq(1).find("a");
+					row = {
+						name: cells.eq(0).text().trim(),
+						type: {
+							text: cells.eq(1).text().trim(),
+							href: typeLink.attr("href") ?? undefined,
+						},
+						description: cells.eq(2).html()?.trim() ?? "",
+					};
+				}
+
+				if (row) {
+					tableData?.push(row);
+				}
+			});
+		}
 	}
 
 	if (sectionType === "Unknown" && title) {
@@ -152,10 +181,16 @@ export function parseAnchor(
 		}
 	}
 
-	const startNodeForAfterDesc = tableElement?.length
-		? tableElement
-		: (nextElementAfterDescription ?? parentH4);
-	const descriptionAfterTable = getHtmlUntil(startNodeForAfterDesc, "h4", $);
+	const startNodeForAfterDesc =
+		mainDefinitionElement ??
+		nextElementAfterDescription ??
+		currentDescriptionNode ??
+		parentH4;
+	const descriptionAfterDefinition = getHtmlUntil(
+		startNodeForAfterDesc,
+		"h4",
+		$,
+	);
 
 	return {
 		anchor: anchorName,
@@ -163,7 +198,8 @@ export function parseAnchor(
 		sectionType,
 		description: finalDescription,
 		table: tableData,
-		descriptionAfterTable: descriptionAfterTable || undefined,
+		oneOf: oneOfData,
+		descriptionAfterTable: descriptionAfterDefinition || undefined,
 	};
 }
 
