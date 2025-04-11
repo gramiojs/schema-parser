@@ -37,5 +37,8 @@
 		"@types/bun": "^1.2.8",
 		"pkgroll": "^2.11.2",
 		"typescript": "^5.8.2"
+	},
+	"dependencies": {
+		"cheerio": "^1.0.0"
 	}
 }
