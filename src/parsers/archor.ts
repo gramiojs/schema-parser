@@ -1,5 +1,6 @@
 import type { Cheerio, CheerioAPI } from "cheerio";
 import type { Element } from "domhandler";
+import type { NavItem } from "./navbar.ts";
 
 export interface TypeInfo {
 	text: string;
@@ -13,7 +14,7 @@ export interface TableRow {
 	description: string;
 }
 
-interface ParsedSection {
+export interface ParsedSection {
 	anchor: string;
 	title: string;
 	type: "Method" | "Object" | "Unknown";
@@ -199,17 +200,26 @@ export function parseAnchor(
 		description: finalDescription,
 		table: tableData,
 		oneOf: oneOfData,
-		descriptionAfterTable: descriptionAfterDefinition || undefined,
+		// descriptionAfterTable: descriptionAfterDefinition || undefined,
 	};
 }
 
-export function parseAllSections($: CheerioAPI): ParsedSection[] {
-	const sections: ParsedSection[] = [];
-	$("h4 > a.anchor").each((_, anchor) => {
-		const section = parseAnchor($, $(anchor));
-		if (section) {
-			sections.push(section);
+export function parseSections(
+	$: CheerioAPI,
+	sections: NavItem[],
+): ParsedSection[] {
+	const parsedSections: ParsedSection[] = [];
+
+	for (const section of sections) {
+		for (const anchor of section.children) {
+			const anchorElement = $(`a[name="${anchor.href.slice(1)}"]`);
+
+			const parsedSection = parseAnchor($, anchorElement);
+			if (parsedSection) {
+				parsedSections.push(parsedSection);
+			}
 		}
-	});
-	return sections;
+	}
+
+	return parsedSections;
 }

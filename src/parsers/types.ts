@@ -1,5 +1,6 @@
 import * as cheerio from "cheerio";
 import type { TableRow, TypeInfo } from "./archor.ts";
+import { htmlToMarkdown } from "./utils.ts";
 
 export type TypeUnion =
 	| "integer"
@@ -12,12 +13,11 @@ export type TypeUnion =
 
 export interface FieldBasic {
 	key: string;
-	description: string;
+	description?: string;
 }
 
 export interface FieldInteger extends FieldBasic {
 	type: "integer";
-	const?: number;
 	enum?: number[];
 }
 
@@ -221,6 +221,6 @@ export function tableRowToField(tableRow: TableRow): Field {
 	return {
 		...typeField,
 		key: tableRow.name,
-		description: tableRow.description,
+		description: htmlToMarkdown(tableRow.description),
 	};
 }

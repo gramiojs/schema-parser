@@ -1,6 +1,6 @@
 import type { CheerioAPI } from "cheerio";
 
-interface NavItem {
+export interface NavItem {
 	text: string;
 	href: string;
 	children: NavItem[];
