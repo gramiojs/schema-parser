@@ -1,6 +1,10 @@
 import { describe, expect, test } from "bun:test";
 import type { TableRow } from "../src/parsers/archor.ts";
-import { type Field, tableRowToField } from "../src/parsers/types.ts";
+import {
+	type Field,
+	type FieldString,
+	tableRowToField,
+} from "../src/parsers/types.ts";
 
 describe("Type Parser", () => {
 	describe("Basic Types", () => {
@@ -307,6 +311,33 @@ describe("Type Parser", () => {
 					{ type: "boolean", const: true },
 				],
 			});
+		});
+	});
+
+	describe("Enum Detection", () => {
+		test("should parse ReactionTypeEmoji.emoji enum", () => {
+			const row: TableRow = {
+				name: "emoji",
+				type: { text: "String" },
+				description: `Reaction emoji. Currently, it can be one of "👍", "👎", "❤", "🔥"`,
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				enum: ["👍", "👎", "❤", "🔥"],
+			});
+		});
+
+		test("should not add enum for non-string types", () => {
+			const row: TableRow = {
+				name: "count",
+				type: { text: "Integer" },
+				description: "Can be one of 1, 2, 3",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).not.toHaveProperty("enum");
 		});
 	});
 });

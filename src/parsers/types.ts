@@ -26,6 +26,7 @@ export interface FieldFloat extends FieldBasic {
 export interface FieldString extends FieldBasic {
 	type: "string";
 	const?: string;
+	enum?: string[];
 }
 
 export interface FieldBoolean extends FieldBasic {
@@ -62,6 +63,36 @@ export type Field =
 	| FieldReference
 	| FieldOneOf;
 
+const ENUM_PATTERNS = [
+	// Matches: "can be one of "a", "b", "c""
+	/(?:can be|possible values are|available options are) (["'])([^"']+)\1(?:, (["'])([^"']+)\3)*/gi,
+];
+
+function detectEnum(description: string): string[] | undefined {
+	const cleanDescription = description
+		.replace(/<img[^>]+>/g, "")
+		.replace(/<[^>]+>/g, " ")
+		.replace(/\s+/g, " ")
+		.trim();
+
+	const quotedMatches = Array.from(cleanDescription.matchAll(/(["'])(.*?)\1/g));
+	if (quotedMatches.length > 1) {
+		return quotedMatches.map((m) => m[2]);
+	}
+
+	for (const pattern of ENUM_PATTERNS) {
+		const matches = Array.from(cleanDescription.matchAll(pattern));
+		if (matches.length > 0) {
+			return matches
+				.flatMap((m) => m.slice(1).filter(Boolean))
+				.map((v) => v.replace(/^["']+|["']+$/g, ""))
+				.filter((v) => v.length > 0);
+		}
+	}
+
+	return undefined;
+}
+
 function extractTypeAndRef(html: string): { text: string; href?: string } {
 	const $ = cheerio.load(html);
 	const link = $("a").first();
@@ -78,7 +109,7 @@ function extractTypeAndRef(html: string): { text: string; href?: string } {
 	return { text };
 }
 
-function parseTypeText(typeInfo: TypeInfo): Field {
+function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 	const arrayMatch = typeInfo.text.match(/^Array of (.+)$/i);
 	if (arrayMatch) {
 		const innerTypeText = arrayMatch[1];
@@ -111,8 +142,14 @@ function parseTypeText(typeInfo: TypeInfo): Field {
 			return { type: "integer" } as FieldInteger;
 		case "Float":
 			return { type: "float" } as FieldFloat;
-		case "String":
-			return { type: "string" } as FieldString;
+		case "String": {
+			const enumValues = description ? detectEnum(description) : undefined;
+
+			return {
+				type: "string",
+				enum: enumValues?.length ? enumValues : undefined,
+			} as FieldString;
+		}
 		case "Boolean":
 			return { type: "boolean" } as FieldBoolean;
 		case "True":
@@ -134,7 +171,7 @@ function parseTypeText(typeInfo: TypeInfo): Field {
 }
 
 export function tableRowToField(tableRow: TableRow): Field {
-	const typeField = parseTypeText(tableRow.type);
+	const typeField = parseTypeText(tableRow.type, tableRow.description);
 
 	return {
 		...typeField,
