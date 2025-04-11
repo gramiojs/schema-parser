@@ -1,4 +1,4 @@
-import { parseAnchor } from "./parsers/archor.ts";
+import { parseAllSections, parseAnchor } from "./parsers/archor.ts";
 import { parseLastVersion } from "./parsers/index.ts";
 import { parseNavigation } from "./parsers/navbar.ts";
 
@@ -15,6 +15,9 @@ console.log(lastVersion);
 
 const navbar = parseNavigation($);
 
-const anchor = parseAnchor($, "#update");
+const sections = parseAllSections($);
 
-// await Bun.write("last-version.json", JSON.stringify(lastVersion, null, 2));
+console.log(sections);
+
+await Bun.write("last-version.json", JSON.stringify(lastVersion, null, 2));
+await Bun.write("sections.json", JSON.stringify(sections, null, 2));

@@ -175,3 +175,6 @@ dist
 .DS_Store
 
 api.html
+sections.json
+last-version.json
+
