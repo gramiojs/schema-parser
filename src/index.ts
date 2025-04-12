@@ -1,30 +1,28 @@
-import { parseAnchor, parseSections } from "./parsers/archor.ts";
+import { parseSections } from "./parsers/archor.ts";
 import { parseLastVersion } from "./parsers/index.ts";
 import { parseNavigation } from "./parsers/navbar.ts";
 import { toCustomSchema } from "./to-custom-schema.ts";
+import { fetchTelegramBotAPIContent } from "./utils.ts";
 
-import {
-	fetchTelegramBotAPIContent,
-	getTelegramBotAPIContentFromFile,
-} from "./utils.ts";
+export * from "./parsers/index.ts";
+export * from "./parsers/archor.ts";
+export * from "./parsers/navbar.ts";
+export * from "./parsers/types.ts";
+export * from "./to-custom-schema.ts";
+export * from "./utils.ts";
 
-const $ = await getTelegramBotAPIContentFromFile();
+export async function getCustomSchema() {
+	const $ = await fetchTelegramBotAPIContent();
 
-const lastVersion = parseLastVersion($);
+	const lastVersion = parseLastVersion($);
 
-console.log(lastVersion);
+	const navbar = parseNavigation($);
 
-const navbar = parseNavigation($);
+	const sections = parseSections($, navbar.slice(3)).filter(
+		(x) => !x.title.includes(" "),
+	);
 
-const sections = parseSections($, navbar.slice(3)).filter(
-	(x) => !x.title.includes(" "),
-);
+	const customSchema = toCustomSchema(lastVersion, sections);
 
-console.log(sections);
-
-await Bun.write("last-version.json", JSON.stringify(lastVersion, null, 2));
-await Bun.write("sections.json", JSON.stringify(sections, null, 2));
-
-const customSchema = toCustomSchema(lastVersion, sections);
-
-await Bun.write("custom-schema.json", JSON.stringify(customSchema, null, 2));
+	return customSchema;
+}
