@@ -13,6 +13,7 @@ export type TypeUnion =
 
 export interface FieldBasic {
 	key: string;
+	required?: boolean;
 	description?: string;
 }
 
@@ -354,11 +355,17 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 }
 
 export function tableRowToField(tableRow: TableRow): Field {
+	const $ = cheerio.load(tableRow.description);
 	const typeField = parseTypeText(tableRow.type, tableRow.description);
+
+	const required = tableRow.required?.toLowerCase().includes("yes")
+		? true
+		: !$.text().toLowerCase().startsWith("optional");
 
 	return {
 		...typeField,
 		key: tableRow.name,
+		required,
 		description: htmlToMarkdown(tableRow.description),
 	};
 }
@@ -378,6 +385,7 @@ function parseFieldDetails(description: string, type: "number" | "string") {
 		min: constraints.min,
 		max: constraints.max,
 		default: patterns.default,
+		required: true,
 		enum:
 			patterns.enum?.length && type === "string"
 				? patterns.enum.filter((v) =>

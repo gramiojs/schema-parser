@@ -16,13 +16,21 @@ interface Method {
 	returns: Omit<Field, "key">;
 }
 
-interface Object {
+interface ObjectBasic {
 	name: string;
 	anchor: string;
 	description?: string;
-	fields?: Field[];
-	oneOf?: Field[];
 }
+
+interface ObjectWithFields extends ObjectBasic {
+	fields: Field[];
+}
+
+interface ObjectWithOneOf extends ObjectBasic {
+	oneOf: Field[];
+}
+
+export type Object = ObjectBasic | ObjectWithFields | ObjectWithOneOf;
 
 export interface CustomSchema {
 	version: Version;
@@ -64,11 +72,20 @@ export function toCustomSchema(
 				fields.push(tableRowToField(row));
 			}
 
+			const type =
+				fields.length > 0
+					? "fields"
+					: section.oneOf?.length
+						? "oneOf"
+						: undefined;
+
 			schema.objects.push({
 				name: section.title,
 				anchor: section.anchor,
 				description: htmlToMarkdown(section.description),
+				type,
 				fields: fields.length > 0 ? fields : undefined,
+				// @ts-expect-error
 				oneOf: section.oneOf?.map((typeInfo) => parseTypeText(typeInfo)),
 			});
 		}
