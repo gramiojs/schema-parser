@@ -135,6 +135,10 @@ function detectDefault(description: string): number | undefined {
 	return undefined;
 }
 
+function uniqueArray(array: (string | number)[]): (string | number)[] {
+	return [...new Set(array)];
+}
+
 function detectEnum(
 	description: string | undefined,
 	type: "string" | "number",
@@ -149,7 +153,7 @@ function detectEnum(
 		.filter(Boolean);
 
 	if (emojiAlts.length > 0) {
-		return emojiAlts as string[];
+		return uniqueArray(emojiAlts as string[]);
 	}
 
 	const cleanDescription = description
@@ -160,16 +164,18 @@ function detectEnum(
 
 	const quotedMatches = Array.from(cleanDescription.matchAll(/(["'])(.*?)\1/g));
 	if (quotedMatches.length > 1) {
-		return quotedMatches.map((m) => m[2]);
+		return uniqueArray(quotedMatches.map((m) => m[2]));
 	}
 
 	for (const pattern of PATTERNS.ONE_OF) {
 		const matches = Array.from(cleanDescription.matchAll(pattern));
 		if (matches.length > 0) {
-			return matches
-				.flatMap((m) => m.slice(1).filter(Boolean))
-				.map((v) => v.replace(/^["']+|["']+$/g, ""))
-				.filter((v) => v.length > 0);
+			return uniqueArray(
+				matches
+					.flatMap((m) => m.slice(1).filter(Boolean))
+					.map((v) => v.replace(/^["']+|["']+$/g, ""))
+					.filter((v) => v.length > 0),
+			);
 		}
 	}
 
@@ -192,7 +198,7 @@ function detectEnum(
 				n !== constraints.default,
 		);
 
-		return filtered.length > 1 ? [...new Set(filtered)] : undefined;
+		return filtered.length > 1 ? uniqueArray(filtered) : undefined;
 	}
 
 	return undefined;
