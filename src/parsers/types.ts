@@ -19,11 +19,12 @@ export interface FieldBasic {
 export interface FieldInteger extends FieldBasic {
 	type: "integer";
 	enum?: number[];
+	default?: number;
 }
 
 export interface FieldFloat extends FieldBasic {
 	type: "float";
-	const?: number;
+	default?: number;
 	enum?: number[];
 }
 
@@ -67,15 +68,78 @@ export type Field =
 	| FieldReference
 	| FieldOneOf;
 
-const ENUM_PATTERNS = [
-	// Matches: "can be one of "a", "b", "c""
-	/(?:can be|possible values are|available options are) (["'])([^"']+)\1(?:, (["'])([^"']+)\3)*/gi,
-];
+const PATTERNS = {
+	DEFAULT: [/defaults? to (\d+)/i, /always "([^"]+)"/gi],
+	MIN_MAX: [
+		/values? between (\d+)[-\s]+(?:and|to) (\d+)/gi,
+		/(\d+)\s*-\s*(\d+)/g,
+		/must be between (\d+) and (\d+)/gi,
+	],
+	ONE_OF: [
+		/can be (?:one of|either) ("[^"]+"(?:, ?"[^"]+")+)/g,
+		/possible values are ((?:\d+|"[^"]+")(?:, ?(?:\d+|"[^"]+"))+)/gi,
+	],
+};
+
+function detectPatterns(description: string) {
+	const result: {
+		min?: number;
+		max?: number;
+		default?: number;
+		enum?: (string | number)[];
+	} = {};
+
+	for (const pattern of PATTERNS.DEFAULT) {
+		const match = description.match(pattern);
+		if (match) {
+			result.default = Number.parseInt(match[1], 10);
+			break;
+		}
+	}
+
+	for (const pattern of PATTERNS.MIN_MAX) {
+		const match = description.match(pattern);
+		if (match) {
+			result.min = Number.parseInt(match[1], 10);
+			result.max = Number.parseInt(match[2], 10);
+			break;
+		}
+	}
+
+	for (const pattern of PATTERNS.ONE_OF) {
+		const match = description.match(pattern);
+		if (match) {
+			result.enum = match[1]
+				.split(/, ?/)
+				.map((v) => v.replace(/^"|"$/g, ""))
+				.map((v) => (isNaN(Number(v)) ? v : Number(v)));
+			break;
+		}
+	}
+
+	return result;
+}
+
+function detectDefault(description: string): number | undefined {
+	const $ = cheerio.load(description);
+
+	const defaultMatch = $.text().match(
+		/(?:default(?:s to)?|default is)\D*(?<![-–])(\d+)(?!\s*[-–])/i,
+	);
+
+	if (defaultMatch) {
+		return Number(defaultMatch[1]);
+	}
+
+	return undefined;
+}
 
 function detectEnum(
-	description: string,
+	description: string | undefined,
 	type: "string" | "number",
 ): (string | number)[] | undefined {
+	if (!description) return undefined;
+
 	const $ = cheerio.load(description);
 
 	const emojiAlts = $("img.emoji[alt]")
@@ -98,7 +162,7 @@ function detectEnum(
 		return quotedMatches.map((m) => m[2]);
 	}
 
-	for (const pattern of ENUM_PATTERNS) {
+	for (const pattern of PATTERNS.ONE_OF) {
 		const matches = Array.from(cleanDescription.matchAll(pattern));
 		if (matches.length > 0) {
 			return matches
@@ -109,17 +173,76 @@ function detectEnum(
 	}
 
 	if (type === "number") {
-		const numberMatches = Array.from(
-			description.matchAll(/(\d+)(?:\s*\([^)]+\))?/g),
-		)
-			.map((m) => Number(m[1]))
-			.filter((n) => !Number.isNaN(n));
+		const numbers: number[] = [];
+		const numberRegex = /\b(\d+)\b/g;
+		let match: RegExpExecArray | null;
 
-		if (numberMatches.length > 1) return numberMatches;
+		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+		while ((match = numberRegex.exec(description)) !== null) {
+			const num = Number(match[1]);
+			if (!Number.isNaN(num)) numbers.push(num);
+		}
+
+		const constraints = detectConstraints(description);
+		const filtered = numbers.filter(
+			(n) =>
+				n !== constraints.min &&
+				n !== constraints.max &&
+				n !== constraints.default,
+		);
+
+		return filtered.length > 1 ? [...new Set(filtered)] : undefined;
 	}
 
 	return undefined;
 }
+
+function detectConstraints(description: string): {
+	min?: number;
+	max?: number;
+	default?: number;
+} {
+	const constraints: { min?: number; max?: number; default?: number } = {};
+
+	const rangeMatch = description.match(/(\d+)\s*[-–]\s*(\d+)(?=\D*$)/);
+	if (rangeMatch) {
+		const min = Number.parseInt(rangeMatch[1], 10);
+		const max = Number.parseInt(rangeMatch[2], 10);
+		if (!Number.isNaN(min)) constraints.min = min;
+		if (!Number.isNaN(max)) constraints.max = max;
+	}
+
+	const minMatch = description.match(/(?:\bmin(?:imum)?\D*)(\d+)/i);
+	const maxMatch = description.match(/(?:\bmax(?:imum)?\D*)(\d+)/i);
+	if (minMatch) constraints.min = Number.parseInt(minMatch[1], 10);
+	if (maxMatch) constraints.max = Number.parseInt(maxMatch[1], 10);
+
+	const defaultMatch = description.match(/(?:\bdefault(?:s to)?\D*)(\d+)/i);
+	if (defaultMatch) constraints.default = Number.parseInt(defaultMatch[1], 10);
+
+	return constraints;
+}
+
+function detectNumbers(description: string) {
+	const numbers: number[] = [];
+	const numberFormats = [
+		/(\d+\.?\d*)\s*\([^)]+\)/g,
+		/\b\d+\.?\d*\b/g,
+		/\\u\{\w+\}/g,
+	];
+
+	for (const format of numberFormats) {
+		let match: RegExpExecArray | null;
+		while ((match = format.exec(description)) !== null) {
+			const numValue = match[1] || match[0];
+			const num = Number.parseFloat(numValue);
+			if (!Number.isNaN(num)) numbers.push(num);
+		}
+	}
+
+	return [...new Set(numbers)];
+}
+
 function extractTypeAndRef(html: string): { text: string; href?: string } {
 	const $ = cheerio.load(html);
 	const link = $("a").first();
@@ -166,13 +289,13 @@ function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 
 	switch (text.trim()) {
 		case "Integer": {
-			const enumValues = description
-				? detectEnum(description, "number")?.map(Number)
-				: undefined;
-
+			const details = parseFieldDetails(description || "");
 			return {
 				type: "integer",
-				...(enumValues?.length ? { enum: enumValues } : {}),
+				...(details.min !== undefined && { min: details.min }),
+				...(details.max !== undefined && { max: details.max }),
+				...(details.default !== undefined && { default: details.default }),
+				...(details.enum?.length ? { enum: details.enum } : {}),
 			} as FieldInteger;
 		}
 		case "Float": {
@@ -180,9 +303,14 @@ function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 				? detectEnum(description, "number")?.map(Number)
 				: undefined;
 
+			const defaultNumber = description
+				? detectDefault(description)
+				: undefined;
+
 			return {
 				type: "float",
 				...(enumValues?.length ? { enum: enumValues } : {}),
+				...(defaultNumber ? { default: defaultNumber } : {}),
 			} as FieldFloat;
 		}
 		case "String": {
@@ -222,5 +350,34 @@ export function tableRowToField(tableRow: TableRow): Field {
 		...typeField,
 		key: tableRow.name,
 		description: htmlToMarkdown(tableRow.description),
+	};
+}
+
+function parseFieldDetails(description: string, type: "number" | "string") {
+	const patterns = detectPatterns(description);
+	// const numbers = detectNumbers(description);
+	const numbers: number[] = [];
+	const constraints = detectConstraints(description);
+
+	const filteredNumbers = numbers.filter(
+		(n) =>
+			n !== patterns.default && n !== constraints.min && n !== constraints.max,
+	);
+
+	return {
+		min: constraints.min,
+		max: constraints.max,
+		default: patterns.default,
+		enum: patterns.enum?.length
+			? patterns.enum.filter((v) =>
+					typeof v === "number"
+						? v !== patterns.default &&
+							v !== constraints.min &&
+							v !== constraints.max
+						: true,
+				)
+			: filteredNumbers.length > 1
+				? filteredNumbers
+				: undefined,
 	};
 }

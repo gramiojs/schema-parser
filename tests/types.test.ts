@@ -369,4 +369,101 @@ describe("Type Parser", () => {
 			});
 		});
 	});
+
+	describe("Default Detection", () => {
+		test("should parse default number from description", () => {
+			const row: TableRow = {
+				name: "count",
+				type: { text: "Integer" },
+				description:
+					"Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100.",
+			};
+
+			const result = tableRowToField(row);
+			console.log(result);
+			expect(result).toMatchObject({
+				type: "integer",
+				default: 100,
+			});
+			expect(result).not.toContainKey("enum");
+		});
+	});
+
+	describe("Constraint Detection", () => {
+		test("should parse min/max from range", () => {
+			const row: TableRow = {
+				name: "member_limit",
+				type: { text: "Integer" },
+				description: "The maximum number of users; 1-99999",
+			};
+
+			const result = tableRowToField(row);
+			console.log(result);
+			expect(result).toMatchObject({
+				type: "integer",
+				min: 1,
+				max: 99999,
+			});
+		});
+
+		test("should parse default with existing enum", () => {
+			const row: TableRow = {
+				name: "cache_time",
+				type: { text: "Integer" },
+				description: "Defaults to 0. Can be 0, 1, 2, 3",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "integer",
+				default: 0,
+				enum: [1, 2, 3],
+			});
+		});
+
+		test.todo("should ignore range numbers in enum", () => {
+			const row: TableRow = {
+				name: "horizontal_accuracy",
+				type: { text: "Float" },
+				description: "Radius 0-1500 meters. Possible values: 0.5, 1.0, 1.5",
+			};
+
+			const result = tableRowToField(row);
+			console.log(result);
+			expect(result).toMatchObject({
+				type: "float",
+				min: 0,
+				max: 1500,
+				enum: [0.5, 1.0, 1.5],
+			});
+		});
+	});
+
+	describe("Edge Cases", () => {
+		test("should handle NaN in constraints", () => {
+			const row: TableRow = {
+				name: "invalid",
+				type: { text: "Integer" },
+				description: "Values between invalid values",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).not.toHaveProperty("min");
+			expect(result).not.toHaveProperty("max");
+		});
+
+		test("should parse numbers with parentheses", () => {
+			const row: TableRow = {
+				name: "priority",
+				type: { text: "Integer" },
+				description: "Values: 1 (high), 2 (medium), 3 (low)",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "integer",
+				enum: [1, 2, 3],
+			});
+		});
+	});
 });

@@ -20,16 +20,13 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100,
-            100
-          ],
+          "default": 100,
           "key": "limit",
           "description": "Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100."
         },
         {
           "type": "integer",
+          "default": 0,
           "key": "timeout",
           "description": "Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only."
         },
@@ -72,11 +69,7 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100,
-            40
-          ],
+          "max": 1,
           "key": "max_connections",
           "description": "The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to _40_. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput."
         },
@@ -1765,10 +1758,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            10000
-          ],
+          "min": 1,
+          "max": 10000,
           "key": "star_count",
           "description": "The number of Telegram Stars that must be paid to buy access to the media; 1-10000"
         },
@@ -1994,39 +1985,22 @@
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            1500
-          ],
           "key": "horizontal_accuracy",
           "description": "The radius of uncertainty for the location, measured in meters; 0-1500"
         },
         {
           "type": "integer",
-          "enum": [
-            60,
-            86400,
-            0,
-            7
-          ],
           "key": "live_period",
           "description": "Period in seconds during which the location will be updated (see [Live Locations](https://telegram.org/blog/live-locations), should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely."
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            360
-          ],
           "key": "heading",
           "description": "For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100000
-          ],
+          "max": 1,
           "key": "proximity_alert_radius",
           "description": "For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
         },
@@ -2459,19 +2433,13 @@
         },
         {
           "type": "integer",
-          "enum": [
-            5,
-            600
-          ],
+          "min": 5,
+          "max": 600,
           "key": "open_period",
           "description": "Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with _close\\_date_."
         },
         {
           "type": "integer",
-          "enum": [
-            5,
-            600
-          ],
           "key": "close_date",
           "description": "Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with _open\\_period_."
         },
@@ -2766,11 +2734,7 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100,
-            100
-          ],
+          "default": 100,
           "key": "limit",
           "description": "Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100."
         }
@@ -2844,10 +2808,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            366,
-            30
-          ],
           "key": "until_date",
           "description": "Date when the user will be unbanned; Unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only."
         },
@@ -2933,10 +2893,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            366,
-            30
-          ],
           "key": "until_date",
           "description": "Date when restrictions will be lifted for the user; Unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever"
         }
@@ -3227,10 +3183,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            99999
-          ],
+          "min": 1,
+          "max": 1,
           "key": "member_limit",
           "description": "The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
         },
@@ -3279,10 +3233,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            99999
-          ],
+          "min": 1,
+          "max": 1,
           "key": "member_limit",
           "description": "The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
         },
@@ -3326,10 +3278,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            10000
-          ],
+          "min": 1,
+          "max": 10000,
           "key": "subscription_price",
           "description": "The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat; 1-10000"
         }
@@ -3865,14 +3815,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            7322096,
-            16766590,
-            13338331,
-            9367192,
-            16749490,
-            16478047
-          ],
           "key": "icon_color",
           "description": "Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)"
         },
@@ -4206,11 +4148,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            3,
-            14,
-            0
-          ],
+          "max": 3,
+          "default": 0,
           "key": "cache_time",
           "description": "The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0."
         }
@@ -4782,38 +4721,22 @@
         },
         {
           "type": "integer",
-          "enum": [
-            0,
-            7,
-            90
-          ],
           "key": "live_period",
           "description": "New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current _live\\_period_ by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then _live\\_period_ remains unchanged"
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            1500
-          ],
           "key": "horizontal_accuracy",
           "description": "The radius of uncertainty for the location, measured in meters; 0-1500"
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            360
-          ],
           "key": "heading",
           "description": "Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100000
-          ],
+          "max": 1,
           "key": "proximity_alert_radius",
           "description": "The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
         },
@@ -5107,24 +5030,11 @@
         },
         {
           "type": "integer",
-          "enum": [
-            3,
-            6,
-            12
-          ],
           "key": "month_count",
           "description": "Number of months the Telegram Premium subscription will be active for the user; must be one of 3, 6, or 12"
         },
         {
           "type": "integer",
-          "enum": [
-            1000,
-            3,
-            1500,
-            6,
-            2500,
-            12
-          ],
           "key": "star_count",
           "description": "Number of Telegram Stars to pay for the Telegram Premium subscription; must be 1000 for 3 months, 1500 for 6 months, and 2500 for 12 months"
         },
@@ -5459,10 +5369,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            10000
-          ],
+          "min": 1,
+          "max": 10000,
           "key": "star_count",
           "description": "Number of Telegram Stars to transfer; 1-10000"
         }
@@ -5518,11 +5426,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100,
-            100
-          ],
+          "max": 1,
+          "default": 100,
           "key": "limit",
           "description": "The maximum number of gifts to be returned; 1-100. Defaults to 100"
         }
@@ -5573,10 +5478,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            0,
-            0
-          ],
           "key": "star_count",
           "description": "The amount of Telegram Stars that will be paid for the upgrade from the business account balance. If `gift.prepaid_upgrade_star_count > 0`, then pass 0, otherwise, the _can\\_transfer\\_stars_ business bot right is required and `gift.upgrade_star_count` must be passed."
         }
@@ -5636,15 +5537,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            6,
-            3600,
-            12,
-            3600,
-            86400,
-            2,
-            86400
-          ],
           "key": "active_period",
           "description": "Period after which the story is moved to the archive, in seconds; must be one of `6 * 3600`, `12 * 3600`, `86400`, or `2 * 86400`"
         },
@@ -6297,6 +6189,8 @@
         },
         {
           "type": "integer",
+          "max": 300,
+          "default": 300,
           "key": "cache_time",
           "description": "The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300."
         },
@@ -6454,14 +6348,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            45,
-            145,
-            2,
-            0,
-            90
-          ],
+          "max": 1,
+          "default": 0,
           "key": "max_tip_amount",
           "description": "The maximum accepted amount for tips in the _smallest units_ of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
@@ -6630,23 +6518,13 @@
         },
         {
           "type": "integer",
-          "enum": [
-            2592000,
-            10000
-          ],
           "key": "subscription_period",
           "description": "The number of seconds the subscription will be active for before the next payment. The currency must be set to “XTR” (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified. Any number of subscriptions can be active for a given bot at the same time, including multiple concurrent subscriptions from the same user. Subscription price must no exceed 10000 Telegram Stars."
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            45,
-            145,
-            2,
-            0,
-            90
-          ],
+          "max": 1,
+          "default": 0,
           "key": "max_tip_amount",
           "description": "The maximum accepted amount for tips in the _smallest units_ of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
@@ -6797,11 +6675,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100,
-            100
-          ],
+          "max": 1,
+          "default": 100,
           "key": "limit",
           "description": "The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100."
         }
@@ -7306,11 +7181,6 @@
       "fields": [
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "id",
           "description": "Unique identifier for this user or bot. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier."
         },
@@ -7384,11 +7254,6 @@
       "fields": [
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "id",
           "description": "Unique identifier for this chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier."
         },
@@ -7431,11 +7296,6 @@
       "fields": [
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "id",
           "description": "Unique identifier for this chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier."
         },
@@ -7708,11 +7568,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "linked_chat_id",
           "description": "_Optional_. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier."
         },
@@ -8170,21 +8025,11 @@
         },
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "migrate_to_chat_id",
           "description": "_Optional_. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier."
         },
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "migrate_from_chat_id",
           "description": "_Optional_. The supergroup has been migrated from a group with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier."
         },
@@ -9056,12 +8901,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            2,
-            31,
-            52,
-            64
-          ],
           "key": "file_size",
           "description": "_Optional_. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value."
         }
@@ -9108,12 +8947,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            2,
-            31,
-            52,
-            64
-          ],
           "key": "file_size",
           "description": "_Optional_. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value."
         },
@@ -9163,12 +8996,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            2,
-            31,
-            52,
-            64
-          ],
           "key": "file_size",
           "description": "_Optional_. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value."
         }
@@ -9261,12 +9088,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            2,
-            31,
-            52,
-            64
-          ],
           "key": "file_size",
           "description": "_Optional_. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value."
         }
@@ -9338,12 +9159,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            2,
-            31,
-            52,
-            64
-          ],
           "key": "file_size",
           "description": "_Optional_. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value."
         }
@@ -9467,11 +9282,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "user_id",
           "description": "_Optional_. Contact's user identifier in Telegram. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier."
         },
@@ -9493,14 +9303,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-          ],
           "key": "value",
           "description": "Value of the dice, 1-6 for “![🎲](//telegram.org/img/emoji/40/F09F8EB2.png)”, “![🎯](//telegram.org/img/emoji/40/F09F8EAF.png)” and “![🎳](//telegram.org/img/emoji/40/F09F8EB3.png)” base emoji, 1-5 for “![🏀](//telegram.org/img/emoji/40/F09F8F80.png)” and “![⚽](//telegram.org/img/emoji/40/E29ABD.png)” base emoji, 1-64 for “![🎰](//telegram.org/img/emoji/40/F09F8EB0.png)” base emoji"
         }
@@ -9712,10 +9514,6 @@
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            1500
-          ],
           "key": "horizontal_accuracy",
           "description": "_Optional_. The radius of uncertainty for the location, measured in meters; 0-1500"
         },
@@ -9726,10 +9524,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            360
-          ],
+          "min": 1,
+          "max": 360,
           "key": "heading",
           "description": "_Optional_. The direction in which user is moving, in degrees; 1-360. For active live locations only."
         },
@@ -9894,10 +9690,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            0,
-            359
-          ],
+          "min": 0,
+          "max": 359,
           "key": "rotation_angle",
           "description": "Clockwise rotation angle of the background fill in degrees; 0-359"
         }
@@ -9947,10 +9741,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            0,
-            100
-          ],
+          "min": 0,
+          "max": 100,
           "key": "dark_theme_dimming",
           "description": "Dimming of the background in dark themes, as a percentage; 0-100"
         }
@@ -9976,10 +9768,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            0,
-            100
-          ],
+          "min": 0,
+          "max": 100,
           "key": "dark_theme_dimming",
           "description": "Dimming of the background in dark themes, as a percentage; 0-100"
         },
@@ -10026,10 +9816,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            0,
-            100
-          ],
+          "min": 0,
+          "max": 100,
           "key": "intensity",
           "description": "Intensity of the pattern when it is shown above the filled background; 0-100"
         },
@@ -10141,11 +9929,6 @@
       "fields": [
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "user_id",
           "description": "Identifier of the shared user. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so 64-bit integers or double-precision float types are safe for storing these identifiers. The bot may not have access to the user and could be unable to use this identifier, unless the user is already known to the bot by some other means."
         },
@@ -10212,11 +9995,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "chat_id",
           "description": "Identifier of the shared chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. The bot may not have access to the chat and could be unable to use this identifier, unless the chat is already known to the bot by some other means."
         },
@@ -10578,12 +10356,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            2,
-            31,
-            52,
-            64
-          ],
           "key": "file_size",
           "description": "_Optional_. File size in bytes. It can be bigger than 2^31 and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this value."
         },
@@ -10729,11 +10501,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            10,
-            1
-          ],
+          "max": 1,
+          "default": 1,
           "key": "max_quantity",
           "description": "_Optional_. The maximum number of users to be selected; 1-10. Defaults to 1."
         },
@@ -11163,10 +10932,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            99999
-          ],
+          "min": 1,
+          "max": 1,
           "key": "member_limit",
           "description": "_Optional_. The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
         },
@@ -11668,12 +11435,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64,
-            5
-          ],
           "key": "user_chat_id",
           "description": "Identifier of a private chat with the user who sent the join request. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier. The bot can use this identifier for 5 minutes to send messages until the join request is processed, assuming no other administrator contacted the user."
         },
@@ -11780,19 +11541,15 @@
       "fields": [
         {
           "type": "integer",
-          "enum": [
-            1,
-            31
-          ],
+          "min": 1,
+          "max": 31,
           "key": "day",
           "description": "Day of the user's birth; 1-31"
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            12
-          ],
+          "min": 1,
+          "max": 12,
           "key": "month",
           "description": "Month of the user's birth; 1-12"
         },
@@ -11854,23 +11611,13 @@
       "fields": [
         {
           "type": "integer",
-          "enum": [
-            0,
-            7,
-            24,
-            60
-          ],
+          "min": 0,
           "key": "opening_minute",
           "description": "The minute's sequence number in a week, starting on Monday, marking the start of the time interval during which the business is open; 0 - 7 \\* 24 \\* 60"
         },
         {
           "type": "integer",
-          "enum": [
-            0,
-            8,
-            24,
-            60
-          ],
+          "min": 0,
           "key": "closing_minute",
           "description": "The minute's sequence number in a week, starting on Monday, marking the end of the time interval during which the business is open; 0 - 8 \\* 24 \\* 60"
         }
@@ -11925,10 +11672,6 @@
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            360
-          ],
           "key": "rotation_angle",
           "description": "The clockwise rotation angle of the rectangle, in degrees; 0-360"
         },
@@ -12917,12 +12660,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            1000000000,
-            999999999,
-            999999999
-          ],
           "key": "nanostar_amount",
           "description": "_Optional_. The number of 1/1000000000 shares of Telegram Stars; from -999999999 to 999999999; can be negative if and only if _amount_ is non-positive"
         }
@@ -13457,11 +13194,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "user_chat_id",
           "description": "Identifier of a private chat with the user who created the business connection. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a 64-bit integer or double-precision float type are safe for storing this identifier."
         },
@@ -13520,11 +13252,6 @@
       "fields": [
         {
           "type": "integer",
-          "enum": [
-            32,
-            52,
-            64
-          ],
           "key": "migrate_to_chat_id",
           "description": "_Optional_. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier."
         },
@@ -13934,7 +13661,7 @@
         {
           "type": "string",
           "key": "type",
-          "description": "Type of the profile photo, must be “static”"
+          "description": "Type of the profile photo, must be _static_"
         },
         {
           "type": "string",
@@ -13950,7 +13677,7 @@
         {
           "type": "string",
           "key": "type",
-          "description": "Type of the profile photo, must be “animated”"
+          "description": "Type of the profile photo, must be _animated_"
         },
         {
           "type": "string",
@@ -13959,10 +13686,6 @@
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            0
-          ],
           "key": "main_frame_timestamp",
           "description": "_Optional_. Timestamp in seconds of the frame that will be used as the static profile photo. Defaults to 0.0."
         }
@@ -13980,7 +13703,7 @@
         {
           "type": "string",
           "key": "type",
-          "description": "Type of the content, must be “photo”"
+          "description": "Type of the content, must be _photo_"
         },
         {
           "type": "string",
@@ -13996,7 +13719,7 @@
         {
           "type": "string",
           "key": "type",
-          "description": "Type of the content, must be “video”"
+          "description": "Type of the content, must be _video_"
         },
         {
           "type": "string",
@@ -14005,19 +13728,11 @@
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            60
-          ],
           "key": "duration",
           "description": "_Optional_. Precise duration of the video in seconds; 0-60"
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            0
-          ],
           "key": "cover_frame_timestamp",
           "description": "_Optional_. Timestamp in seconds of the frame that will be used as the static cover for the story. Defaults to 0.0."
         },
@@ -15221,39 +14936,22 @@
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            1500
-          ],
           "key": "horizontal_accuracy",
           "description": "_Optional_. The radius of uncertainty for the location, measured in meters; 0-1500"
         },
         {
           "type": "integer",
-          "enum": [
-            60,
-            86400,
-            0,
-            7
-          ],
           "key": "live_period",
           "description": "_Optional_. Period in seconds during which the location can be updated, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely."
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            360
-          ],
           "key": "heading",
           "description": "_Optional_. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100000
-          ],
+          "max": 1,
           "key": "proximity_alert_radius",
           "description": "_Optional_. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
         },
@@ -16069,39 +15767,22 @@
         },
         {
           "type": "float",
-          "enum": [
-            0,
-            1500
-          ],
           "key": "horizontal_accuracy",
           "description": "_Optional_. The radius of uncertainty for the location, measured in meters; 0-1500"
         },
         {
           "type": "integer",
-          "enum": [
-            60,
-            86400,
-            0,
-            7
-          ],
           "key": "live_period",
           "description": "_Optional_. Period in seconds during which the location can be updated, should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely."
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            360
-          ],
           "key": "heading",
           "description": "_Optional_. For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            100000
-          ],
+          "max": 1,
           "key": "proximity_alert_radius",
           "description": "_Optional_. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
         }
@@ -16222,14 +15903,8 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            45,
-            145,
-            2,
-            0,
-            90
-          ],
+          "max": 1,
+          "default": 0,
           "key": "max_tip_amount",
           "description": "_Optional_. The maximum accepted amount for tips in the _smallest units_ of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
@@ -16380,12 +16055,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            45,
-            145,
-            2
-          ],
           "key": "amount",
           "description": "Price of the product in the _smallest units_ of the [currency](/bots/payments#supported-currencies) (integer, **not** float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies)."
         }
@@ -16417,12 +16086,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            45,
-            145,
-            2
-          ],
           "key": "total_amount",
           "description": "Total price in the _smallest units_ of the currency (integer, **not** float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies)."
         }
@@ -16533,12 +16196,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            45,
-            145,
-            2
-          ],
           "key": "total_amount",
           "description": "Total price in the _smallest units_ of the currency (integer, **not** float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies)."
         },
@@ -16601,12 +16258,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            45,
-            145,
-            2
-          ],
           "key": "total_amount",
           "description": "Total refunded price in the _smallest units_ of the currency (integer, **not** float/double). For example, for a price of `US$ 1.45`, `total_amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies)."
         },
@@ -16686,12 +16337,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            45,
-            145,
-            2
-          ],
           "key": "total_amount",
           "description": "Total price in the _smallest units_ of the currency (integer, **not** float/double). For example, for a price of `US$ 1.45` pass `amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies)."
         },
@@ -16818,12 +16463,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            1000000000,
-            999999999,
-            999999999
-          ],
           "key": "nanostar_amount",
           "description": "_Optional_. The number of 1/1000000000 shares of Telegram Stars received by the affiliate; from -999999999 to 999999999; can be negative for refunds"
         }
@@ -17037,12 +16676,6 @@
         },
         {
           "type": "integer",
-          "enum": [
-            1,
-            1000000000,
-            0,
-            999999999
-          ],
           "key": "nanostar_amount",
           "description": "_Optional_. The number of 1/1000000000 shares of Telegram Stars transferred by the transaction; from 0 to 999999999"
         },
