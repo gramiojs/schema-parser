@@ -44,10 +44,10 @@ jobs:
             - name: Type-check
               run: tsc --noEmit
 
-            # - name: Run tests
-            #   run: bun test
-            #   env:
-            #       TOKEN: ${{ secrets.BOT_TOKEN }}
+            - name: Run tests
+              run: bun test
+              # env:
+              # TOKEN: ${{ secrets.BOT_TOKEN }}
 
             - name: Build package
               run: bun prepublishOnly

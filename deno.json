@@ -4,5 +4,9 @@
 	"exports": "./src/index.ts",
 	"publish": {
 		"include": ["deno.json", "src", "README.md", "LICENSE"]
+	},
+	"imports": {
+		"cheerio": "npm:cheerio@^1.0.0",
+		"turndown": "npm:turndown@^7.2.0"
 	}
 }
