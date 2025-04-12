@@ -8,7 +8,7 @@ import {
 } from "./parsers/types.ts";
 import { htmlToMarkdown } from "./parsers/utils.ts";
 
-interface Method {
+export interface Method {
 	name: string;
 	anchor: string;
 	description?: string;
@@ -16,21 +16,23 @@ interface Method {
 	returns: Omit<Field, "key">;
 }
 
-interface ObjectBasic {
+export interface ObjectBasic {
 	name: string;
 	anchor: string;
 	description?: string;
 }
 
-interface ObjectWithFields extends ObjectBasic {
+export interface ObjectWithFields extends ObjectBasic {
+	type: "fields";
 	fields: Field[];
 }
 
-interface ObjectWithOneOf extends ObjectBasic {
+export interface ObjectWithOneOf extends ObjectBasic {
+	type: "oneOf";
 	oneOf: Field[];
 }
 
-export type Object = ObjectBasic | ObjectWithFields | ObjectWithOneOf;
+export type Object = ObjectWithFields | ObjectWithOneOf;
 
 export interface CustomSchema {
 	version: Version;
@@ -83,9 +85,10 @@ export function toCustomSchema(
 				name: section.title,
 				anchor: section.anchor,
 				description: htmlToMarkdown(section.description),
+				// @ts-expect-error
 				type,
 				fields: fields.length > 0 ? fields : undefined,
-				// @ts-expect-error
+				// @ts-ignore
 				oneOf: section.oneOf?.map((typeInfo) => parseTypeText(typeInfo)),
 			});
 		}

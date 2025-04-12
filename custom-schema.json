@@ -24,14 +24,14 @@
           "type": "integer",
           "default": 100,
           "key": "limit",
-          "required": true,
+          "required": false,
           "description": "Limits the number of updates to be retrieved. Values between 1-100 are accepted. Defaults to 100."
         },
         {
           "type": "integer",
           "default": 0,
           "key": "timeout",
-          "required": true,
+          "required": false,
           "description": "Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only."
         },
         {
@@ -3047,7 +3047,7 @@
           "type": "integer",
           "default": 100,
           "key": "limit",
-          "required": true,
+          "required": false,
           "description": "Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100."
         }
       ],
@@ -4664,7 +4664,7 @@
           "max": 3,
           "default": 0,
           "key": "cache_time",
-          "required": true,
+          "required": false,
           "description": "The maximum amount of time in seconds that the result of the callback query may be cached client-side. Telegram apps will support caching starting in version 3.14. Defaults to 0."
         }
       ],
@@ -6137,7 +6137,7 @@
           "max": 1,
           "default": 100,
           "key": "limit",
-          "required": true,
+          "required": false,
           "description": "The maximum number of gifts to be returned; 1-100. Defaults to 100"
         }
       ],
@@ -7013,7 +7013,7 @@
           "max": 300,
           "default": 300,
           "key": "cache_time",
-          "required": true,
+          "required": false,
           "description": "The maximum amount of time in seconds that the result of the inline query may be cached on the server. Defaults to 300."
         },
         {
@@ -7196,7 +7196,7 @@
           "max": 1,
           "default": 0,
           "key": "max_tip_amount",
-          "required": true,
+          "required": false,
           "description": "The maximum accepted amount for tips in the _smallest units_ of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
@@ -7400,7 +7400,7 @@
           "max": 1,
           "default": 0,
           "key": "max_tip_amount",
-          "required": true,
+          "required": false,
           "description": "The maximum accepted amount for tips in the _smallest units_ of the currency (integer, **not** float/double). For example, for a maximum tip of `US$ 1.45` pass `max_tip_amount = 145`. See the _exp_ parameter in [currencies.json](/bots/payments/currencies.json), it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0. Not supported for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
@@ -7574,7 +7574,7 @@
           "max": 1,
           "default": 100,
           "key": "limit",
-          "required": true,
+          "required": false,
           "description": "The maximum number of transactions to be retrieved. Values between 1-100 are accepted. Defaults to 100."
         }
       ],
@@ -7842,6 +7842,7 @@
       "name": "Update",
       "anchor": "#update",
       "description": "This [object](#available-types) represents an incoming update.  \nAt most **one** of the optional parameters can be present in any given update.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -8085,6 +8086,7 @@
       "name": "WebhookInfo",
       "anchor": "#webhookinfo",
       "description": "Describes the current status of a webhook.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -8149,6 +8151,7 @@
       "name": "User",
       "anchor": "#user",
       "description": "This object represents a Telegram user or bot.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -8236,6 +8239,7 @@
       "name": "Chat",
       "anchor": "#chat",
       "description": "This object represents a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -8286,6 +8290,7 @@
       "name": "ChatFullInfo",
       "anchor": "#chatfullinfo",
       "description": "This object contains full information about a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -8624,6 +8629,7 @@
       "name": "Message",
       "anchor": "#message",
       "description": "This object represents a message.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -9442,6 +9448,7 @@
       "name": "MessageId",
       "anchor": "#messageid",
       "description": "This object represents a unique message identifier.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -9455,6 +9462,7 @@
       "name": "InaccessibleMessage",
       "anchor": "#inaccessiblemessage",
       "description": "This object describes a message that was deleted or is otherwise inaccessible to the bot.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -9484,6 +9492,7 @@
       "name": "MaybeInaccessibleMessage",
       "anchor": "#maybeinaccessiblemessage",
       "description": "This object describes a message that can be inaccessible to the bot. It can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -9505,6 +9514,7 @@
       "name": "MessageEntity",
       "anchor": "#messageentity",
       "description": "This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -9558,6 +9568,7 @@
       "name": "TextQuote",
       "anchor": "#textquote",
       "description": "This object contains information about the quoted part of a message that is replied to by the given message.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -9597,6 +9608,7 @@
       "name": "ExternalReplyInfo",
       "anchor": "#externalreplyinfo",
       "description": "This object contains information about a message that is being replied to, which may come from another chat or forum topic.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -9840,6 +9852,7 @@
       "name": "ReplyParameters",
       "anchor": "#replyparameters",
       "description": "Describes reply parameters for the message that is being sent.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -9904,6 +9917,7 @@
       "name": "MessageOrigin",
       "anchor": "#messageorigin",
       "description": "This object describes the origin of a message. It can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -9939,6 +9953,7 @@
       "name": "MessageOriginUser",
       "anchor": "#messageoriginuser",
       "description": "The message was originally sent by a known user.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -9969,6 +9984,7 @@
       "name": "MessageOriginHiddenUser",
       "anchor": "#messageoriginhiddenuser",
       "description": "The message was originally sent by an unknown user.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -9995,6 +10011,7 @@
       "name": "MessageOriginChat",
       "anchor": "#messageoriginchat",
       "description": "The message was originally sent on behalf of a chat to a group chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10031,6 +10048,7 @@
       "name": "MessageOriginChannel",
       "anchor": "#messageoriginchannel",
       "description": "The message was originally sent to a channel chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10073,6 +10091,7 @@
       "name": "PhotoSize",
       "anchor": "#photosize",
       "description": "This object represents one size of a photo or a [file](#document) / [sticker](#sticker) thumbnail.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10110,6 +10129,7 @@
       "name": "Animation",
       "anchor": "#animation",
       "description": "This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10175,6 +10195,7 @@
       "name": "Audio",
       "anchor": "#audio",
       "description": "This object represents an audio file to be treated as music by the Telegram clients.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10240,6 +10261,7 @@
       "name": "Document",
       "anchor": "#document",
       "description": "This object represents a general file (as opposed to [photos](#photosize), [voice messages](#voice) and [audio files](#audio)).",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10287,6 +10309,7 @@
       "name": "Story",
       "anchor": "#story",
       "description": "This object represents a story.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -10310,6 +10333,7 @@
       "name": "Video",
       "anchor": "#video",
       "description": "This object represents a video file.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10394,6 +10418,7 @@
       "name": "VideoNote",
       "anchor": "#videonote",
       "description": "This object represents a [video message](https://telegram.org/blog/video-messages-and-telescope) (available in Telegram apps as of [v.4.0](https://telegram.org/blog/video-messages-and-telescope)).",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10441,6 +10466,7 @@
       "name": "Voice",
       "anchor": "#voice",
       "description": "This object represents a voice note.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10478,6 +10504,7 @@
       "name": "PaidMediaInfo",
       "anchor": "#paidmediainfo",
       "description": "Describes the paid media added to a message.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -10504,6 +10531,7 @@
       "name": "PaidMedia",
       "anchor": "#paidmedia",
       "description": "This object describes paid media. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -10532,6 +10560,7 @@
       "name": "PaidMediaPreview",
       "anchor": "#paidmediapreview",
       "description": "The paid media isn't available before the payment.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10564,6 +10593,7 @@
       "name": "PaidMediaPhoto",
       "anchor": "#paidmediaphoto",
       "description": "The paid media is a photo.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10591,6 +10621,7 @@
       "name": "PaidMediaVideo",
       "anchor": "#paidmediavideo",
       "description": "The paid media is a video.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10615,6 +10646,7 @@
       "name": "Contact",
       "anchor": "#contact",
       "description": "This object represents a phone contact.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10652,6 +10684,7 @@
       "name": "Dice",
       "anchor": "#dice",
       "description": "This object represents an animated emoji that displays a random value.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10671,6 +10704,7 @@
       "name": "PollOption",
       "anchor": "#polloption",
       "description": "This object contains information about one answer option in a poll.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10703,6 +10737,7 @@
       "name": "InputPollOption",
       "anchor": "#inputpolloption",
       "description": "This object contains information about one answer option in a poll to be sent.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10735,6 +10770,7 @@
       "name": "PollAnswer",
       "anchor": "#pollanswer",
       "description": "This object represents an answer of a user in a non-anonymous poll.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10777,6 +10813,7 @@
       "name": "Poll",
       "anchor": "#poll",
       "description": "This object contains information about a poll.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -10889,6 +10926,7 @@
       "name": "Location",
       "anchor": "#location",
       "description": "This object represents a point on the map.",
+      "type": "fields",
       "fields": [
         {
           "type": "float",
@@ -10934,6 +10972,7 @@
       "name": "Venue",
       "anchor": "#venue",
       "description": "This object represents a venue.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -10987,6 +11026,7 @@
       "name": "WebAppData",
       "anchor": "#webappdata",
       "description": "Describes data sent from a [Web App](/bots/webapps) to the bot.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11006,6 +11046,7 @@
       "name": "ProximityAlertTriggered",
       "anchor": "#proximityalerttriggered",
       "description": "This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -11039,6 +11080,7 @@
       "name": "MessageAutoDeleteTimerChanged",
       "anchor": "#messageautodeletetimerchanged",
       "description": "This object represents a service message about a change in auto-delete timer settings.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11052,6 +11094,7 @@
       "name": "ChatBoostAdded",
       "anchor": "#chatboostadded",
       "description": "This object represents a service message about a user boosting a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11065,6 +11108,7 @@
       "name": "BackgroundFill",
       "anchor": "#backgroundfill",
       "description": "This object describes the way a background is filled based on the selected colors. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -11093,6 +11137,7 @@
       "name": "BackgroundFillSolid",
       "anchor": "#backgroundfillsolid",
       "description": "The background is filled using the selected color.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11113,6 +11158,7 @@
       "name": "BackgroundFillGradient",
       "anchor": "#backgroundfillgradient",
       "description": "The background is a gradient fill.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11147,6 +11193,7 @@
       "name": "BackgroundFillFreeformGradient",
       "anchor": "#backgroundfillfreeformgradient",
       "description": "The background is a freeform gradient that rotates after every message in the chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11170,6 +11217,7 @@
       "name": "BackgroundType",
       "anchor": "#backgroundtype",
       "description": "This object describes the type of a background. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -11205,6 +11253,7 @@
       "name": "BackgroundTypeFill",
       "anchor": "#backgroundtypefill",
       "description": "The background is automatically filled based on the selected colors.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11237,6 +11286,7 @@
       "name": "BackgroundTypeWallpaper",
       "anchor": "#backgroundtypewallpaper",
       "description": "The background is a wallpaper in the JPEG format.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11283,6 +11333,7 @@
       "name": "BackgroundTypePattern",
       "anchor": "#backgroundtypepattern",
       "description": "The background is a .PNG or .TGV (gzipped subset of SVG with MIME type “application/x-tgwallpattern”) pattern to be combined with the background fill chosen by the user.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11339,6 +11390,7 @@
       "name": "BackgroundTypeChatTheme",
       "anchor": "#backgroundtypechattheme",
       "description": "The background is taken directly from a built-in chat theme.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11359,6 +11411,7 @@
       "name": "ChatBackground",
       "anchor": "#chatbackground",
       "description": "This object represents a chat background.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -11376,6 +11429,7 @@
       "name": "ForumTopicCreated",
       "anchor": "#forumtopiccreated",
       "description": "This object represents a service message about a new forum topic created in the chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11406,6 +11460,7 @@
       "name": "ForumTopicEdited",
       "anchor": "#forumtopicedited",
       "description": "This object represents a service message about an edited forum topic.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11440,6 +11495,7 @@
       "name": "SharedUser",
       "anchor": "#shareduser",
       "description": "This object contains information about a user that was shared with the bot using a [KeyboardButtonRequestUsers](#keyboardbuttonrequestusers) button.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11484,6 +11540,7 @@
       "name": "UsersShared",
       "anchor": "#usersshared",
       "description": "This object contains information about the users whose identifiers were shared with the bot using a [KeyboardButtonRequestUsers](#keyboardbuttonrequestusers) button.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11510,6 +11567,7 @@
       "name": "ChatShared",
       "anchor": "#chatshared",
       "description": "This object contains information about a chat that was shared with the bot using a [KeyboardButtonRequestChat](#keyboardbuttonrequestchat) button.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11554,6 +11612,7 @@
       "name": "WriteAccessAllowed",
       "anchor": "#writeaccessallowed",
       "description": "This object represents a service message about a user allowing a bot to write messages after adding it to the attachment menu, launching a Web App from a link, or accepting an explicit request from a Web App sent by the method [requestWriteAccess](/bots/webapps#initializing-mini-apps).",
+      "type": "fields",
       "fields": [
         {
           "type": "boolean",
@@ -11579,6 +11638,7 @@
       "name": "VideoChatScheduled",
       "anchor": "#videochatscheduled",
       "description": "This object represents a service message about a video chat scheduled in the chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11597,6 +11657,7 @@
       "name": "VideoChatEnded",
       "anchor": "#videochatended",
       "description": "This object represents a service message about a video chat ended in the chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11610,6 +11671,7 @@
       "name": "VideoChatParticipantsInvited",
       "anchor": "#videochatparticipantsinvited",
       "description": "This object represents a service message about new members invited to a video chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "array",
@@ -11630,6 +11692,7 @@
       "name": "PaidMessagePriceChanged",
       "anchor": "#paidmessagepricechanged",
       "description": "Describes a service message about a change in the price of paid messages within a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11643,6 +11706,7 @@
       "name": "GiveawayCreated",
       "anchor": "#giveawaycreated",
       "description": "This object represents a service message about the creation of a scheduled giveaway.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11656,6 +11720,7 @@
       "name": "Giveaway",
       "anchor": "#giveaway",
       "description": "This object represents a message about a scheduled giveaway.",
+      "type": "fields",
       "fields": [
         {
           "type": "array",
@@ -11729,6 +11794,7 @@
       "name": "GiveawayWinners",
       "anchor": "#giveawaywinners",
       "description": "This object represents a message about the completion of a giveaway with public winners.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -11821,6 +11887,7 @@
       "name": "GiveawayCompleted",
       "anchor": "#giveawaycompleted",
       "description": "This object represents a service message about the completion of a giveaway without public winners.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11857,6 +11924,7 @@
       "name": "LinkPreviewOptions",
       "anchor": "#linkpreviewoptions",
       "description": "Describes the options used for link preview generation.",
+      "type": "fields",
       "fields": [
         {
           "type": "boolean",
@@ -11894,6 +11962,7 @@
       "name": "UserProfilePhotos",
       "anchor": "#userprofilephotos",
       "description": "This object represent a user's profile pictures.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -11923,6 +11992,7 @@
       "name": "File",
       "anchor": "#file",
       "description": "This object represents a file ready to be downloaded. The file can be downloaded via the link `https://api.telegram.org/file/bot<token>/<file_path>`. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling [getFile](#getfile).",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11954,6 +12024,7 @@
       "name": "WebAppInfo",
       "anchor": "#webappinfo",
       "description": "Describes a [Web App](/bots/webapps).",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -11967,6 +12038,7 @@
       "name": "ReplyKeyboardMarkup",
       "anchor": "#replykeyboardmarkup",
       "description": "This object represents a [custom keyboard](/bots/features#keyboards) with reply options (see [Introduction to bots](/bots/features#keyboards) for details and examples). Not supported in channels and for messages sent on behalf of a Telegram Business account.",
+      "type": "fields",
       "fields": [
         {
           "type": "array",
@@ -12020,6 +12092,7 @@
       "name": "KeyboardButton",
       "anchor": "#keyboardbutton",
       "description": "This object represents one button of the reply keyboard. At most one of the optional fields must be used to specify type of the button. For simple text buttons, _String_ can be used instead of this object to specify the button text.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12085,6 +12158,7 @@
       "name": "KeyboardButtonRequestUsers",
       "anchor": "#keyboardbuttonrequestusers",
       "description": "This object defines the criteria used to request suitable users. Information about the selected users will be shared with the bot when the corresponding button is pressed. [More about requesting users »](/bots/features#chat-and-user-selection)",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -12136,6 +12210,7 @@
       "name": "KeyboardButtonRequestChat",
       "anchor": "#keyboardbuttonrequestchat",
       "description": "This object defines the criteria used to request a suitable chat. Information about the selected chat will be shared with the bot when the corresponding button is pressed. The bot will be granted requested rights in the chat if appropriate. [More about requesting chats »](/bots/features#chat-and-user-selection).",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -12217,6 +12292,7 @@
       "name": "KeyboardButtonPollType",
       "anchor": "#keyboardbuttonpolltype",
       "description": "This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12230,6 +12306,7 @@
       "name": "ReplyKeyboardRemove",
       "anchor": "#replykeyboardremove",
       "description": "Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see [ReplyKeyboardMarkup](#replykeyboardmarkup)). Not supported in channels and for messages sent on behalf of a Telegram Business account.",
+      "type": "fields",
       "fields": [
         {
           "type": "boolean",
@@ -12250,6 +12327,7 @@
       "name": "InlineKeyboardMarkup",
       "anchor": "#inlinekeyboardmarkup",
       "description": "This object represents an [inline keyboard](/bots/features#inline-keyboards) that appears right next to the message it belongs to.",
+      "type": "fields",
       "fields": [
         {
           "type": "array",
@@ -12273,6 +12351,7 @@
       "name": "InlineKeyboardButton",
       "anchor": "#inlinekeyboardbutton",
       "description": "This object represents one button of an inline keyboard. Exactly one of the optional fields must be used to specify type of the button.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12366,6 +12445,7 @@
       "name": "LoginUrl",
       "anchor": "#loginurl",
       "description": "This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the [Telegram Login Widget](/widgets/login) when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12397,6 +12477,7 @@
       "name": "SwitchInlineQueryChosenChat",
       "anchor": "#switchinlinequerychosenchat",
       "description": "This object represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12434,6 +12515,7 @@
       "name": "CopyTextButton",
       "anchor": "#copytextbutton",
       "description": "This object represents an inline keyboard button that copies specified text to the clipboard.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12447,6 +12529,7 @@
       "name": "CallbackQuery",
       "anchor": "#callbackquery",
       "description": "This object represents an incoming callback query from a callback button in an [inline keyboard](/bots/features#inline-keyboards). If the button that originated the query was attached to a message sent by the bot, the field _message_ will be present. If the button was attached to a message sent via the bot (in [inline mode](#inline-mode)), the field _inline\\_message\\_id_ will be present. Exactly one of the fields _data_ or _game\\_short\\_name_ will be present.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12504,6 +12587,7 @@
       "name": "ForceReply",
       "anchor": "#forcereply",
       "description": "Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice [privacy mode](/bots/features#privacy-mode). Not supported in channels and for messages sent on behalf of a Telegram Business account.",
+      "type": "fields",
       "fields": [
         {
           "type": "boolean",
@@ -12530,6 +12614,7 @@
       "name": "ChatPhoto",
       "anchor": "#chatphoto",
       "description": "This object represents a chat photo.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12561,6 +12646,7 @@
       "name": "ChatInviteLink",
       "anchor": "#chatinvitelink",
       "description": "Represents an invite link for a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12640,6 +12726,7 @@
       "name": "ChatAdministratorRights",
       "anchor": "#chatadministratorrights",
       "description": "Represents the rights of an administrator in a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "boolean",
@@ -12737,6 +12824,7 @@
       "name": "ChatMemberUpdated",
       "anchor": "#chatmemberupdated",
       "description": "This object represents changes in the status of a chat member.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -12812,6 +12900,7 @@
       "name": "ChatMember",
       "anchor": "#chatmember",
       "description": "This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -12861,6 +12950,7 @@
       "name": "ChatMemberOwner",
       "anchor": "#chatmemberowner",
       "description": "Represents a [chat member](#chatmember) that owns the chat and has all administrator privileges.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -12897,6 +12987,7 @@
       "name": "ChatMemberAdministrator",
       "anchor": "#chatmemberadministrator",
       "description": "Represents a [chat member](#chatmember) that has some additional privileges.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13023,6 +13114,7 @@
       "name": "ChatMemberMember",
       "anchor": "#chatmembermember",
       "description": "Represents a [chat member](#chatmember) that has no additional privileges or restrictions.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13053,6 +13145,7 @@
       "name": "ChatMemberRestricted",
       "anchor": "#chatmemberrestricted",
       "description": "Represents a [chat member](#chatmember) that is under certain restrictions in the chat. Supergroups only.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13173,6 +13266,7 @@
       "name": "ChatMemberLeft",
       "anchor": "#chatmemberleft",
       "description": "Represents a [chat member](#chatmember) that isn't currently a member of the chat, but may join it themselves.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13197,6 +13291,7 @@
       "name": "ChatMemberBanned",
       "anchor": "#chatmemberbanned",
       "description": "Represents a [chat member](#chatmember) that was banned in the chat and can't return to the chat or view chat messages.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13227,6 +13322,7 @@
       "name": "ChatJoinRequest",
       "anchor": "#chatjoinrequest",
       "description": "Represents a join request sent to a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -13282,6 +13378,7 @@
       "name": "ChatPermissions",
       "anchor": "#chatpermissions",
       "description": "Describes actions that a non-administrator user is allowed to take in a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "boolean",
@@ -13373,6 +13470,7 @@
       "name": "Birthdate",
       "anchor": "#birthdate",
       "description": "Describes the birthdate of a user.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -13402,6 +13500,7 @@
       "name": "BusinessIntro",
       "anchor": "#businessintro",
       "description": "Contains information about the start page settings of a Telegram Business account.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13431,6 +13530,7 @@
       "name": "BusinessLocation",
       "anchor": "#businesslocation",
       "description": "Contains information about the location of a Telegram Business account.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13454,6 +13554,7 @@
       "name": "BusinessOpeningHoursInterval",
       "anchor": "#businessopeninghoursinterval",
       "description": "Describes an interval of time during which a business is open.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -13475,6 +13576,7 @@
       "name": "BusinessOpeningHours",
       "anchor": "#businessopeninghours",
       "description": "Describes the opening hours of a business.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13501,6 +13603,7 @@
       "name": "StoryAreaPosition",
       "anchor": "#storyareaposition",
       "description": "Describes the position of a clickable area within a story.",
+      "type": "fields",
       "fields": [
         {
           "type": "float",
@@ -13544,6 +13647,7 @@
       "name": "LocationAddress",
       "anchor": "#locationaddress",
       "description": "Describes the physical address of a location.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13575,6 +13679,7 @@
       "name": "StoryAreaType",
       "anchor": "#storyareatype",
       "description": "Describes the type of a clickable area on a story. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -13617,6 +13722,7 @@
       "name": "StoryAreaTypeLocation",
       "anchor": "#storyareatypelocation",
       "description": "Describes a story area pointing to a location. Currently, a story can have up to 10 location areas.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13653,6 +13759,7 @@
       "name": "StoryAreaTypeSuggestedReaction",
       "anchor": "#storyareatypesuggestedreaction",
       "description": "Describes a story area pointing to a suggested reaction. Currently, a story can have up to 5 suggested reaction areas.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13689,6 +13796,7 @@
       "name": "StoryAreaTypeLink",
       "anchor": "#storyareatypelink",
       "description": "Describes a story area pointing to an HTTP or tg:// link. Currently, a story can have up to 3 link areas.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13709,6 +13817,7 @@
       "name": "StoryAreaTypeWeather",
       "anchor": "#storyareatypeweather",
       "description": "Describes a story area containing weather information. Currently, a story can have up to 3 weather areas.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13741,6 +13850,7 @@
       "name": "StoryAreaTypeUniqueGift",
       "anchor": "#storyareatypeuniquegift",
       "description": "Describes a story area pointing to a unique gift. Currently, a story can have at most 1 unique gift area.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13761,6 +13871,7 @@
       "name": "StoryArea",
       "anchor": "#storyarea",
       "description": "Describes a clickable area on a story media.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -13788,6 +13899,7 @@
       "name": "ChatLocation",
       "anchor": "#chatlocation",
       "description": "Represents a location to which a chat is connected.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -13811,6 +13923,7 @@
       "name": "ReactionType",
       "anchor": "#reactiontype",
       "description": "This object describes the type of a reaction. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -13839,6 +13952,7 @@
       "name": "ReactionTypeEmoji",
       "anchor": "#reactiontypeemoji",
       "description": "The reaction is based on an emoji.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13934,6 +14048,7 @@
       "name": "ReactionTypeCustomEmoji",
       "anchor": "#reactiontypecustomemoji",
       "description": "The reaction is based on a custom emoji.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13954,6 +14069,7 @@
       "name": "ReactionTypePaid",
       "anchor": "#reactiontypepaid",
       "description": "The reaction is paid.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -13968,6 +14084,7 @@
       "name": "ReactionCount",
       "anchor": "#reactioncount",
       "description": "Represents a reaction added to a message along with the number of times it was added.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -13991,6 +14108,7 @@
       "name": "MessageReactionUpdated",
       "anchor": "#messagereactionupdated",
       "description": "This object represents a change of a reaction on a message performed by a user.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -14066,6 +14184,7 @@
       "name": "MessageReactionCountUpdated",
       "anchor": "#messagereactioncountupdated",
       "description": "This object represents reaction changes on a message with anonymous reactions.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -14108,6 +14227,7 @@
       "name": "ForumTopic",
       "anchor": "#forumtopic",
       "description": "This object represents a forum topic.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -14139,6 +14259,7 @@
       "name": "Gift",
       "anchor": "#gift",
       "description": "This object represents a gift that can be sent by the bot.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14186,6 +14307,7 @@
       "name": "Gifts",
       "anchor": "#gifts",
       "description": "This object represent a list of gifts.",
+      "type": "fields",
       "fields": [
         {
           "type": "array",
@@ -14206,6 +14328,7 @@
       "name": "UniqueGiftModel",
       "anchor": "#uniquegiftmodel",
       "description": "This object describes the model of a unique gift.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14235,6 +14358,7 @@
       "name": "UniqueGiftSymbol",
       "anchor": "#uniquegiftsymbol",
       "description": "This object describes the symbol shown on the pattern of a unique gift.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14264,6 +14388,7 @@
       "name": "UniqueGiftBackdropColors",
       "anchor": "#uniquegiftbackdropcolors",
       "description": "This object describes the colors of the backdrop of a unique gift.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -14295,6 +14420,7 @@
       "name": "UniqueGiftBackdrop",
       "anchor": "#uniquegiftbackdrop",
       "description": "This object describes the backdrop of a unique gift.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14324,6 +14450,7 @@
       "name": "UniqueGift",
       "anchor": "#uniquegift",
       "description": "This object describes a unique gift that was upgraded from a regular gift.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14379,6 +14506,7 @@
       "name": "GiftInfo",
       "anchor": "#giftinfo",
       "description": "Describes a service message about a regular gift that was sent or received.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -14447,6 +14575,7 @@
       "name": "UniqueGiftInfo",
       "anchor": "#uniquegiftinfo",
       "description": "Describes a service message about a unique gift that was sent or received.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -14482,6 +14611,7 @@
       "name": "OwnedGift",
       "anchor": "#ownedgift",
       "description": "This object describes a gift received and owned by a user or a chat. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -14503,6 +14633,7 @@
       "name": "OwnedGiftRegular",
       "anchor": "#ownedgiftregular",
       "description": "Describes a regular gift owned by a user or a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14608,6 +14739,7 @@
       "name": "OwnedGiftUnique",
       "anchor": "#ownedgiftunique",
       "description": "Describes a unique gift received and owned by a user or a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14674,6 +14806,7 @@
       "name": "OwnedGifts",
       "anchor": "#ownedgifts",
       "description": "Contains the list of gifts received and owned by a user or a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -14706,6 +14839,7 @@
       "name": "AcceptedGiftTypes",
       "anchor": "#acceptedgifttypes",
       "description": "This object describes the types of gifts that can be gifted to a user or a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "boolean",
@@ -14737,6 +14871,7 @@
       "name": "StarAmount",
       "anchor": "#staramount",
       "description": "Describes an amount of Telegram Stars.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -14756,6 +14891,7 @@
       "name": "BotCommand",
       "anchor": "#botcommand",
       "description": "This object represents a bot command.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14775,6 +14911,7 @@
       "name": "BotCommandScope",
       "anchor": "#botcommandscope",
       "description": "This object represents the scope to which bot commands are applied. Currently, the following 7 scopes are supported:",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -14831,6 +14968,7 @@
       "name": "BotCommandScopeDefault",
       "anchor": "#botcommandscopedefault",
       "description": "Represents the default [scope](#botcommandscope) of bot commands. Default commands are used if no commands with a [narrower scope](#determining-list-of-commands) are specified for the user.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14844,6 +14982,7 @@
       "name": "BotCommandScopeAllPrivateChats",
       "anchor": "#botcommandscopeallprivatechats",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering all private chats.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14857,6 +14996,7 @@
       "name": "BotCommandScopeAllGroupChats",
       "anchor": "#botcommandscopeallgroupchats",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering all group and supergroup chats.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14870,6 +15010,7 @@
       "name": "BotCommandScopeAllChatAdministrators",
       "anchor": "#botcommandscopeallchatadministrators",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering all group and supergroup chat administrators.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14883,6 +15024,7 @@
       "name": "BotCommandScopeChat",
       "anchor": "#botcommandscopechat",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering a specific chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14910,6 +15052,7 @@
       "name": "BotCommandScopeChatAdministrators",
       "anchor": "#botcommandscopechatadministrators",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering all administrators of a specific group or supergroup chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14937,6 +15080,7 @@
       "name": "BotCommandScopeChatMember",
       "anchor": "#botcommandscopechatmember",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering a specific member of a group or supergroup chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14970,6 +15114,7 @@
       "name": "BotName",
       "anchor": "#botname",
       "description": "This object represents the bot's name.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14983,6 +15128,7 @@
       "name": "BotDescription",
       "anchor": "#botdescription",
       "description": "This object represents the bot's description.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -14996,6 +15142,7 @@
       "name": "BotShortDescription",
       "anchor": "#botshortdescription",
       "description": "This object represents the bot's short description.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15009,6 +15156,7 @@
       "name": "MenuButton",
       "anchor": "#menubutton",
       "description": "This object describes the bot's menu button in a private chat. It should be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -15037,6 +15185,7 @@
       "name": "MenuButtonCommands",
       "anchor": "#menubuttoncommands",
       "description": "Represents a menu button, which opens the bot's list of commands.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15050,6 +15199,7 @@
       "name": "MenuButtonWebApp",
       "anchor": "#menubuttonwebapp",
       "description": "Represents a menu button, which launches a [Web App](/bots/webapps).",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15079,6 +15229,7 @@
       "name": "MenuButtonDefault",
       "anchor": "#menubuttondefault",
       "description": "Describes that no specific value for the menu button was set.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15092,6 +15243,7 @@
       "name": "ChatBoostSource",
       "anchor": "#chatboostsource",
       "description": "This object describes the source of a chat boost. It can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -15120,6 +15272,7 @@
       "name": "ChatBoostSourcePremium",
       "anchor": "#chatboostsourcepremium",
       "description": "The boost was obtained by subscribing to Telegram Premium or by gifting a Telegram Premium subscription to another user.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15144,6 +15297,7 @@
       "name": "ChatBoostSourceGiftCode",
       "anchor": "#chatboostsourcegiftcode",
       "description": "The boost was obtained by the creation of Telegram Premium gift codes to boost a chat. Each such code boosts the chat 4 times for the duration of the corresponding Telegram Premium subscription.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15168,6 +15322,7 @@
       "name": "ChatBoostSourceGiveaway",
       "anchor": "#chatboostsourcegiveaway",
       "description": "The boost was obtained by the creation of a Telegram Premium or a Telegram Star giveaway. This boosts the chat 4 times for the duration of the corresponding Telegram Premium subscription for Telegram Premium giveaways and _prize\\_star\\_count_ / 500 times for one year for Telegram Star giveaways.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15211,6 +15366,7 @@
       "name": "ChatBoost",
       "anchor": "#chatboost",
       "description": "This object contains information about a chat boost.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15246,6 +15402,7 @@
       "name": "ChatBoostUpdated",
       "anchor": "#chatboostupdated",
       "description": "This object represents a boost added to a chat or changed.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -15273,6 +15430,7 @@
       "name": "ChatBoostRemoved",
       "anchor": "#chatboostremoved",
       "description": "This object represents a boost removed from a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -15312,6 +15470,7 @@
       "name": "UserChatBoosts",
       "anchor": "#userchatboosts",
       "description": "This object represents a list of boosts added to a chat by a user.",
+      "type": "fields",
       "fields": [
         {
           "type": "array",
@@ -15332,6 +15491,7 @@
       "name": "BusinessBotRights",
       "anchor": "#businessbotrights",
       "description": "Represents the rights of a business bot.",
+      "type": "fields",
       "fields": [
         {
           "type": "boolean",
@@ -15437,6 +15597,7 @@
       "name": "BusinessConnection",
       "anchor": "#businessconnection",
       "description": "Describes the connection of the bot with a business account.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15488,6 +15649,7 @@
       "name": "BusinessMessagesDeleted",
       "anchor": "#businessmessagesdeleted",
       "description": "This object is received when messages are deleted from a connected business account.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15520,6 +15682,7 @@
       "name": "ResponseParameters",
       "anchor": "#responseparameters",
       "description": "Describes why a request was unsuccessful.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",
@@ -15539,6 +15702,7 @@
       "name": "InputMedia",
       "anchor": "#inputmedia",
       "description": "This object represents the content of a media message to be sent. It should be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -15581,6 +15745,7 @@
       "name": "InputMediaPhoto",
       "anchor": "#inputmediaphoto",
       "description": "Represents a photo to be sent.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15637,6 +15802,7 @@
       "name": "InputMediaVideo",
       "anchor": "#inputmediavideo",
       "description": "Represents a video to be sent.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15735,6 +15901,7 @@
       "name": "InputMediaAnimation",
       "anchor": "#inputmediaanimation",
       "description": "Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15815,6 +15982,7 @@
       "name": "InputMediaAudio",
       "anchor": "#inputmediaaudio",
       "description": "Represents an audio file to be treated as music to be sent.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15883,6 +16051,7 @@
       "name": "InputMediaDocument",
       "anchor": "#inputmediadocument",
       "description": "Represents a general file to be sent.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15944,6 +16113,7 @@
       "name": "InputPaidMedia",
       "anchor": "#inputpaidmedia",
       "description": "This object describes the paid media to be sent. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -15965,6 +16135,7 @@
       "name": "InputPaidMediaPhoto",
       "anchor": "#inputpaidmediaphoto",
       "description": "The paid media to send is a photo.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -15984,6 +16155,7 @@
       "name": "InputPaidMediaVideo",
       "anchor": "#inputpaidmediavideo",
       "description": "The paid media to send is a video.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16045,6 +16217,7 @@
       "name": "InputProfilePhoto",
       "anchor": "#inputprofilephoto",
       "description": "This object describes a profile photo to set. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -16066,6 +16239,7 @@
       "name": "InputProfilePhotoStatic",
       "anchor": "#inputprofilephotostatic",
       "description": "A static profile photo in the .JPG format.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16085,6 +16259,7 @@
       "name": "InputProfilePhotoAnimated",
       "anchor": "#inputprofilephotoanimated",
       "description": "An animated profile photo in the MPEG4 format.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16110,6 +16285,7 @@
       "name": "InputStoryContent",
       "anchor": "#inputstorycontent",
       "description": "This object describes the content of a story to post. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -16131,6 +16307,7 @@
       "name": "InputStoryContentPhoto",
       "anchor": "#inputstorycontentphoto",
       "description": "Describes a photo to post as a story.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16150,6 +16327,7 @@
       "name": "InputStoryContentVideo",
       "anchor": "#inputstorycontentvideo",
       "description": "Describes a video to post as a story.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16187,6 +16365,7 @@
       "name": "Sticker",
       "anchor": "#sticker",
       "description": "This object represents a sticker.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16297,6 +16476,7 @@
       "name": "StickerSet",
       "anchor": "#stickerset",
       "description": "This object represents a sticker set.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16345,6 +16525,7 @@
       "name": "MaskPosition",
       "anchor": "#maskposition",
       "description": "This object describes the position on faces where a mask should be placed by default.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16388,6 +16569,7 @@
       "name": "InputSticker",
       "anchor": "#inputsticker",
       "description": "This object describes a sticker to be added to a sticker set.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16435,6 +16617,7 @@
       "name": "InlineQuery",
       "anchor": "#inlinequery",
       "description": "This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16486,6 +16669,7 @@
       "name": "InlineQueryResultsButton",
       "anchor": "#inlinequeryresultsbutton",
       "description": "This object represents a button to be shown above inline query results. You **must** use exactly one of the optional fields.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16515,6 +16699,7 @@
       "name": "InlineQueryResult",
       "anchor": "#inlinequeryresult",
       "description": "This object represents one result of an inline query. Telegram clients currently support results of the following 20 types:",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -16662,6 +16847,7 @@
       "name": "InlineQueryResultArticle",
       "anchor": "#inlinequeryresultarticle",
       "description": "Represents a link to an article or web page.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16737,6 +16923,7 @@
       "name": "InlineQueryResultPhoto",
       "anchor": "#inlinequeryresultphoto",
       "description": "Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the photo.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16843,6 +17030,7 @@
       "name": "InlineQueryResultGif",
       "anchor": "#inlinequeryresultgif",
       "description": "Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the animation.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -16955,6 +17143,7 @@
       "name": "InlineQueryResultMpeg4Gif",
       "anchor": "#inlinequeryresultmpeg4gif",
       "description": "Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the animation.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17067,6 +17256,7 @@
       "name": "InlineQueryResultVideo",
       "anchor": "#inlinequeryresultvideo",
       "description": "Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the video.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17185,6 +17375,7 @@
       "name": "InlineQueryResultAudio",
       "anchor": "#inlinequeryresultaudio",
       "description": "Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the audio.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17273,6 +17464,7 @@
       "name": "InlineQueryResultVoice",
       "anchor": "#inlinequeryresultvoice",
       "description": "Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the the voice message.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17355,6 +17547,7 @@
       "name": "InlineQueryResultDocument",
       "anchor": "#inlinequeryresultdocument",
       "description": "Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the file. Currently, only **.PDF** and **.ZIP** files can be sent using this method.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17461,6 +17654,7 @@
       "name": "InlineQueryResultLocation",
       "anchor": "#inlinequeryresultlocation",
       "description": "Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the location.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17561,6 +17755,7 @@
       "name": "InlineQueryResultVenue",
       "anchor": "#inlinequeryresultvenue",
       "description": "Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the venue.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17666,6 +17861,7 @@
       "name": "InlineQueryResultContact",
       "anchor": "#inlinequeryresultcontact",
       "description": "Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the contact.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17747,6 +17943,7 @@
       "name": "InlineQueryResultGame",
       "anchor": "#inlinequeryresultgame",
       "description": "Represents a [Game](#games).",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17782,6 +17979,7 @@
       "name": "InlineQueryResultCachedPhoto",
       "anchor": "#inlinequeryresultcachedphoto",
       "description": "Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the photo.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17870,6 +18068,7 @@
       "name": "InlineQueryResultCachedGif",
       "anchor": "#inlinequeryresultcachedgif",
       "description": "Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with specified content instead of the animation.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -17952,6 +18151,7 @@
       "name": "InlineQueryResultCachedMpeg4Gif",
       "anchor": "#inlinequeryresultcachedmpeg4gif",
       "description": "Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the animation.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18034,6 +18234,7 @@
       "name": "InlineQueryResultCachedSticker",
       "anchor": "#inlinequeryresultcachedsticker",
       "description": "Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the sticker.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18079,6 +18280,7 @@
       "name": "InlineQueryResultCachedDocument",
       "anchor": "#inlinequeryresultcacheddocument",
       "description": "Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the file.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18161,6 +18363,7 @@
       "name": "InlineQueryResultCachedVideo",
       "anchor": "#inlinequeryresultcachedvideo",
       "description": "Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the video.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18249,6 +18452,7 @@
       "name": "InlineQueryResultCachedVoice",
       "anchor": "#inlinequeryresultcachedvoice",
       "description": "Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the voice message.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18325,6 +18529,7 @@
       "name": "InlineQueryResultCachedAudio",
       "anchor": "#inlinequeryresultcachedaudio",
       "description": "Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the audio.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18395,6 +18600,7 @@
       "name": "InputMessageContent",
       "anchor": "#inputmessagecontent",
       "description": "This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following 5 types:",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -18437,6 +18643,7 @@
       "name": "InputTextMessageContent",
       "anchor": "#inputtextmessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of a text message to be sent as the result of an inline query.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18479,6 +18686,7 @@
       "name": "InputLocationMessageContent",
       "anchor": "#inputlocationmessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of a location message to be sent as the result of an inline query.",
+      "type": "fields",
       "fields": [
         {
           "type": "float",
@@ -18523,6 +18731,7 @@
       "name": "InputVenueMessageContent",
       "anchor": "#inputvenuemessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of a venue message to be sent as the result of an inline query.",
+      "type": "fields",
       "fields": [
         {
           "type": "float",
@@ -18578,6 +18787,7 @@
       "name": "InputContactMessageContent",
       "anchor": "#inputcontactmessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of a contact message to be sent as the result of an inline query.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18609,6 +18819,7 @@
       "name": "InputInvoiceMessageContent",
       "anchor": "#inputinvoicemessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of an invoice message to be sent as the result of an inline query.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18748,6 +18959,7 @@
       "name": "ChosenInlineResult",
       "anchor": "#choseninlineresult",
       "description": "Represents a [result](#inlinequeryresult) of an inline query that was chosen by the user and sent to their chat partner.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18793,6 +19005,7 @@
       "name": "SentWebAppMessage",
       "anchor": "#sentwebappmessage",
       "description": "Describes an inline message sent by a [Web App](/bots/webapps) on behalf of a user.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18806,6 +19019,7 @@
       "name": "PreparedInlineMessage",
       "anchor": "#preparedinlinemessage",
       "description": "Describes an inline message to be sent by a user of a Mini App.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18825,6 +19039,7 @@
       "name": "LabeledPrice",
       "anchor": "#labeledprice",
       "description": "This object represents a portion of the price for goods or services.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18844,6 +19059,7 @@
       "name": "Invoice",
       "anchor": "#invoice",
       "description": "This object contains basic information about an invoice.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18881,6 +19097,7 @@
       "name": "ShippingAddress",
       "anchor": "#shippingaddress",
       "description": "This object represents a shipping address.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18924,6 +19141,7 @@
       "name": "OrderInfo",
       "anchor": "#orderinfo",
       "description": "This object represents information about an order.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18959,6 +19177,7 @@
       "name": "ShippingOption",
       "anchor": "#shippingoption",
       "description": "This object represents one shipping option.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -18991,6 +19210,7 @@
       "name": "SuccessfulPayment",
       "anchor": "#successfulpayment",
       "description": "This object contains basic information about a successful payment. Note that if the buyer initiates a chargeback with the relevant payment provider following this transaction, the funds may be debited from your balance. This is outside of Telegram's control.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19064,6 +19284,7 @@
       "name": "RefundedPayment",
       "anchor": "#refundedpayment",
       "description": "This object contains basic information about a refunded payment.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19102,6 +19323,7 @@
       "name": "ShippingQuery",
       "anchor": "#shippingquery",
       "description": "This object contains information about an incoming shipping query.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19141,6 +19363,7 @@
       "name": "PreCheckoutQuery",
       "anchor": "#precheckoutquery",
       "description": "This object contains information about an incoming pre-checkout query.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19198,6 +19421,7 @@
       "name": "PaidMediaPurchased",
       "anchor": "#paidmediapurchased",
       "description": "This object contains information about a paid media purchase.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -19221,6 +19445,7 @@
       "name": "RevenueWithdrawalState",
       "anchor": "#revenuewithdrawalstate",
       "description": "This object describes the state of a revenue withdrawal operation. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -19249,6 +19474,7 @@
       "name": "RevenueWithdrawalStatePending",
       "anchor": "#revenuewithdrawalstatepending",
       "description": "The withdrawal is in progress.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19263,6 +19489,7 @@
       "name": "RevenueWithdrawalStateSucceeded",
       "anchor": "#revenuewithdrawalstatesucceeded",
       "description": "The withdrawal succeeded.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19289,6 +19516,7 @@
       "name": "RevenueWithdrawalStateFailed",
       "anchor": "#revenuewithdrawalstatefailed",
       "description": "The withdrawal failed and the transaction was refunded.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19303,6 +19531,7 @@
       "name": "AffiliateInfo",
       "anchor": "#affiliateinfo",
       "description": "Contains information about the affiliate that received a commission via this transaction.",
+      "type": "fields",
       "fields": [
         {
           "type": "reference",
@@ -19348,6 +19577,7 @@
       "name": "TransactionPartner",
       "anchor": "#transactionpartner",
       "description": "This object describes the source of a transaction, or its recipient for outgoing transactions. Currently, it can be one of",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -19404,6 +19634,7 @@
       "name": "TransactionPartnerUser",
       "anchor": "#transactionpartneruser",
       "description": "Describes a transaction with a user.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19491,6 +19722,7 @@
       "name": "TransactionPartnerChat",
       "anchor": "#transactionpartnerchat",
       "description": "Describes a transaction with a chat.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19525,6 +19757,7 @@
       "name": "TransactionPartnerAffiliateProgram",
       "anchor": "#transactionpartneraffiliateprogram",
       "description": "Describes the affiliate program that issued the affiliate commission received via this transaction.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19555,6 +19788,7 @@
       "name": "TransactionPartnerFragment",
       "anchor": "#transactionpartnerfragment",
       "description": "Describes a withdrawal transaction with Fragment.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19579,6 +19813,7 @@
       "name": "TransactionPartnerTelegramAds",
       "anchor": "#transactionpartnertelegramads",
       "description": "Describes a withdrawal transaction to the Telegram Ads platform.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19593,6 +19828,7 @@
       "name": "TransactionPartnerTelegramApi",
       "anchor": "#transactionpartnertelegramapi",
       "description": "Describes a transaction with payment for [paid broadcasting](#paid-broadcasts).",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19613,6 +19849,7 @@
       "name": "TransactionPartnerOther",
       "anchor": "#transactionpartnerother",
       "description": "Describes a transaction with an unknown source or recipient.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19627,6 +19864,7 @@
       "name": "StarTransaction",
       "anchor": "#startransaction",
       "description": "Describes a Telegram Star transaction. Note that if the buyer initiates a chargeback with the payment provider from whom they acquired Stars (e.g., Apple, Google) following this transaction, the refunded Stars will be deducted from the bot's balance. This is outside of Telegram's control.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19678,6 +19916,7 @@
       "name": "StarTransactions",
       "anchor": "#startransactions",
       "description": "Contains a list of Telegram Star transactions.",
+      "type": "fields",
       "fields": [
         {
           "type": "array",
@@ -19698,6 +19937,7 @@
       "name": "PassportData",
       "anchor": "#passportdata",
       "description": "Describes Telegram Passport data shared with the bot by the user.",
+      "type": "fields",
       "fields": [
         {
           "type": "array",
@@ -19728,6 +19968,7 @@
       "name": "PassportFile",
       "anchor": "#passportfile",
       "description": "This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19759,6 +20000,7 @@
       "name": "EncryptedPassportElement",
       "anchor": "#encryptedpassportelement",
       "description": "Describes documents or other Telegram Passport elements shared with the bot by the user.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19852,6 +20094,7 @@
       "name": "EncryptedCredentials",
       "anchor": "#encryptedcredentials",
       "description": "Describes data required for decrypting and authenticating [EncryptedPassportElement](#encryptedpassportelement). See the [Telegram Passport Documentation](/passport#receiving-information) for a complete description of the data decryption and authentication processes.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19877,6 +20120,7 @@
       "name": "PassportElementError",
       "anchor": "#passportelementerror",
       "description": "This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user. It should be one of:",
+      "type": "oneOf",
       "oneOf": [
         {
           "type": "reference",
@@ -19947,6 +20191,7 @@
       "name": "PassportElementErrorDataField",
       "anchor": "#passportelementerrordatafield",
       "description": "Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -19984,6 +20229,7 @@
       "name": "PassportElementErrorFrontSide",
       "anchor": "#passportelementerrorfrontside",
       "description": "Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20015,6 +20261,7 @@
       "name": "PassportElementErrorReverseSide",
       "anchor": "#passportelementerrorreverseside",
       "description": "Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20046,6 +20293,7 @@
       "name": "PassportElementErrorSelfie",
       "anchor": "#passportelementerrorselfie",
       "description": "Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20077,6 +20325,7 @@
       "name": "PassportElementErrorFile",
       "anchor": "#passportelementerrorfile",
       "description": "Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20108,6 +20357,7 @@
       "name": "PassportElementErrorFiles",
       "anchor": "#passportelementerrorfiles",
       "description": "Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20142,6 +20392,7 @@
       "name": "PassportElementErrorTranslationFile",
       "anchor": "#passportelementerrortranslationfile",
       "description": "Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20173,6 +20424,7 @@
       "name": "PassportElementErrorTranslationFiles",
       "anchor": "#passportelementerrortranslationfiles",
       "description": "Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20207,6 +20459,7 @@
       "name": "PassportElementErrorUnspecified",
       "anchor": "#passportelementerrorunspecified",
       "description": "Represents an issue in an unspecified place. The error is considered resolved when new data is added.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20238,6 +20491,7 @@
       "name": "Game",
       "anchor": "#game",
       "description": "This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.",
+      "type": "fields",
       "fields": [
         {
           "type": "string",
@@ -20304,6 +20558,7 @@
       "name": "GameHighScore",
       "anchor": "#gamehighscore",
       "description": "This object represents one row of the high scores table for a game.",
+      "type": "fields",
       "fields": [
         {
           "type": "integer",

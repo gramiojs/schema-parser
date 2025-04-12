@@ -365,7 +365,10 @@ export function tableRowToField(tableRow: TableRow): Field {
 	return {
 		...typeField,
 		key: tableRow.name,
-		required,
+		required:
+			"default" in typeField && typeField.default !== undefined
+				? false
+				: required,
 		description: htmlToMarkdown(tableRow.description),
 	};
 }
@@ -385,7 +388,6 @@ function parseFieldDetails(description: string, type: "number" | "string") {
 		min: constraints.min,
 		max: constraints.max,
 		default: patterns.default,
-		required: true,
 		enum:
 			patterns.enum?.length && type === "string"
 				? patterns.enum.filter((v) =>
