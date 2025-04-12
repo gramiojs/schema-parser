@@ -8997,6 +8997,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "user",
           "key": "type",
           "description": "Type of the message origin, always “user”"
         },
@@ -9023,6 +9024,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "hidden_user",
           "key": "type",
           "description": "Type of the message origin, always “hidden\\_user”"
         },
@@ -9045,6 +9047,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "chat",
           "key": "type",
           "description": "Type of the message origin, always “chat”"
         },
@@ -9076,6 +9079,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "channel",
           "key": "type",
           "description": "Type of the message origin, always “channel”"
         },
@@ -9516,6 +9520,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "preview",
           "key": "type",
           "description": "Type of the paid media, always “preview”"
         },
@@ -9543,6 +9548,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "photo",
           "key": "type",
           "description": "Type of the paid media, always “photo”"
         },
@@ -9567,6 +9573,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "video",
           "key": "type",
           "description": "Type of the paid media, always “video”"
         },
@@ -10015,6 +10022,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "solid",
           "key": "type",
           "description": "Type of the background fill, always “solid”"
         },
@@ -10032,6 +10040,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "gradient",
           "key": "type",
           "description": "Type of the background fill, always “gradient”"
         },
@@ -10061,6 +10070,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "freeform_gradient",
           "key": "type",
           "description": "Type of the background fill, always “freeform\\_gradient”"
         },
@@ -10116,6 +10126,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "fill",
           "key": "type",
           "description": "Type of the background, always “fill”"
         },
@@ -10144,6 +10155,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "wallpaper",
           "key": "type",
           "description": "Type of the background, always “wallpaper”"
         },
@@ -10184,6 +10196,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "pattern",
           "key": "type",
           "description": "Type of the background, always “pattern”"
         },
@@ -10233,6 +10246,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "chat_theme",
           "key": "type",
           "description": "Type of the background, always “chat\\_theme”"
         },
@@ -11585,6 +11599,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "creator",
           "key": "status",
           "description": "The member's status in the chat, always “creator”"
         },
@@ -11616,6 +11631,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "administrator",
           "key": "status",
           "description": "The member's status in the chat, always “administrator”"
         },
@@ -11722,6 +11738,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "member",
           "key": "status",
           "description": "The member's status in the chat, always “member”"
         },
@@ -11748,6 +11765,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "restricted",
           "key": "status",
           "description": "The member's status in the chat, always “restricted”"
         },
@@ -11849,6 +11867,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "left",
           "key": "status",
           "description": "The member's status in the chat, always “left”"
         },
@@ -11870,6 +11889,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "kicked",
           "key": "status",
           "description": "The member's status in the chat, always “kicked”"
         },
@@ -12244,6 +12264,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "location",
           "key": "type",
           "description": "Type of the area, always “location”"
         },
@@ -12275,6 +12296,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "suggested_reaction",
           "key": "type",
           "description": "Type of the area, always “suggested\\_reaction”"
         },
@@ -12306,6 +12328,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "link",
           "key": "type",
           "description": "Type of the area, always “link”"
         },
@@ -12323,6 +12346,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "weather",
           "key": "type",
           "description": "Type of the area, always “weather”"
         },
@@ -12350,6 +12374,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "unique_gift",
           "key": "type",
           "description": "Type of the area, always “unique\\_gift”"
         },
@@ -12441,6 +12466,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "emoji",
           "key": "type",
           "description": "Type of the reaction, always “emoji”"
         },
@@ -12533,6 +12559,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "custom_emoji",
           "key": "type",
           "description": "Type of the reaction, always “custom\\_emoji”"
         },
@@ -12550,6 +12577,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "paid",
           "key": "type",
           "description": "Type of the reaction, always “paid”"
         }
@@ -13042,6 +13070,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "regular",
           "key": "type",
           "description": "Type of the gift, always “regular”"
         },
@@ -13133,6 +13162,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "unique",
           "key": "type",
           "description": "Type of the gift, always “unique”"
         },
@@ -13606,6 +13636,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "premium",
           "key": "source",
           "description": "Source of the boost, always “premium”"
         },
@@ -13627,6 +13658,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "gift_code",
           "key": "source",
           "description": "Source of the boost, always “gift\\_code”"
         },
@@ -13648,6 +13680,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "giveaway",
           "key": "source",
           "description": "Source of the boost, always “giveaway”"
         },
@@ -17090,6 +17123,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "XTR",
           "key": "currency",
           "description": "Three-letter ISO 4217 [currency](/bots/payments#supported-currencies) code, or “XTR” for payments in [Telegram Stars](https://t.me/BotNews/90). Currently, always “XTR”"
         },
@@ -17256,6 +17290,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "pending",
           "key": "type",
           "description": "Type of the state, always “pending”"
         }
@@ -17268,6 +17303,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "succeeded",
           "key": "type",
           "description": "Type of the state, always “succeeded”"
         },
@@ -17290,6 +17326,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "failed",
           "key": "type",
           "description": "Type of the state, always “failed”"
         }
@@ -17398,6 +17435,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "user",
           "key": "type",
           "description": "Type of the transaction partner, always “user”"
         },
@@ -17474,6 +17512,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "chat",
           "key": "type",
           "description": "Type of the transaction partner, always “chat”"
         },
@@ -17504,6 +17543,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "affiliate_program",
           "key": "type",
           "description": "Type of the transaction partner, always “affiliate\\_program”"
         },
@@ -17530,6 +17570,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "fragment",
           "key": "type",
           "description": "Type of the transaction partner, always “fragment”"
         },
@@ -17551,6 +17592,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "telegram_ads",
           "key": "type",
           "description": "Type of the transaction partner, always “telegram\\_ads”"
         }
@@ -17563,6 +17605,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "telegram_api",
           "key": "type",
           "description": "Type of the transaction partner, always “telegram\\_api”"
         },
@@ -17580,6 +17623,7 @@
       "fields": [
         {
           "type": "string",
+          "const": "other",
           "key": "type",
           "description": "Type of the transaction partner, always “other”"
         }

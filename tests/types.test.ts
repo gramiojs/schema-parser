@@ -464,66 +464,85 @@ describe("Type Parser", () => {
 			});
 		});
 	});
-});
 
-describe("Return Type Resolver", () => {
-	const testCases = [
-		{
-			description:
-				'Returns the revoked invite link as <a href="#chatinvitelink">ChatInviteLink</a> object.',
-			expected: {
-				type: "reference",
-				reference: {
-					name: "ChatInviteLink",
-					anchor: "#chatinvitelink",
+	describe("Const Detection", () => {
+		test("should parse const", () => {
+			const row: TableRow = {
+				name: "status",
+				type: {
+					text: "String",
 				},
-			},
-		},
-		{
-			description: "On success, returns True.",
-			expected: {
-				type: "boolean",
-				const: true,
-			},
-		},
-		{
-			description: 'Returns an Array of <a href="#update">Update</a> objects.',
-			expected: {
-				type: "array",
-				arrayOf: {
+				description: "The member's status in the chat, always “creator”",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "creator",
+			});
+		});
+	});
+
+	describe("Return Type Resolver", () => {
+		const testCases = [
+			{
+				description:
+					'Returns the revoked invite link as <a href="#chatinvitelink">ChatInviteLink</a> object.',
+				expected: {
 					type: "reference",
 					reference: {
-						name: "Update",
-						anchor: "#update",
+						name: "ChatInviteLink",
+						anchor: "#chatinvitelink",
 					},
 				},
 			},
-		},
-		{
-			description: "Returns a list of ChatMember objects.",
-			expected: {
-				type: "array",
-				arrayOf: {
-					type: "reference",
-					reference: {
-						name: "ChatMember",
-						anchor: "#chatmember",
+			{
+				description: "On success, returns True.",
+				expected: {
+					type: "boolean",
+					const: true,
+				},
+			},
+			{
+				description:
+					'Returns an Array of <a href="#update">Update</a> objects.',
+				expected: {
+					type: "array",
+					arrayOf: {
+						type: "reference",
+						reference: {
+							name: "Update",
+							anchor: "#update",
+						},
 					},
 				},
 			},
-		},
-		{
-			description: "Returns basic information about the bot.",
-			expected: { type: "string" },
-		},
-	];
+			{
+				description: "Returns a list of ChatMember objects.",
+				expected: {
+					type: "array",
+					arrayOf: {
+						type: "reference",
+						reference: {
+							name: "ChatMember",
+							anchor: "#chatmember",
+						},
+					},
+				},
+			},
+			{
+				description: "Returns basic information about the bot.",
+				expected: { type: "string" },
+			},
+		];
 
-	test.each(testCases)(
-		"should parse '$expected.type' from description",
-		({ description, expected }) => {
-			console.log(description, expected.type);
-			const result = resolveReturnType(description);
-			expect(result).toMatchObject(expected);
-		},
-	);
+		test.each(testCases)(
+			"should parse '$expected.type' from description",
+			({ description, expected }) => {
+				console.log(description, expected.type);
+				const result = resolveReturnType(description);
+				expect(result).toMatchObject(expected);
+			},
+		);
+	});
 });

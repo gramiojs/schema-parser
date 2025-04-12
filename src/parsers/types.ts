@@ -259,7 +259,14 @@ function extractTypeAndRef(html: string): { text: string; href?: string } {
 	return { text };
 }
 
-function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
+function detectConst(description: string) {
+	const $ = cheerio.load(description);
+
+	const constMatch = $.text().match(/always\s+["“]([^"”]+)["”]/i);
+	return constMatch ? constMatch[1] : undefined;
+}
+
+export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 	const arrayMatch = typeInfo.text.match(/^Array of (.+)$/i);
 	if (arrayMatch) {
 		const innerTypeText = arrayMatch[1];
@@ -318,9 +325,12 @@ function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 				? detectEnum(description, "string")
 				: undefined;
 
+			const constValue = description ? detectConst(description) : undefined;
+
 			return {
 				type: "string",
 				enum: enumValues?.length ? enumValues : undefined,
+				const: constValue,
 			} as FieldString;
 		}
 		case "Boolean":
