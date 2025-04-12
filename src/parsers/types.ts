@@ -263,7 +263,7 @@ function extractTypeAndRef(html: string): { text: string; href?: string } {
 function detectConst(description: string) {
 	const $ = cheerio.load(description);
 
-	const constMatch = $.text().match(/always\s+["“]([^"”]+)["”]/i);
+	const constMatch = $.text().match(/always\s+[""“]([^""“]+)[""“]/i);
 	return constMatch ? constMatch[1] : undefined;
 }
 
@@ -406,13 +406,11 @@ function parseFieldDetails(description: string, type: "number" | "string") {
 }
 
 export function resolveReturnType(description: string): Omit<Field, "key"> {
-	const $ = cheerio.load(description);
-
-	// https://core.telegram.org/bots/api#getavailablegifts
-	// !DIRTY FIX because telegram description is not always correct
 	if (
-		description.startsWith("Returns the list of gifts") &&
-		description.includes('Returns a <a href="#gifts">gifts</a> object.')
+		description.toLowerCase().startsWith("returns the list of gifts") &&
+		description
+			.toLowerCase()
+			.includes('returns a <a href="#gifts">gifts</a> object')
 	) {
 		return {
 			type: "array",
@@ -423,66 +421,71 @@ export function resolveReturnType(description: string): Omit<Field, "key"> {
 		} as FieldArray;
 	}
 
-	const allReturns =
-		$.root()
-			.text()
-			.match(/Returns (.*?)(\.|$)/gi) || [];
-	const lastReturnClause =
-		allReturns[allReturns.length - 1]?.match(/Returns (.*?)(\.|$)/i)?.[1] || "";
+	const $ = cheerio.load(description);
 
-	const htmlReturns =
-		$.root()
-			.html()
-			?.match(/Returns (.*?)(\.|$)/gi) || [];
-	const lastHtmlReturn =
-		htmlReturns[htmlReturns.length - 1]?.match(/Returns (.*?)(\.|$)/i)?.[1] ||
-		"";
-
-	if (/(?:^|\W)(true|false)(?:$|\W)/i.test(lastReturnClause)) {
-		return {
-			type: "boolean",
-			const: lastReturnClause.toLowerCase().includes("true"),
-		} as FieldBoolean;
+	if ($.text().match(/Returns (an |the )?(True|False)/i)) {
+		return { type: "boolean", const: $.text().includes("True") };
 	}
 
-	const arrayMatch = lastReturnClause.match(/(?:Array|list) of (.+)/i);
+	const hasAnyExplicitLink = $('a[href^="#"]').length > 0;
+
+	const returnText =
+		$.root().text().split("Returns").pop()?.split(".")[0] || "";
+
+	if (returnText.includes("otherwise") || returnText.includes("either")) {
+		const variants: Field[] = [];
+
+		const mainMatch = returnText.match(/([A-Z][a-zA-Z]+)/);
+		if (mainMatch) {
+			variants.push(
+				hasAnyExplicitLink ? createReference(mainMatch[1]) : { type: "string" },
+			);
+		}
+
+		const altMatch = returnText.match(/otherwise (\w+)/i);
+		if (altMatch) {
+			const altType =
+				altMatch[1].toLowerCase() === "true"
+					? { type: "boolean", const: true }
+					: hasAnyExplicitLink
+						? createReference(altMatch[1])
+						: { type: "string" };
+			variants.push(altType);
+		}
+
+		if (variants.length > 0) return { type: "one_of", variants };
+	}
+
+	const arrayMatch = returnText.match(/(Array|list) of (\w+)/i);
 	if (arrayMatch) {
-		const arrayContent = cheerio.load(lastHtmlReturn);
-		const firstLink = arrayContent("a").first();
-		const rawInnerText = arrayContent.root().text().trim();
-
-		const parts = rawInnerText.split(/ of /i);
-		const lastPart = parts[parts.length - 1].trim();
-		const typeNameMatch = lastPart.match(/^([A-Z][a-zA-Z]+)/);
-		const typeName = typeNameMatch ? typeNameMatch[1] : lastPart;
-
-		const innerType =
-			firstLink.length > 0
-				? {
-						text: firstLink.text().trim(),
-						href: firstLink.attr("href"),
-					}
-				: {
-						text: typeName,
-						href: `#${typeName.toLowerCase()}`,
-					};
-
 		return {
 			type: "array",
-			arrayOf: parseTypeText(innerType),
-		} as FieldArray;
+			arrayOf: hasAnyExplicitLink
+				? createReference(arrayMatch[2])
+				: { type: "string" },
+		};
 	}
 
-	const linkMatch = lastHtmlReturn.match(/<a href="([^"]+)"[^>]*>([^<]+)<\/a>/);
-	if (linkMatch) {
+	const directLink = $('a[href^="#"]').first();
+	if (directLink.length) {
 		return {
 			type: "reference",
 			reference: {
-				name: linkMatch[2],
-				anchor: linkMatch[1],
+				name: directLink.text().trim(),
+				anchor: directLink.attr("href") || "",
 			},
-		} as FieldReference;
+		};
 	}
 
-	return { type: "string" } as FieldString;
+	return { type: "string" };
+}
+
+function createReference(typeName: string): Field {
+	return {
+		type: "reference",
+		reference: {
+			name: typeName.replace(/ objects?/i, ""),
+			anchor: `#${typeName.toLowerCase()}`,
+		},
+	};
 }

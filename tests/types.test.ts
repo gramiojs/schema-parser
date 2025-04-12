@@ -472,7 +472,7 @@ describe("Type Parser", () => {
 				type: {
 					text: "String",
 				},
-				description: "The member's status in the chat, always “creator”",
+				description: 'The member\'s status in the chat, always "creator"',
 			};
 
 			const result = tableRowToField(row);
@@ -518,7 +518,8 @@ describe("Type Parser", () => {
 				},
 			},
 			{
-				description: "Returns a list of ChatMember objects.",
+				description:
+					"Returns an Array of <a href='#chatmember'>ChatMember</a> objects.",
 				expected: {
 					type: "array",
 					arrayOf: {
@@ -536,7 +537,7 @@ describe("Type Parser", () => {
 			},
 			{
 				description:
-					'Returns the list of gifts that can be sent by the bot to users and channel chats. Requires no parameters. Returns a <a href="#gifts">gifts</a> object.',
+					'Returns the list of gifts that can be sent by the bot. Returns a <a href="#gifts">Gifts</a> object.',
 				expected: {
 					type: "array",
 					arrayOf: {
@@ -548,6 +549,49 @@ describe("Type Parser", () => {
 					},
 				},
 			},
+			{
+				description: `
+					<p>Use this method to send messages. 
+					<b>Returns</b> the sent <a href="#message">Message</a> object.
+				`,
+				expected: {
+					type: "reference",
+					reference: { name: "Message", anchor: "#message" },
+				},
+			},
+			{
+				description: `
+					<p>First returns wrong type. 
+					<b>Returns</b> <em>True</em> on success.
+				`,
+				expected: { type: "boolean", const: true },
+			},
+			{
+				description: `
+					Returns Array of <a href="#user">User</a> objects.
+					Some additional text.
+				`,
+				expected: {
+					type: "array",
+					arrayOf: {
+						type: "reference",
+						reference: { name: "User", anchor: "#user" },
+					},
+				},
+			},
+			// {
+			// 	// <p>On success, returns a list of ChatMember objects
+			// 	description: `
+			// 		<b>Returns</b> <a href="#chatmember">ChatMember</a> array.
+			// 	`,
+			// 	expected: {
+			// 		type: "array",
+			// 		arrayOf: {
+			// 			type: "reference",
+			// 			reference: { name: "ChatMember", anchor: "#chatmember" },
+			// 		},
+			// 	},
+			// },
 		];
 
 		test.each(testCases)(

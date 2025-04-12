@@ -317,7 +317,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -385,7 +389,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -450,7 +458,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "MessageId",
+          "anchor": "#messageid"
+        }
       }
     },
     {
@@ -603,8 +615,8 @@
       "returns": {
         "type": "reference",
         "reference": {
-          "name": "MessageId",
-          "anchor": "#messageid"
+          "name": "poll",
+          "anchor": "#poll"
         }
       }
     },
@@ -676,7 +688,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "poll",
+          "anchor": "#poll"
+        }
       }
     },
     {
@@ -837,7 +853,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -1022,7 +1042,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -1195,7 +1219,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -1422,7 +1450,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Document",
+          "anchor": "#document"
+        }
       }
     },
     {
@@ -1619,7 +1651,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -1774,7 +1810,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Audio",
+          "anchor": "#audio"
+        }
       }
     },
     {
@@ -1928,7 +1968,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -2080,7 +2124,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -2163,7 +2211,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Messages",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -2306,7 +2358,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -2460,7 +2516,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -2590,7 +2650,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -2803,7 +2867,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -2930,7 +2998,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -3101,7 +3173,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "File",
+          "anchor": "#file"
+        }
       }
     },
     {
@@ -3571,8 +3647,8 @@
       "returns": {
         "type": "reference",
         "reference": {
-          "name": "ChatInviteLink",
-          "anchor": "#chatinvitelink"
+          "name": "revokeChatInviteLink",
+          "anchor": "#revokechatinvitelink"
         }
       }
     },
@@ -3679,8 +3755,8 @@
       "returns": {
         "type": "reference",
         "reference": {
-          "name": "ChatInviteLink",
-          "anchor": "#chatinvitelink"
+          "name": "editChatSubscriptionInviteLink",
+          "anchor": "#editchatsubscriptioninvitelink"
         }
       }
     },
@@ -5133,7 +5209,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "game",
+          "anchor": "#games"
+        }
       }
     },
     {
@@ -5216,7 +5296,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -5278,7 +5362,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -5367,7 +5455,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "stopMessageLiveLocation",
+          "anchor": "#stopmessagelivelocation"
+        }
       }
     },
     {
@@ -5419,7 +5511,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -5471,7 +5567,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -5517,7 +5617,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Poll",
+          "anchor": "#poll"
+        }
       }
     },
     {
@@ -5591,13 +5695,10 @@
       "description": "Returns the list of gifts that can be sent by the bot to users and channel chats. Requires no parameters. Returns a [Gifts](#gifts) object.",
       "parameters": [],
       "returns": {
-        "type": "array",
-        "arrayOf": {
-          "type": "reference",
-          "reference": {
-            "name": "gifts that can be sent by the bot to users and channel chats",
-            "anchor": "#gifts that can be sent by the bot to users and channel chats"
-          }
+        "type": "reference",
+        "reference": {
+          "name": "Gifts",
+          "anchor": "#gifts"
         }
       }
     },
@@ -6051,7 +6152,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "StarAmount",
+          "anchor": "#staramount"
+        }
       }
     },
     {
@@ -6142,7 +6247,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "OwnedGifts",
+          "anchor": "#ownedgifts"
+        }
       }
     },
     {
@@ -6548,7 +6657,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -6564,7 +6677,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "StickerSet",
+          "anchor": "#stickerset"
+        }
       }
     },
     {
@@ -6624,8 +6741,8 @@
       "returns": {
         "type": "reference",
         "reference": {
-          "name": "File",
-          "anchor": "#file"
+          "name": "createNewStickerSet",
+          "anchor": "#createnewstickerset"
         }
       }
     },
@@ -7066,7 +7183,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "SentWebAppMessage",
+          "anchor": "#sentwebappmessage"
+        }
       }
     },
     {
@@ -7332,7 +7453,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -7527,7 +7652,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Update",
+          "anchor": "#update"
+        }
       }
     },
     {
@@ -7555,7 +7684,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Update",
+          "anchor": "#update"
+        }
       }
     },
     {
@@ -7579,7 +7712,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "StarTransactions",
+          "anchor": "#startransactions"
+        }
       }
     },
     {
@@ -7739,7 +7876,11 @@
         }
       ],
       "returns": {
-        "type": "string"
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -7791,8 +7932,11 @@
         }
       ],
       "returns": {
-        "type": "boolean",
-        "const": false
+        "type": "reference",
+        "reference": {
+          "name": "Message",
+          "anchor": "#message"
+        }
       }
     },
     {
@@ -9957,7 +10101,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "user",
           "key": "type",
           "required": true,
           "description": "Type of the message origin, always “user”"
@@ -9988,7 +10131,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "hidden_user",
           "key": "type",
           "required": true,
           "description": "Type of the message origin, always “hidden\\_user”"
@@ -10015,7 +10157,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "chat",
           "key": "type",
           "required": true,
           "description": "Type of the message origin, always “chat”"
@@ -10052,7 +10193,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "channel",
           "key": "type",
           "required": true,
           "description": "Type of the message origin, always “channel”"
@@ -10564,7 +10704,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "preview",
           "key": "type",
           "required": true,
           "description": "Type of the paid media, always “preview”"
@@ -10597,7 +10736,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "photo",
           "key": "type",
           "required": true,
           "description": "Type of the paid media, always “photo”"
@@ -10625,7 +10763,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "video",
           "key": "type",
           "required": true,
           "description": "Type of the paid media, always “video”"
@@ -11141,7 +11278,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "solid",
           "key": "type",
           "required": true,
           "description": "Type of the background fill, always “solid”"
@@ -11162,7 +11298,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "gradient",
           "key": "type",
           "required": true,
           "description": "Type of the background fill, always “gradient”"
@@ -11197,7 +11332,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "freeform_gradient",
           "key": "type",
           "required": true,
           "description": "Type of the background fill, always “freeform\\_gradient”"
@@ -11257,7 +11391,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "fill",
           "key": "type",
           "required": true,
           "description": "Type of the background, always “fill”"
@@ -11290,7 +11423,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "wallpaper",
           "key": "type",
           "required": true,
           "description": "Type of the background, always “wallpaper”"
@@ -11337,7 +11469,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "pattern",
           "key": "type",
           "required": true,
           "description": "Type of the background, always “pattern”"
@@ -11394,7 +11525,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "chat_theme",
           "key": "type",
           "required": true,
           "description": "Type of the background, always “chat\\_theme”"
@@ -12954,7 +13084,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "creator",
           "key": "status",
           "required": true,
           "description": "The member's status in the chat, always “creator”"
@@ -12991,7 +13120,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "administrator",
           "key": "status",
           "required": true,
           "description": "The member's status in the chat, always “administrator”"
@@ -13118,7 +13246,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "member",
           "key": "status",
           "required": true,
           "description": "The member's status in the chat, always “member”"
@@ -13149,7 +13276,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "restricted",
           "key": "status",
           "required": true,
           "description": "The member's status in the chat, always “restricted”"
@@ -13270,7 +13396,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "left",
           "key": "status",
           "required": true,
           "description": "The member's status in the chat, always “left”"
@@ -13295,7 +13420,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "kicked",
           "key": "status",
           "required": true,
           "description": "The member's status in the chat, always “kicked”"
@@ -13726,7 +13850,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "location",
           "key": "type",
           "required": true,
           "description": "Type of the area, always “location”"
@@ -13763,7 +13886,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "suggested_reaction",
           "key": "type",
           "required": true,
           "description": "Type of the area, always “suggested\\_reaction”"
@@ -13800,7 +13922,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "link",
           "key": "type",
           "required": true,
           "description": "Type of the area, always “link”"
@@ -13821,7 +13942,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "weather",
           "key": "type",
           "required": true,
           "description": "Type of the area, always “weather”"
@@ -13854,7 +13974,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "unique_gift",
           "key": "type",
           "required": true,
           "description": "Type of the area, always “unique\\_gift”"
@@ -13956,7 +14075,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "emoji",
           "key": "type",
           "required": true,
           "description": "Type of the reaction, always “emoji”"
@@ -14052,7 +14170,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "custom_emoji",
           "key": "type",
           "required": true,
           "description": "Type of the reaction, always “custom\\_emoji”"
@@ -14073,7 +14190,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "paid",
           "key": "type",
           "required": true,
           "description": "Type of the reaction, always “paid”"
@@ -14637,7 +14753,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "regular",
           "key": "type",
           "required": true,
           "description": "Type of the gift, always “regular”"
@@ -14743,7 +14858,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "unique",
           "key": "type",
           "required": true,
           "description": "Type of the gift, always “unique”"
@@ -15276,7 +15390,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "premium",
           "key": "source",
           "required": true,
           "description": "Source of the boost, always “premium”"
@@ -15301,7 +15414,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "gift_code",
           "key": "source",
           "required": true,
           "description": "Source of the boost, always “gift\\_code”"
@@ -15326,7 +15438,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "giveaway",
           "key": "source",
           "required": true,
           "description": "Source of the boost, always “giveaway”"
@@ -19288,7 +19399,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "XTR",
           "key": "currency",
           "required": true,
           "description": "Three-letter ISO 4217 [currency](/bots/payments#supported-currencies) code, or “XTR” for payments in [Telegram Stars](https://t.me/BotNews/90). Currently, always “XTR”"
@@ -19478,7 +19588,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "pending",
           "key": "type",
           "required": true,
           "description": "Type of the state, always “pending”"
@@ -19493,7 +19602,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "succeeded",
           "key": "type",
           "required": true,
           "description": "Type of the state, always “succeeded”"
@@ -19520,7 +19628,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "failed",
           "key": "type",
           "required": true,
           "description": "Type of the state, always “failed”"
@@ -19638,7 +19745,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "user",
           "key": "type",
           "required": true,
           "description": "Type of the transaction partner, always “user”"
@@ -19726,7 +19832,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "chat",
           "key": "type",
           "required": true,
           "description": "Type of the transaction partner, always “chat”"
@@ -19761,7 +19866,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "affiliate_program",
           "key": "type",
           "required": true,
           "description": "Type of the transaction partner, always “affiliate\\_program”"
@@ -19792,7 +19896,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "fragment",
           "key": "type",
           "required": true,
           "description": "Type of the transaction partner, always “fragment”"
@@ -19817,7 +19920,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "telegram_ads",
           "key": "type",
           "required": true,
           "description": "Type of the transaction partner, always “telegram\\_ads”"
@@ -19832,7 +19934,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "telegram_api",
           "key": "type",
           "required": true,
           "description": "Type of the transaction partner, always “telegram\\_api”"
@@ -19853,7 +19954,6 @@
       "fields": [
         {
           "type": "string",
-          "const": "other",
           "key": "type",
           "required": true,
           "description": "Type of the transaction partner, always “other”"
