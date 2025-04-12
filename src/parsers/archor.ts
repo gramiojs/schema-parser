@@ -78,7 +78,7 @@ export function parseAnchor(
 	let mainDefinitionElement: Cheerio<Element> | null = null;
 
 	const isNextUl = nextElementAfterDescription?.is("ul");
-	const suggestsOneOf = descriptionLastPText.includes("can be one of");
+	const suggestsOneOf = true; // descriptionLastPText.includes("can be one of");
 	const noImmediateTable = !nextElementAfterDescription?.is("table.table");
 
 	if (

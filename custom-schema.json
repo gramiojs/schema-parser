@@ -7127,7 +7127,7 @@
   ],
   "objects": [
     {
-      "name": "#update",
+      "name": "Update",
       "anchor": "#update",
       "description": "This [object](#available-types) represents an incoming update.  \nAt most **one** of the optional parameters can be present in any given update.",
       "fields": [
@@ -7346,7 +7346,7 @@
       ]
     },
     {
-      "name": "#webhookinfo",
+      "name": "WebhookInfo",
       "anchor": "#webhookinfo",
       "description": "Describes the current status of a webhook.",
       "fields": [
@@ -7401,7 +7401,7 @@
       ]
     },
     {
-      "name": "#user",
+      "name": "User",
       "anchor": "#user",
       "description": "This object represents a Telegram user or bot.",
       "fields": [
@@ -7475,7 +7475,7 @@
       ]
     },
     {
-      "name": "#chat",
+      "name": "Chat",
       "anchor": "#chat",
       "description": "This object represents a chat.",
       "fields": [
@@ -7518,7 +7518,7 @@
       ]
     },
     {
-      "name": "#chatfullinfo",
+      "name": "ChatFullInfo",
       "anchor": "#chatfullinfo",
       "description": "This object contains full information about a chat.",
       "fields": [
@@ -7811,7 +7811,7 @@
       ]
     },
     {
-      "name": "#message",
+      "name": "Message",
       "anchor": "#message",
       "description": "This object represents a message.",
       "fields": [
@@ -8540,7 +8540,7 @@
       ]
     },
     {
-      "name": "#messageid",
+      "name": "MessageId",
       "anchor": "#messageid",
       "description": "This object represents a unique message identifier.",
       "fields": [
@@ -8552,7 +8552,7 @@
       ]
     },
     {
-      "name": "#inaccessiblemessage",
+      "name": "InaccessibleMessage",
       "anchor": "#inaccessiblemessage",
       "description": "This object describes a message that was deleted or is otherwise inaccessible to the bot.",
       "fields": [
@@ -8578,13 +8578,28 @@
       ]
     },
     {
-      "name": "#maybeinaccessiblemessage",
+      "name": "MaybeInaccessibleMessage",
       "anchor": "#maybeinaccessiblemessage",
       "description": "This object describes a message that can be inaccessible to the bot. It can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "Message",
+            "anchor": "#message"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InaccessibleMessage",
+            "anchor": "#inaccessiblemessage"
+          }
+        }
+      ]
     },
     {
-      "name": "#messageentity",
+      "name": "MessageEntity",
       "anchor": "#messageentity",
       "description": "This object represents one special entity in a text message. For example, hashtags, usernames, URLs, etc.",
       "fields": [
@@ -8630,7 +8645,7 @@
       ]
     },
     {
-      "name": "#textquote",
+      "name": "TextQuote",
       "anchor": "#textquote",
       "description": "This object contains information about the quoted part of a message that is replied to by the given message.",
       "fields": [
@@ -8665,7 +8680,7 @@
       ]
     },
     {
-      "name": "#externalreplyinfo",
+      "name": "ExternalReplyInfo",
       "anchor": "#externalreplyinfo",
       "description": "This object contains information about a message that is being replied to, which may come from another chat or forum topic.",
       "fields": [
@@ -8884,7 +8899,7 @@
       ]
     },
     {
-      "name": "#replyparameters",
+      "name": "ReplyParameters",
       "anchor": "#replyparameters",
       "description": "Describes reply parameters for the message that is being sent.",
       "fields": [
@@ -8941,13 +8956,42 @@
       ]
     },
     {
-      "name": "#messageorigin",
+      "name": "MessageOrigin",
       "anchor": "#messageorigin",
       "description": "This object describes the origin of a message. It can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "MessageOriginUser",
+            "anchor": "#messageoriginuser"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "MessageOriginHiddenUser",
+            "anchor": "#messageoriginhiddenuser"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "MessageOriginChat",
+            "anchor": "#messageoriginchat"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "MessageOriginChannel",
+            "anchor": "#messageoriginchannel"
+          }
+        }
+      ]
     },
     {
-      "name": "#messageoriginuser",
+      "name": "MessageOriginUser",
       "anchor": "#messageoriginuser",
       "description": "The message was originally sent by a known user.",
       "fields": [
@@ -8973,7 +9017,7 @@
       ]
     },
     {
-      "name": "#messageoriginhiddenuser",
+      "name": "MessageOriginHiddenUser",
       "anchor": "#messageoriginhiddenuser",
       "description": "The message was originally sent by an unknown user.",
       "fields": [
@@ -8995,7 +9039,7 @@
       ]
     },
     {
-      "name": "#messageoriginchat",
+      "name": "MessageOriginChat",
       "anchor": "#messageoriginchat",
       "description": "The message was originally sent on behalf of a chat to a group chat.",
       "fields": [
@@ -9026,7 +9070,7 @@
       ]
     },
     {
-      "name": "#messageoriginchannel",
+      "name": "MessageOriginChannel",
       "anchor": "#messageoriginchannel",
       "description": "The message was originally sent to a channel chat.",
       "fields": [
@@ -9062,7 +9106,7 @@
       ]
     },
     {
-      "name": "#photosize",
+      "name": "PhotoSize",
       "anchor": "#photosize",
       "description": "This object represents one size of a photo or a [file](#document) / [sticker](#sticker) thumbnail.",
       "fields": [
@@ -9094,7 +9138,7 @@
       ]
     },
     {
-      "name": "#animation",
+      "name": "Animation",
       "anchor": "#animation",
       "description": "This object represents an animation file (GIF or H.264/MPEG-4 AVC video without sound).",
       "fields": [
@@ -9150,7 +9194,7 @@
       ]
     },
     {
-      "name": "#audio",
+      "name": "Audio",
       "anchor": "#audio",
       "description": "This object represents an audio file to be treated as music by the Telegram clients.",
       "fields": [
@@ -9206,7 +9250,7 @@
       ]
     },
     {
-      "name": "#document",
+      "name": "Document",
       "anchor": "#document",
       "description": "This object represents a general file (as opposed to [photos](#photosize), [voice messages](#voice) and [audio files](#audio)).",
       "fields": [
@@ -9247,7 +9291,7 @@
       ]
     },
     {
-      "name": "#story",
+      "name": "Story",
       "anchor": "#story",
       "description": "This object represents a story.",
       "fields": [
@@ -9268,7 +9312,7 @@
       ]
     },
     {
-      "name": "#video",
+      "name": "Video",
       "anchor": "#video",
       "description": "This object represents a video file.",
       "fields": [
@@ -9341,7 +9385,7 @@
       ]
     },
     {
-      "name": "#videonote",
+      "name": "VideoNote",
       "anchor": "#videonote",
       "description": "This object represents a [video message](https://telegram.org/blog/video-messages-and-telescope) (available in Telegram apps as of [v.4.0](https://telegram.org/blog/video-messages-and-telescope)).",
       "fields": [
@@ -9382,7 +9426,7 @@
       ]
     },
     {
-      "name": "#voice",
+      "name": "Voice",
       "anchor": "#voice",
       "description": "This object represents a voice note.",
       "fields": [
@@ -9414,7 +9458,7 @@
       ]
     },
     {
-      "name": "#paidmediainfo",
+      "name": "PaidMediaInfo",
       "anchor": "#paidmediainfo",
       "description": "Describes the paid media added to a message.",
       "fields": [
@@ -9438,13 +9482,35 @@
       ]
     },
     {
-      "name": "#paidmedia",
+      "name": "PaidMedia",
       "anchor": "#paidmedia",
       "description": "This object describes paid media. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PaidMediaPreview",
+            "anchor": "#paidmediapreview"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PaidMediaPhoto",
+            "anchor": "#paidmediaphoto"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PaidMediaVideo",
+            "anchor": "#paidmediavideo"
+          }
+        }
+      ]
     },
     {
-      "name": "#paidmediapreview",
+      "name": "PaidMediaPreview",
       "anchor": "#paidmediapreview",
       "description": "The paid media isn't available before the payment.",
       "fields": [
@@ -9471,7 +9537,7 @@
       ]
     },
     {
-      "name": "#paidmediaphoto",
+      "name": "PaidMediaPhoto",
       "anchor": "#paidmediaphoto",
       "description": "The paid media is a photo.",
       "fields": [
@@ -9495,7 +9561,7 @@
       ]
     },
     {
-      "name": "#paidmediavideo",
+      "name": "PaidMediaVideo",
       "anchor": "#paidmediavideo",
       "description": "The paid media is a video.",
       "fields": [
@@ -9516,7 +9582,7 @@
       ]
     },
     {
-      "name": "#contact",
+      "name": "Contact",
       "anchor": "#contact",
       "description": "This object represents a phone contact.",
       "fields": [
@@ -9548,7 +9614,7 @@
       ]
     },
     {
-      "name": "#dice",
+      "name": "Dice",
       "anchor": "#dice",
       "description": "This object represents an animated emoji that displays a random value.",
       "fields": [
@@ -9565,7 +9631,7 @@
       ]
     },
     {
-      "name": "#polloption",
+      "name": "PollOption",
       "anchor": "#polloption",
       "description": "This object contains information about one answer option in a poll.",
       "fields": [
@@ -9594,7 +9660,7 @@
       ]
     },
     {
-      "name": "#inputpolloption",
+      "name": "InputPollOption",
       "anchor": "#inputpolloption",
       "description": "This object contains information about one answer option in a poll to be sent.",
       "fields": [
@@ -9623,7 +9689,7 @@
       ]
     },
     {
-      "name": "#pollanswer",
+      "name": "PollAnswer",
       "anchor": "#pollanswer",
       "description": "This object represents an answer of a user in a non-anonymous poll.",
       "fields": [
@@ -9661,7 +9727,7 @@
       ]
     },
     {
-      "name": "#poll",
+      "name": "Poll",
       "anchor": "#poll",
       "description": "This object contains information about a poll.",
       "fields": [
@@ -9759,7 +9825,7 @@
       ]
     },
     {
-      "name": "#location",
+      "name": "Location",
       "anchor": "#location",
       "description": "This object represents a point on the map.",
       "fields": [
@@ -9798,7 +9864,7 @@
       ]
     },
     {
-      "name": "#venue",
+      "name": "Venue",
       "anchor": "#venue",
       "description": "This object represents a venue.",
       "fields": [
@@ -9844,7 +9910,7 @@
       ]
     },
     {
-      "name": "#webappdata",
+      "name": "WebAppData",
       "anchor": "#webappdata",
       "description": "Describes data sent from a [Web App](/bots/webapps) to the bot.",
       "fields": [
@@ -9861,7 +9927,7 @@
       ]
     },
     {
-      "name": "#proximityalerttriggered",
+      "name": "ProximityAlertTriggered",
       "anchor": "#proximityalerttriggered",
       "description": "This object represents the content of a service message, sent whenever a user in the chat triggers a proximity alert set by another user.",
       "fields": [
@@ -9891,7 +9957,7 @@
       ]
     },
     {
-      "name": "#messageautodeletetimerchanged",
+      "name": "MessageAutoDeleteTimerChanged",
       "anchor": "#messageautodeletetimerchanged",
       "description": "This object represents a service message about a change in auto-delete timer settings.",
       "fields": [
@@ -9903,7 +9969,7 @@
       ]
     },
     {
-      "name": "#chatboostadded",
+      "name": "ChatBoostAdded",
       "anchor": "#chatboostadded",
       "description": "This object represents a service message about a user boosting a chat.",
       "fields": [
@@ -9915,13 +9981,35 @@
       ]
     },
     {
-      "name": "#backgroundfill",
+      "name": "BackgroundFill",
       "anchor": "#backgroundfill",
       "description": "This object describes the way a background is filled based on the selected colors. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BackgroundFillSolid",
+            "anchor": "#backgroundfillsolid"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BackgroundFillGradient",
+            "anchor": "#backgroundfillgradient"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BackgroundFillFreeformGradient",
+            "anchor": "#backgroundfillfreeformgradient"
+          }
+        }
+      ]
     },
     {
-      "name": "#backgroundfillsolid",
+      "name": "BackgroundFillSolid",
       "anchor": "#backgroundfillsolid",
       "description": "The background is filled using the selected color.",
       "fields": [
@@ -9938,7 +10026,7 @@
       ]
     },
     {
-      "name": "#backgroundfillgradient",
+      "name": "BackgroundFillGradient",
       "anchor": "#backgroundfillgradient",
       "description": "The background is a gradient fill.",
       "fields": [
@@ -9967,7 +10055,7 @@
       ]
     },
     {
-      "name": "#backgroundfillfreeformgradient",
+      "name": "BackgroundFillFreeformGradient",
       "anchor": "#backgroundfillfreeformgradient",
       "description": "The background is a freeform gradient that rotates after every message in the chat.",
       "fields": [
@@ -9987,13 +10075,42 @@
       ]
     },
     {
-      "name": "#backgroundtype",
+      "name": "BackgroundType",
       "anchor": "#backgroundtype",
       "description": "This object describes the type of a background. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BackgroundTypeFill",
+            "anchor": "#backgroundtypefill"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BackgroundTypeWallpaper",
+            "anchor": "#backgroundtypewallpaper"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BackgroundTypePattern",
+            "anchor": "#backgroundtypepattern"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BackgroundTypeChatTheme",
+            "anchor": "#backgroundtypechattheme"
+          }
+        }
+      ]
     },
     {
-      "name": "#backgroundtypefill",
+      "name": "BackgroundTypeFill",
       "anchor": "#backgroundtypefill",
       "description": "The background is automatically filled based on the selected colors.",
       "fields": [
@@ -10021,7 +10138,7 @@
       ]
     },
     {
-      "name": "#backgroundtypewallpaper",
+      "name": "BackgroundTypeWallpaper",
       "anchor": "#backgroundtypewallpaper",
       "description": "The background is a wallpaper in the JPEG format.",
       "fields": [
@@ -10061,7 +10178,7 @@
       ]
     },
     {
-      "name": "#backgroundtypepattern",
+      "name": "BackgroundTypePattern",
       "anchor": "#backgroundtypepattern",
       "description": "The background is a .PNG or .TGV (gzipped subset of SVG with MIME type “application/x-tgwallpattern”) pattern to be combined with the background fill chosen by the user.",
       "fields": [
@@ -10110,7 +10227,7 @@
       ]
     },
     {
-      "name": "#backgroundtypechattheme",
+      "name": "BackgroundTypeChatTheme",
       "anchor": "#backgroundtypechattheme",
       "description": "The background is taken directly from a built-in chat theme.",
       "fields": [
@@ -10127,7 +10244,7 @@
       ]
     },
     {
-      "name": "#chatbackground",
+      "name": "ChatBackground",
       "anchor": "#chatbackground",
       "description": "This object represents a chat background.",
       "fields": [
@@ -10143,7 +10260,7 @@
       ]
     },
     {
-      "name": "#forumtopiccreated",
+      "name": "ForumTopicCreated",
       "anchor": "#forumtopiccreated",
       "description": "This object represents a service message about a new forum topic created in the chat.",
       "fields": [
@@ -10165,13 +10282,12 @@
       ]
     },
     {
-      "name": "#forumtopicclosed",
+      "name": "ForumTopicClosed",
       "anchor": "#forumtopicclosed",
-      "description": "This object represents a service message about a forum topic closed in the chat. Currently holds no information.",
-      "fields": []
+      "description": "This object represents a service message about a forum topic closed in the chat. Currently holds no information."
     },
     {
-      "name": "#forumtopicedited",
+      "name": "ForumTopicEdited",
       "anchor": "#forumtopicedited",
       "description": "This object represents a service message about an edited forum topic.",
       "fields": [
@@ -10188,25 +10304,22 @@
       ]
     },
     {
-      "name": "#forumtopicreopened",
+      "name": "ForumTopicReopened",
       "anchor": "#forumtopicreopened",
-      "description": "This object represents a service message about a forum topic reopened in the chat. Currently holds no information.",
-      "fields": []
+      "description": "This object represents a service message about a forum topic reopened in the chat. Currently holds no information."
     },
     {
-      "name": "#generalforumtopichidden",
+      "name": "GeneralForumTopicHidden",
       "anchor": "#generalforumtopichidden",
-      "description": "This object represents a service message about General forum topic hidden in the chat. Currently holds no information.",
-      "fields": []
+      "description": "This object represents a service message about General forum topic hidden in the chat. Currently holds no information."
     },
     {
-      "name": "#generalforumtopicunhidden",
+      "name": "GeneralForumTopicUnhidden",
       "anchor": "#generalforumtopicunhidden",
-      "description": "This object represents a service message about General forum topic unhidden in the chat. Currently holds no information.",
-      "fields": []
+      "description": "This object represents a service message about General forum topic unhidden in the chat. Currently holds no information."
     },
     {
-      "name": "#shareduser",
+      "name": "SharedUser",
       "anchor": "#shareduser",
       "description": "This object contains information about a user that was shared with the bot using a [KeyboardButtonRequestUsers](#keyboardbuttonrequestusers) button.",
       "fields": [
@@ -10245,7 +10358,7 @@
       ]
     },
     {
-      "name": "#usersshared",
+      "name": "UsersShared",
       "anchor": "#usersshared",
       "description": "This object contains information about the users whose identifiers were shared with the bot using a [KeyboardButtonRequestUsers](#keyboardbuttonrequestusers) button.",
       "fields": [
@@ -10269,7 +10382,7 @@
       ]
     },
     {
-      "name": "#chatshared",
+      "name": "ChatShared",
       "anchor": "#chatshared",
       "description": "This object contains information about a chat that was shared with the bot using a [KeyboardButtonRequestChat](#keyboardbuttonrequestchat) button.",
       "fields": [
@@ -10308,7 +10421,7 @@
       ]
     },
     {
-      "name": "#writeaccessallowed",
+      "name": "WriteAccessAllowed",
       "anchor": "#writeaccessallowed",
       "description": "This object represents a service message about a user allowing a bot to write messages after adding it to the attachment menu, launching a Web App from a link, or accepting an explicit request from a Web App sent by the method [requestWriteAccess](/bots/webapps#initializing-mini-apps).",
       "fields": [
@@ -10330,7 +10443,7 @@
       ]
     },
     {
-      "name": "#videochatscheduled",
+      "name": "VideoChatScheduled",
       "anchor": "#videochatscheduled",
       "description": "This object represents a service message about a video chat scheduled in the chat.",
       "fields": [
@@ -10342,13 +10455,12 @@
       ]
     },
     {
-      "name": "#videochatstarted",
+      "name": "VideoChatStarted",
       "anchor": "#videochatstarted",
-      "description": "This object represents a service message about a video chat started in the chat. Currently holds no information.",
-      "fields": []
+      "description": "This object represents a service message about a video chat started in the chat. Currently holds no information."
     },
     {
-      "name": "#videochatended",
+      "name": "VideoChatEnded",
       "anchor": "#videochatended",
       "description": "This object represents a service message about a video chat ended in the chat.",
       "fields": [
@@ -10360,7 +10472,7 @@
       ]
     },
     {
-      "name": "#videochatparticipantsinvited",
+      "name": "VideoChatParticipantsInvited",
       "anchor": "#videochatparticipantsinvited",
       "description": "This object represents a service message about new members invited to a video chat.",
       "fields": [
@@ -10379,7 +10491,7 @@
       ]
     },
     {
-      "name": "#paidmessagepricechanged",
+      "name": "PaidMessagePriceChanged",
       "anchor": "#paidmessagepricechanged",
       "description": "Describes a service message about a change in the price of paid messages within a chat.",
       "fields": [
@@ -10391,7 +10503,7 @@
       ]
     },
     {
-      "name": "#giveawaycreated",
+      "name": "GiveawayCreated",
       "anchor": "#giveawaycreated",
       "description": "This object represents a service message about the creation of a scheduled giveaway.",
       "fields": [
@@ -10403,7 +10515,7 @@
       ]
     },
     {
-      "name": "#giveaway",
+      "name": "Giveaway",
       "anchor": "#giveaway",
       "description": "This object represents a message about a scheduled giveaway.",
       "fields": [
@@ -10467,7 +10579,7 @@
       ]
     },
     {
-      "name": "#giveawaywinners",
+      "name": "GiveawayWinners",
       "anchor": "#giveawaywinners",
       "description": "This object represents a message about the completion of a giveaway with public winners.",
       "fields": [
@@ -10547,7 +10659,7 @@
       ]
     },
     {
-      "name": "#giveawaycompleted",
+      "name": "GiveawayCompleted",
       "anchor": "#giveawaycompleted",
       "description": "This object represents a service message about the completion of a giveaway without public winners.",
       "fields": [
@@ -10579,7 +10691,7 @@
       ]
     },
     {
-      "name": "#linkpreviewoptions",
+      "name": "LinkPreviewOptions",
       "anchor": "#linkpreviewoptions",
       "description": "Describes the options used for link preview generation.",
       "fields": [
@@ -10611,7 +10723,7 @@
       ]
     },
     {
-      "name": "#userprofilephotos",
+      "name": "UserProfilePhotos",
       "anchor": "#userprofilephotos",
       "description": "This object represent a user's profile pictures.",
       "fields": [
@@ -10638,7 +10750,7 @@
       ]
     },
     {
-      "name": "#file",
+      "name": "File",
       "anchor": "#file",
       "description": "This object represents a file ready to be downloaded. The file can be downloaded via the link `https://api.telegram.org/file/bot<token>/<file_path>`. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling [getFile](#getfile).",
       "fields": [
@@ -10665,7 +10777,7 @@
       ]
     },
     {
-      "name": "#webappinfo",
+      "name": "WebAppInfo",
       "anchor": "#webappinfo",
       "description": "Describes a [Web App](/bots/webapps).",
       "fields": [
@@ -10677,7 +10789,7 @@
       ]
     },
     {
-      "name": "#replykeyboardmarkup",
+      "name": "ReplyKeyboardMarkup",
       "anchor": "#replykeyboardmarkup",
       "description": "This object represents a [custom keyboard](/bots/features#keyboards) with reply options (see [Introduction to bots](/bots/features#keyboards) for details and examples). Not supported in channels and for messages sent on behalf of a Telegram Business account.",
       "fields": [
@@ -10724,7 +10836,7 @@
       ]
     },
     {
-      "name": "#keyboardbutton",
+      "name": "KeyboardButton",
       "anchor": "#keyboardbutton",
       "description": "This object represents one button of the reply keyboard. At most one of the optional fields must be used to specify type of the button. For simple text buttons, _String_ can be used instead of this object to specify the button text.",
       "fields": [
@@ -10782,7 +10894,7 @@
       ]
     },
     {
-      "name": "#keyboardbuttonrequestusers",
+      "name": "KeyboardButtonRequestUsers",
       "anchor": "#keyboardbuttonrequestusers",
       "description": "This object defines the criteria used to request suitable users. Information about the selected users will be shared with the bot when the corresponding button is pressed. [More about requesting users »](/bots/features#chat-and-user-selection)",
       "fields": [
@@ -10826,7 +10938,7 @@
       ]
     },
     {
-      "name": "#keyboardbuttonrequestchat",
+      "name": "KeyboardButtonRequestChat",
       "anchor": "#keyboardbuttonrequestchat",
       "description": "This object defines the criteria used to request a suitable chat. Information about the selected chat will be shared with the bot when the corresponding button is pressed. The bot will be granted requested rights in the chat if appropriate. [More about requesting chats »](/bots/features#chat-and-user-selection).",
       "fields": [
@@ -10896,7 +11008,7 @@
       ]
     },
     {
-      "name": "#keyboardbuttonpolltype",
+      "name": "KeyboardButtonPollType",
       "anchor": "#keyboardbuttonpolltype",
       "description": "This object represents type of a poll, which is allowed to be created and sent when the corresponding button is pressed.",
       "fields": [
@@ -10908,7 +11020,7 @@
       ]
     },
     {
-      "name": "#replykeyboardremove",
+      "name": "ReplyKeyboardRemove",
       "anchor": "#replykeyboardremove",
       "description": "Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard. By default, custom keyboards are displayed until a new keyboard is sent by a bot. An exception is made for one-time keyboards that are hidden immediately after the user presses a button (see [ReplyKeyboardMarkup](#replykeyboardmarkup)). Not supported in channels and for messages sent on behalf of a Telegram Business account.",
       "fields": [
@@ -10926,7 +11038,7 @@
       ]
     },
     {
-      "name": "#inlinekeyboardmarkup",
+      "name": "InlineKeyboardMarkup",
       "anchor": "#inlinekeyboardmarkup",
       "description": "This object represents an [inline keyboard](/bots/features#inline-keyboards) that appears right next to the message it belongs to.",
       "fields": [
@@ -10948,7 +11060,7 @@
       ]
     },
     {
-      "name": "#inlinekeyboardbutton",
+      "name": "InlineKeyboardButton",
       "anchor": "#inlinekeyboardbutton",
       "description": "This object represents one button of an inline keyboard. Exactly one of the optional fields must be used to specify type of the button.",
       "fields": [
@@ -11030,7 +11142,7 @@
       ]
     },
     {
-      "name": "#loginurl",
+      "name": "LoginUrl",
       "anchor": "#loginurl",
       "description": "This object represents a parameter of the inline keyboard button used to automatically authorize a user. Serves as a great replacement for the [Telegram Login Widget](/widgets/login) when the user is coming from Telegram. All the user needs to do is tap/click a button and confirm that they want to log in:",
       "fields": [
@@ -11057,7 +11169,7 @@
       ]
     },
     {
-      "name": "#switchinlinequerychosenchat",
+      "name": "SwitchInlineQueryChosenChat",
       "anchor": "#switchinlinequerychosenchat",
       "description": "This object represents an inline button that switches the current user to inline mode in a chosen chat, with an optional default inline query.",
       "fields": [
@@ -11089,7 +11201,7 @@
       ]
     },
     {
-      "name": "#copytextbutton",
+      "name": "CopyTextButton",
       "anchor": "#copytextbutton",
       "description": "This object represents an inline keyboard button that copies specified text to the clipboard.",
       "fields": [
@@ -11101,7 +11213,7 @@
       ]
     },
     {
-      "name": "#callbackquery",
+      "name": "CallbackQuery",
       "anchor": "#callbackquery",
       "description": "This object represents an incoming callback query from a callback button in an [inline keyboard](/bots/features#inline-keyboards). If the button that originated the query was attached to a message sent by the bot, the field _message_ will be present. If the button was attached to a message sent via the bot (in [inline mode](#inline-mode)), the field _inline\\_message\\_id_ will be present. Exactly one of the fields _data_ or _game\\_short\\_name_ will be present.",
       "fields": [
@@ -11151,7 +11263,7 @@
       ]
     },
     {
-      "name": "#forcereply",
+      "name": "ForceReply",
       "anchor": "#forcereply",
       "description": "Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply'). This can be extremely useful if you want to create user-friendly step-by-step interfaces without having to sacrifice [privacy mode](/bots/features#privacy-mode). Not supported in channels and for messages sent on behalf of a Telegram Business account.",
       "fields": [
@@ -11174,7 +11286,7 @@
       ]
     },
     {
-      "name": "#chatphoto",
+      "name": "ChatPhoto",
       "anchor": "#chatphoto",
       "description": "This object represents a chat photo.",
       "fields": [
@@ -11201,7 +11313,7 @@
       ]
     },
     {
-      "name": "#chatinvitelink",
+      "name": "ChatInviteLink",
       "anchor": "#chatinvitelink",
       "description": "Represents an invite link for a chat.",
       "fields": [
@@ -11269,7 +11381,7 @@
       ]
     },
     {
-      "name": "#chatadministratorrights",
+      "name": "ChatAdministratorRights",
       "anchor": "#chatadministratorrights",
       "description": "Represents the rights of an administrator in a chat.",
       "fields": [
@@ -11351,7 +11463,7 @@
       ]
     },
     {
-      "name": "#chatmemberupdated",
+      "name": "ChatMemberUpdated",
       "anchor": "#chatmemberupdated",
       "description": "This object represents changes in the status of a chat member.",
       "fields": [
@@ -11418,13 +11530,56 @@
       ]
     },
     {
-      "name": "#chatmember",
+      "name": "ChatMember",
       "anchor": "#chatmember",
       "description": "This object contains information about one member of a chat. Currently, the following 6 types of chat members are supported:",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatMemberOwner",
+            "anchor": "#chatmemberowner"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatMemberAdministrator",
+            "anchor": "#chatmemberadministrator"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatMemberMember",
+            "anchor": "#chatmembermember"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatMemberRestricted",
+            "anchor": "#chatmemberrestricted"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatMemberLeft",
+            "anchor": "#chatmemberleft"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatMemberBanned",
+            "anchor": "#chatmemberbanned"
+          }
+        }
+      ]
     },
     {
-      "name": "#chatmemberowner",
+      "name": "ChatMemberOwner",
       "anchor": "#chatmemberowner",
       "description": "Represents a [chat member](#chatmember) that owns the chat and has all administrator privileges.",
       "fields": [
@@ -11455,7 +11610,7 @@
       ]
     },
     {
-      "name": "#chatmemberadministrator",
+      "name": "ChatMemberAdministrator",
       "anchor": "#chatmemberadministrator",
       "description": "Represents a [chat member](#chatmember) that has some additional privileges.",
       "fields": [
@@ -11561,7 +11716,7 @@
       ]
     },
     {
-      "name": "#chatmembermember",
+      "name": "ChatMemberMember",
       "anchor": "#chatmembermember",
       "description": "Represents a [chat member](#chatmember) that has no additional privileges or restrictions.",
       "fields": [
@@ -11587,7 +11742,7 @@
       ]
     },
     {
-      "name": "#chatmemberrestricted",
+      "name": "ChatMemberRestricted",
       "anchor": "#chatmemberrestricted",
       "description": "Represents a [chat member](#chatmember) that is under certain restrictions in the chat. Supergroups only.",
       "fields": [
@@ -11688,7 +11843,7 @@
       ]
     },
     {
-      "name": "#chatmemberleft",
+      "name": "ChatMemberLeft",
       "anchor": "#chatmemberleft",
       "description": "Represents a [chat member](#chatmember) that isn't currently a member of the chat, but may join it themselves.",
       "fields": [
@@ -11709,7 +11864,7 @@
       ]
     },
     {
-      "name": "#chatmemberbanned",
+      "name": "ChatMemberBanned",
       "anchor": "#chatmemberbanned",
       "description": "Represents a [chat member](#chatmember) that was banned in the chat and can't return to the chat or view chat messages.",
       "fields": [
@@ -11735,7 +11890,7 @@
       ]
     },
     {
-      "name": "#chatjoinrequest",
+      "name": "ChatJoinRequest",
       "anchor": "#chatjoinrequest",
       "description": "Represents a join request sent to a chat.",
       "fields": [
@@ -11784,7 +11939,7 @@
       ]
     },
     {
-      "name": "#chatpermissions",
+      "name": "ChatPermissions",
       "anchor": "#chatpermissions",
       "description": "Describes actions that a non-administrator user is allowed to take in a chat.",
       "fields": [
@@ -11861,7 +12016,7 @@
       ]
     },
     {
-      "name": "#birthdate",
+      "name": "Birthdate",
       "anchor": "#birthdate",
       "description": "Describes the birthdate of a user.",
       "fields": [
@@ -11887,7 +12042,7 @@
       ]
     },
     {
-      "name": "#businessintro",
+      "name": "BusinessIntro",
       "anchor": "#businessintro",
       "description": "Contains information about the start page settings of a Telegram Business account.",
       "fields": [
@@ -11913,7 +12068,7 @@
       ]
     },
     {
-      "name": "#businesslocation",
+      "name": "BusinessLocation",
       "anchor": "#businesslocation",
       "description": "Contains information about the location of a Telegram Business account.",
       "fields": [
@@ -11934,7 +12089,7 @@
       ]
     },
     {
-      "name": "#businessopeninghoursinterval",
+      "name": "BusinessOpeningHoursInterval",
       "anchor": "#businessopeninghoursinterval",
       "description": "Describes an interval of time during which a business is open.",
       "fields": [
@@ -11953,7 +12108,7 @@
       ]
     },
     {
-      "name": "#businessopeninghours",
+      "name": "BusinessOpeningHours",
       "anchor": "#businessopeninghours",
       "description": "Describes the opening hours of a business.",
       "fields": [
@@ -11977,7 +12132,7 @@
       ]
     },
     {
-      "name": "#storyareaposition",
+      "name": "StoryAreaPosition",
       "anchor": "#storyareaposition",
       "description": "Describes the position of a clickable area within a story.",
       "fields": [
@@ -12014,7 +12169,7 @@
       ]
     },
     {
-      "name": "#locationaddress",
+      "name": "LocationAddress",
       "anchor": "#locationaddress",
       "description": "Describes the physical address of a location.",
       "fields": [
@@ -12041,13 +12196,49 @@
       ]
     },
     {
-      "name": "#storyareatype",
+      "name": "StoryAreaType",
       "anchor": "#storyareatype",
       "description": "Describes the type of a clickable area on a story. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "StoryAreaTypeLocation",
+            "anchor": "#storyareatypelocation"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "StoryAreaTypeSuggestedReaction",
+            "anchor": "#storyareatypesuggestedreaction"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "StoryAreaTypeLink",
+            "anchor": "#storyareatypelink"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "StoryAreaTypeWeather",
+            "anchor": "#storyareatypeweather"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "StoryAreaTypeUniqueGift",
+            "anchor": "#storyareatypeuniquegift"
+          }
+        }
+      ]
     },
     {
-      "name": "#storyareatypelocation",
+      "name": "StoryAreaTypeLocation",
       "anchor": "#storyareatypelocation",
       "description": "Describes a story area pointing to a location. Currently, a story can have up to 10 location areas.",
       "fields": [
@@ -12078,7 +12269,7 @@
       ]
     },
     {
-      "name": "#storyareatypesuggestedreaction",
+      "name": "StoryAreaTypeSuggestedReaction",
       "anchor": "#storyareatypesuggestedreaction",
       "description": "Describes a story area pointing to a suggested reaction. Currently, a story can have up to 5 suggested reaction areas.",
       "fields": [
@@ -12109,7 +12300,7 @@
       ]
     },
     {
-      "name": "#storyareatypelink",
+      "name": "StoryAreaTypeLink",
       "anchor": "#storyareatypelink",
       "description": "Describes a story area pointing to an HTTP or tg:// link. Currently, a story can have up to 3 link areas.",
       "fields": [
@@ -12126,7 +12317,7 @@
       ]
     },
     {
-      "name": "#storyareatypeweather",
+      "name": "StoryAreaTypeWeather",
       "anchor": "#storyareatypeweather",
       "description": "Describes a story area containing weather information. Currently, a story can have up to 3 weather areas.",
       "fields": [
@@ -12153,7 +12344,7 @@
       ]
     },
     {
-      "name": "#storyareatypeuniquegift",
+      "name": "StoryAreaTypeUniqueGift",
       "anchor": "#storyareatypeuniquegift",
       "description": "Describes a story area pointing to a unique gift. Currently, a story can have at most 1 unique gift area.",
       "fields": [
@@ -12170,7 +12361,7 @@
       ]
     },
     {
-      "name": "#storyarea",
+      "name": "StoryArea",
       "anchor": "#storyarea",
       "description": "Describes a clickable area on a story media.",
       "fields": [
@@ -12195,7 +12386,7 @@
       ]
     },
     {
-      "name": "#chatlocation",
+      "name": "ChatLocation",
       "anchor": "#chatlocation",
       "description": "Represents a location to which a chat is connected.",
       "fields": [
@@ -12216,13 +12407,35 @@
       ]
     },
     {
-      "name": "#reactiontype",
+      "name": "ReactionType",
       "anchor": "#reactiontype",
       "description": "This object describes the type of a reaction. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ReactionTypeEmoji",
+            "anchor": "#reactiontypeemoji"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ReactionTypeCustomEmoji",
+            "anchor": "#reactiontypecustomemoji"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ReactionTypePaid",
+            "anchor": "#reactiontypepaid"
+          }
+        }
+      ]
     },
     {
-      "name": "#reactiontypeemoji",
+      "name": "ReactionTypeEmoji",
       "anchor": "#reactiontypeemoji",
       "description": "The reaction is based on an emoji.",
       "fields": [
@@ -12314,7 +12527,7 @@
       ]
     },
     {
-      "name": "#reactiontypecustomemoji",
+      "name": "ReactionTypeCustomEmoji",
       "anchor": "#reactiontypecustomemoji",
       "description": "The reaction is based on a custom emoji.",
       "fields": [
@@ -12331,7 +12544,7 @@
       ]
     },
     {
-      "name": "#reactiontypepaid",
+      "name": "ReactionTypePaid",
       "anchor": "#reactiontypepaid",
       "description": "The reaction is paid.",
       "fields": [
@@ -12343,7 +12556,7 @@
       ]
     },
     {
-      "name": "#reactioncount",
+      "name": "ReactionCount",
       "anchor": "#reactioncount",
       "description": "Represents a reaction added to a message along with the number of times it was added.",
       "fields": [
@@ -12364,7 +12577,7 @@
       ]
     },
     {
-      "name": "#messagereactionupdated",
+      "name": "MessageReactionUpdated",
       "anchor": "#messagereactionupdated",
       "description": "This object represents a change of a reaction on a message performed by a user.",
       "fields": [
@@ -12432,7 +12645,7 @@
       ]
     },
     {
-      "name": "#messagereactioncountupdated",
+      "name": "MessageReactionCountUpdated",
       "anchor": "#messagereactioncountupdated",
       "description": "This object represents reaction changes on a message with anonymous reactions.",
       "fields": [
@@ -12470,7 +12683,7 @@
       ]
     },
     {
-      "name": "#forumtopic",
+      "name": "ForumTopic",
       "anchor": "#forumtopic",
       "description": "This object represents a forum topic.",
       "fields": [
@@ -12497,7 +12710,7 @@
       ]
     },
     {
-      "name": "#gift",
+      "name": "Gift",
       "anchor": "#gift",
       "description": "This object represents a gift that can be sent by the bot.",
       "fields": [
@@ -12538,7 +12751,7 @@
       ]
     },
     {
-      "name": "#gifts",
+      "name": "Gifts",
       "anchor": "#gifts",
       "description": "This object represent a list of gifts.",
       "fields": [
@@ -12557,7 +12770,7 @@
       ]
     },
     {
-      "name": "#uniquegiftmodel",
+      "name": "UniqueGiftModel",
       "anchor": "#uniquegiftmodel",
       "description": "This object describes the model of a unique gift.",
       "fields": [
@@ -12583,7 +12796,7 @@
       ]
     },
     {
-      "name": "#uniquegiftsymbol",
+      "name": "UniqueGiftSymbol",
       "anchor": "#uniquegiftsymbol",
       "description": "This object describes the symbol shown on the pattern of a unique gift.",
       "fields": [
@@ -12609,7 +12822,7 @@
       ]
     },
     {
-      "name": "#uniquegiftbackdropcolors",
+      "name": "UniqueGiftBackdropColors",
       "anchor": "#uniquegiftbackdropcolors",
       "description": "This object describes the colors of the backdrop of a unique gift.",
       "fields": [
@@ -12636,7 +12849,7 @@
       ]
     },
     {
-      "name": "#uniquegiftbackdrop",
+      "name": "UniqueGiftBackdrop",
       "anchor": "#uniquegiftbackdrop",
       "description": "This object describes the backdrop of a unique gift.",
       "fields": [
@@ -12662,7 +12875,7 @@
       ]
     },
     {
-      "name": "#uniquegift",
+      "name": "UniqueGift",
       "anchor": "#uniquegift",
       "description": "This object describes a unique gift that was upgraded from a regular gift.",
       "fields": [
@@ -12711,7 +12924,7 @@
       ]
     },
     {
-      "name": "#giftinfo",
+      "name": "GiftInfo",
       "anchor": "#giftinfo",
       "description": "Describes a service message about a regular gift that was sent or received.",
       "fields": [
@@ -12771,7 +12984,7 @@
       ]
     },
     {
-      "name": "#uniquegiftinfo",
+      "name": "UniqueGiftInfo",
       "anchor": "#uniquegiftinfo",
       "description": "Describes a service message about a unique gift that was sent or received.",
       "fields": [
@@ -12802,13 +13015,28 @@
       ]
     },
     {
-      "name": "#ownedgift",
+      "name": "OwnedGift",
       "anchor": "#ownedgift",
       "description": "This object describes a gift received and owned by a user or a chat. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "OwnedGiftRegular",
+            "anchor": "#ownedgiftregular"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "OwnedGiftUnique",
+            "anchor": "#ownedgiftunique"
+          }
+        }
+      ]
     },
     {
-      "name": "#ownedgiftregular",
+      "name": "OwnedGiftRegular",
       "anchor": "#ownedgiftregular",
       "description": "Describes a regular gift owned by a user or a chat.",
       "fields": [
@@ -12899,7 +13127,7 @@
       ]
     },
     {
-      "name": "#ownedgiftunique",
+      "name": "OwnedGiftUnique",
       "anchor": "#ownedgiftunique",
       "description": "Describes a unique gift received and owned by a user or a chat.",
       "fields": [
@@ -12956,7 +13184,7 @@
       ]
     },
     {
-      "name": "#ownedgifts",
+      "name": "OwnedGifts",
       "anchor": "#ownedgifts",
       "description": "Contains the list of gifts received and owned by a user or a chat.",
       "fields": [
@@ -12985,7 +13213,7 @@
       ]
     },
     {
-      "name": "#acceptedgifttypes",
+      "name": "AcceptedGiftTypes",
       "anchor": "#acceptedgifttypes",
       "description": "This object describes the types of gifts that can be gifted to a user or a chat.",
       "fields": [
@@ -13012,7 +13240,7 @@
       ]
     },
     {
-      "name": "#staramount",
+      "name": "StarAmount",
       "anchor": "#staramount",
       "description": "Describes an amount of Telegram Stars.",
       "fields": [
@@ -13029,7 +13257,7 @@
       ]
     },
     {
-      "name": "#botcommand",
+      "name": "BotCommand",
       "anchor": "#botcommand",
       "description": "This object represents a bot command.",
       "fields": [
@@ -13046,19 +13274,63 @@
       ]
     },
     {
-      "name": "#botcommandscope",
+      "name": "BotCommandScope",
       "anchor": "#botcommandscope",
       "description": "This object represents the scope to which bot commands are applied. Currently, the following 7 scopes are supported:",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BotCommandScopeDefault",
+            "anchor": "#botcommandscopedefault"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BotCommandScopeAllPrivateChats",
+            "anchor": "#botcommandscopeallprivatechats"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BotCommandScopeAllGroupChats",
+            "anchor": "#botcommandscopeallgroupchats"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BotCommandScopeAllChatAdministrators",
+            "anchor": "#botcommandscopeallchatadministrators"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BotCommandScopeChat",
+            "anchor": "#botcommandscopechat"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BotCommandScopeChatAdministrators",
+            "anchor": "#botcommandscopechatadministrators"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "BotCommandScopeChatMember",
+            "anchor": "#botcommandscopechatmember"
+          }
+        }
+      ]
     },
     {
-      "name": "#determining-list-of-commands",
-      "anchor": "#determining-list-of-commands",
-      "description": "The following algorithm is used to determine the list of commands for a particular user viewing the bot menu. The first list of commands which is set is returned:\n\n**Commands in the chat with the bot**",
-      "fields": []
-    },
-    {
-      "name": "#botcommandscopedefault",
+      "name": "BotCommandScopeDefault",
       "anchor": "#botcommandscopedefault",
       "description": "Represents the default [scope](#botcommandscope) of bot commands. Default commands are used if no commands with a [narrower scope](#determining-list-of-commands) are specified for the user.",
       "fields": [
@@ -13070,7 +13342,7 @@
       ]
     },
     {
-      "name": "#botcommandscopeallprivatechats",
+      "name": "BotCommandScopeAllPrivateChats",
       "anchor": "#botcommandscopeallprivatechats",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering all private chats.",
       "fields": [
@@ -13082,7 +13354,7 @@
       ]
     },
     {
-      "name": "#botcommandscopeallgroupchats",
+      "name": "BotCommandScopeAllGroupChats",
       "anchor": "#botcommandscopeallgroupchats",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering all group and supergroup chats.",
       "fields": [
@@ -13094,7 +13366,7 @@
       ]
     },
     {
-      "name": "#botcommandscopeallchatadministrators",
+      "name": "BotCommandScopeAllChatAdministrators",
       "anchor": "#botcommandscopeallchatadministrators",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering all group and supergroup chat administrators.",
       "fields": [
@@ -13106,7 +13378,7 @@
       ]
     },
     {
-      "name": "#botcommandscopechat",
+      "name": "BotCommandScopeChat",
       "anchor": "#botcommandscopechat",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering a specific chat.",
       "fields": [
@@ -13131,7 +13403,7 @@
       ]
     },
     {
-      "name": "#botcommandscopechatadministrators",
+      "name": "BotCommandScopeChatAdministrators",
       "anchor": "#botcommandscopechatadministrators",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering all administrators of a specific group or supergroup chat.",
       "fields": [
@@ -13156,7 +13428,7 @@
       ]
     },
     {
-      "name": "#botcommandscopechatmember",
+      "name": "BotCommandScopeChatMember",
       "anchor": "#botcommandscopechatmember",
       "description": "Represents the [scope](#botcommandscope) of bot commands, covering a specific member of a group or supergroup chat.",
       "fields": [
@@ -13186,7 +13458,7 @@
       ]
     },
     {
-      "name": "#botname",
+      "name": "BotName",
       "anchor": "#botname",
       "description": "This object represents the bot's name.",
       "fields": [
@@ -13198,7 +13470,7 @@
       ]
     },
     {
-      "name": "#botdescription",
+      "name": "BotDescription",
       "anchor": "#botdescription",
       "description": "This object represents the bot's description.",
       "fields": [
@@ -13210,7 +13482,7 @@
       ]
     },
     {
-      "name": "#botshortdescription",
+      "name": "BotShortDescription",
       "anchor": "#botshortdescription",
       "description": "This object represents the bot's short description.",
       "fields": [
@@ -13222,13 +13494,35 @@
       ]
     },
     {
-      "name": "#menubutton",
+      "name": "MenuButton",
       "anchor": "#menubutton",
       "description": "This object describes the bot's menu button in a private chat. It should be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "MenuButtonCommands",
+            "anchor": "#menubuttoncommands"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "MenuButtonWebApp",
+            "anchor": "#menubuttonwebapp"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "MenuButtonDefault",
+            "anchor": "#menubuttondefault"
+          }
+        }
+      ]
     },
     {
-      "name": "#menubuttoncommands",
+      "name": "MenuButtonCommands",
       "anchor": "#menubuttoncommands",
       "description": "Represents a menu button, which opens the bot's list of commands.",
       "fields": [
@@ -13240,7 +13534,7 @@
       ]
     },
     {
-      "name": "#menubuttonwebapp",
+      "name": "MenuButtonWebApp",
       "anchor": "#menubuttonwebapp",
       "description": "Represents a menu button, which launches a [Web App](/bots/webapps).",
       "fields": [
@@ -13266,7 +13560,7 @@
       ]
     },
     {
-      "name": "#menubuttondefault",
+      "name": "MenuButtonDefault",
       "anchor": "#menubuttondefault",
       "description": "Describes that no specific value for the menu button was set.",
       "fields": [
@@ -13278,13 +13572,35 @@
       ]
     },
     {
-      "name": "#chatboostsource",
+      "name": "ChatBoostSource",
       "anchor": "#chatboostsource",
       "description": "This object describes the source of a chat boost. It can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatBoostSourcePremium",
+            "anchor": "#chatboostsourcepremium"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatBoostSourceGiftCode",
+            "anchor": "#chatboostsourcegiftcode"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "ChatBoostSourceGiveaway",
+            "anchor": "#chatboostsourcegiveaway"
+          }
+        }
+      ]
     },
     {
-      "name": "#chatboostsourcepremium",
+      "name": "ChatBoostSourcePremium",
       "anchor": "#chatboostsourcepremium",
       "description": "The boost was obtained by subscribing to Telegram Premium or by gifting a Telegram Premium subscription to another user.",
       "fields": [
@@ -13305,7 +13621,7 @@
       ]
     },
     {
-      "name": "#chatboostsourcegiftcode",
+      "name": "ChatBoostSourceGiftCode",
       "anchor": "#chatboostsourcegiftcode",
       "description": "The boost was obtained by the creation of Telegram Premium gift codes to boost a chat. Each such code boosts the chat 4 times for the duration of the corresponding Telegram Premium subscription.",
       "fields": [
@@ -13326,7 +13642,7 @@
       ]
     },
     {
-      "name": "#chatboostsourcegiveaway",
+      "name": "ChatBoostSourceGiveaway",
       "anchor": "#chatboostsourcegiveaway",
       "description": "The boost was obtained by the creation of a Telegram Premium or a Telegram Star giveaway. This boosts the chat 4 times for the duration of the corresponding Telegram Premium subscription for Telegram Premium giveaways and _prize\\_star\\_count_ / 500 times for one year for Telegram Star giveaways.",
       "fields": [
@@ -13363,7 +13679,7 @@
       ]
     },
     {
-      "name": "#chatboost",
+      "name": "ChatBoost",
       "anchor": "#chatboost",
       "description": "This object contains information about a chat boost.",
       "fields": [
@@ -13394,7 +13710,7 @@
       ]
     },
     {
-      "name": "#chatboostupdated",
+      "name": "ChatBoostUpdated",
       "anchor": "#chatboostupdated",
       "description": "This object represents a boost added to a chat or changed.",
       "fields": [
@@ -13419,7 +13735,7 @@
       ]
     },
     {
-      "name": "#chatboostremoved",
+      "name": "ChatBoostRemoved",
       "anchor": "#chatboostremoved",
       "description": "This object represents a boost removed from a chat.",
       "fields": [
@@ -13454,7 +13770,7 @@
       ]
     },
     {
-      "name": "#userchatboosts",
+      "name": "UserChatBoosts",
       "anchor": "#userchatboosts",
       "description": "This object represents a list of boosts added to a chat by a user.",
       "fields": [
@@ -13473,7 +13789,7 @@
       ]
     },
     {
-      "name": "#businessbotrights",
+      "name": "BusinessBotRights",
       "anchor": "#businessbotrights",
       "description": "Represents the rights of a business bot.",
       "fields": [
@@ -13564,7 +13880,7 @@
       ]
     },
     {
-      "name": "#businessconnection",
+      "name": "BusinessConnection",
       "anchor": "#businessconnection",
       "description": "Describes the connection of the bot with a business account.",
       "fields": [
@@ -13609,7 +13925,7 @@
       ]
     },
     {
-      "name": "#businessmessagesdeleted",
+      "name": "BusinessMessagesDeleted",
       "anchor": "#businessmessagesdeleted",
       "description": "This object is received when messages are deleted from a connected business account.",
       "fields": [
@@ -13638,7 +13954,7 @@
       ]
     },
     {
-      "name": "#responseparameters",
+      "name": "ResponseParameters",
       "anchor": "#responseparameters",
       "description": "Describes why a request was unsuccessful.",
       "fields": [
@@ -13655,13 +13971,49 @@
       ]
     },
     {
-      "name": "#inputmedia",
+      "name": "InputMedia",
       "anchor": "#inputmedia",
       "description": "This object represents the content of a media message to be sent. It should be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputMediaAnimation",
+            "anchor": "#inputmediaanimation"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputMediaDocument",
+            "anchor": "#inputmediadocument"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputMediaAudio",
+            "anchor": "#inputmediaaudio"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputMediaPhoto",
+            "anchor": "#inputmediaphoto"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputMediaVideo",
+            "anchor": "#inputmediavideo"
+          }
+        }
+      ]
     },
     {
-      "name": "#inputmediaphoto",
+      "name": "InputMediaPhoto",
       "anchor": "#inputmediaphoto",
       "description": "Represents a photo to be sent.",
       "fields": [
@@ -13710,7 +14062,7 @@
       ]
     },
     {
-      "name": "#inputmediavideo",
+      "name": "InputMediaVideo",
       "anchor": "#inputmediavideo",
       "description": "Represents a video to be sent.",
       "fields": [
@@ -13794,7 +14146,7 @@
       ]
     },
     {
-      "name": "#inputmediaanimation",
+      "name": "InputMediaAnimation",
       "anchor": "#inputmediaanimation",
       "description": "Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.",
       "fields": [
@@ -13863,7 +14215,7 @@
       ]
     },
     {
-      "name": "#inputmediaaudio",
+      "name": "InputMediaAudio",
       "anchor": "#inputmediaaudio",
       "description": "Represents an audio file to be treated as music to be sent.",
       "fields": [
@@ -13922,7 +14274,7 @@
       ]
     },
     {
-      "name": "#inputmediadocument",
+      "name": "InputMediaDocument",
       "anchor": "#inputmediadocument",
       "description": "Represents a general file to be sent.",
       "fields": [
@@ -13971,19 +14323,33 @@
       ]
     },
     {
-      "name": "#inputfile",
+      "name": "InputFile",
       "anchor": "#inputfile",
-      "description": "This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.",
-      "fields": []
+      "description": "This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser."
     },
     {
-      "name": "#inputpaidmedia",
+      "name": "InputPaidMedia",
       "anchor": "#inputpaidmedia",
       "description": "This object describes the paid media to be sent. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputPaidMediaPhoto",
+            "anchor": "#inputpaidmediaphoto"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputPaidMediaVideo",
+            "anchor": "#inputpaidmediavideo"
+          }
+        }
+      ]
     },
     {
-      "name": "#inputpaidmediaphoto",
+      "name": "InputPaidMediaPhoto",
       "anchor": "#inputpaidmediaphoto",
       "description": "The paid media to send is a photo.",
       "fields": [
@@ -14000,7 +14366,7 @@
       ]
     },
     {
-      "name": "#inputpaidmediavideo",
+      "name": "InputPaidMediaVideo",
       "anchor": "#inputpaidmediavideo",
       "description": "The paid media to send is a video.",
       "fields": [
@@ -14052,13 +14418,28 @@
       ]
     },
     {
-      "name": "#inputprofilephoto",
+      "name": "InputProfilePhoto",
       "anchor": "#inputprofilephoto",
       "description": "This object describes a profile photo to set. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputProfilePhotoStatic",
+            "anchor": "#inputprofilephotostatic"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputProfilePhotoAnimated",
+            "anchor": "#inputprofilephotoanimated"
+          }
+        }
+      ]
     },
     {
-      "name": "#inputprofilephotostatic",
+      "name": "InputProfilePhotoStatic",
       "anchor": "#inputprofilephotostatic",
       "description": "A static profile photo in the .JPG format.",
       "fields": [
@@ -14075,7 +14456,7 @@
       ]
     },
     {
-      "name": "#inputprofilephotoanimated",
+      "name": "InputProfilePhotoAnimated",
       "anchor": "#inputprofilephotoanimated",
       "description": "An animated profile photo in the MPEG4 format.",
       "fields": [
@@ -14097,13 +14478,28 @@
       ]
     },
     {
-      "name": "#inputstorycontent",
+      "name": "InputStoryContent",
       "anchor": "#inputstorycontent",
       "description": "This object describes the content of a story to post. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputStoryContentPhoto",
+            "anchor": "#inputstorycontentphoto"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputStoryContentVideo",
+            "anchor": "#inputstorycontentvideo"
+          }
+        }
+      ]
     },
     {
-      "name": "#inputstorycontentphoto",
+      "name": "InputStoryContentPhoto",
       "anchor": "#inputstorycontentphoto",
       "description": "Describes a photo to post as a story.",
       "fields": [
@@ -14120,7 +14516,7 @@
       ]
     },
     {
-      "name": "#inputstorycontentvideo",
+      "name": "InputStoryContentVideo",
       "anchor": "#inputstorycontentvideo",
       "description": "Describes a video to post as a story.",
       "fields": [
@@ -14152,201 +14548,7 @@
       ]
     },
     {
-      "name": "#sending-files",
-      "anchor": "#sending-files",
-      "description": "There are three ways to send files (photos, stickers, audio, media, etc.):",
-      "fields": []
-    },
-    {
-      "name": "#accent-colors",
-      "anchor": "#accent-colors",
-      "description": "Colors with identifiers 0 (red), 1 (orange), 2 (purple/violet), 3 (green), 4 (cyan), 5 (blue), 6 (pink) can be customized by app themes. Additionally, the following colors in RGB format are currently in use.",
-      "fields": [
-        {
-          "type": "string",
-          "key": "7",
-          "description": "FF9380 992F37"
-        },
-        {
-          "type": "string",
-          "key": "8",
-          "description": "ECB04E C35714"
-        },
-        {
-          "type": "string",
-          "key": "9",
-          "description": "C697FF 5E31C8"
-        },
-        {
-          "type": "string",
-          "key": "10",
-          "description": "A7EB6E 167E2D"
-        },
-        {
-          "type": "string",
-          "key": "11",
-          "description": "40D8D0 045C7F"
-        },
-        {
-          "type": "string",
-          "key": "12",
-          "description": "52BFFF 0B5494"
-        },
-        {
-          "type": "string",
-          "key": "13",
-          "description": "FF86A6 8E366E"
-        },
-        {
-          "type": "string",
-          "key": "14",
-          "description": "3FA2FE E5424F FFFFFF"
-        },
-        {
-          "type": "string",
-          "key": "15",
-          "description": "FF905E 32A527 FFFFFF"
-        },
-        {
-          "type": "string",
-          "key": "16",
-          "description": "66D364 D5444F FFFFFF"
-        },
-        {
-          "type": "string",
-          "key": "17",
-          "description": "22BCE2 3DA240 FFFFFF"
-        },
-        {
-          "type": "string",
-          "key": "18",
-          "description": "22BCE2 FF9778 FFDA6B"
-        },
-        {
-          "type": "string",
-          "key": "19",
-          "description": "9791FF F2731D FFDB59"
-        },
-        {
-          "type": "string",
-          "key": "20",
-          "description": "3DA6EB EEA51D FFFFFF"
-        }
-      ]
-    },
-    {
-      "name": "#profile-accent-colors",
-      "anchor": "#profile-accent-colors",
-      "description": "Currently, the following colors in RGB format are in use for profile backgrounds.",
-      "fields": [
-        {
-          "type": "string",
-          "key": "0",
-          "description": "9C4540"
-        },
-        {
-          "type": "string",
-          "key": "1",
-          "description": "945E2C"
-        },
-        {
-          "type": "string",
-          "key": "2",
-          "description": "715099"
-        },
-        {
-          "type": "string",
-          "key": "3",
-          "description": "33713B"
-        },
-        {
-          "type": "string",
-          "key": "4",
-          "description": "387E87"
-        },
-        {
-          "type": "string",
-          "key": "5",
-          "description": "477194"
-        },
-        {
-          "type": "string",
-          "key": "6",
-          "description": "944763"
-        },
-        {
-          "type": "string",
-          "key": "7",
-          "description": "435261"
-        },
-        {
-          "type": "string",
-          "key": "8",
-          "description": "994343 AC583E"
-        },
-        {
-          "type": "string",
-          "key": "9",
-          "description": "8F552F A17232"
-        },
-        {
-          "type": "string",
-          "key": "10",
-          "description": "634691 9250A2"
-        },
-        {
-          "type": "string",
-          "key": "11",
-          "description": "296A43 5F8F44"
-        },
-        {
-          "type": "string",
-          "key": "12",
-          "description": "306C7C 3E987E"
-        },
-        {
-          "type": "string",
-          "key": "13",
-          "description": "38618C 458BA1"
-        },
-        {
-          "type": "string",
-          "key": "14",
-          "description": "884160 A65259"
-        },
-        {
-          "type": "string",
-          "key": "15",
-          "description": "53606E 384654"
-        }
-      ]
-    },
-    {
-      "name": "#inline-mode-objects",
-      "anchor": "#inline-mode-objects",
-      "description": "Objects and methods used in the inline mode are described in the [Inline mode section](#inline-mode).",
-      "fields": []
-    },
-    {
-      "name": "#formatting-options",
-      "anchor": "#formatting-options",
-      "description": "The Bot API supports basic formatting for messages. You can use bold, italic, underlined, strikethrough, spoiler text, block quotations as well as inline links and pre-formatted code in your bots' messages. Telegram clients will render them accordingly. You can specify text entities directly, or use markdown-style or HTML-style formatting.\n\nNote that Telegram clients will display an **alert** to the user before opening an inline link ('Open this link?' together with the full URL).\n\nMessage entities can be nested, providing following restrictions are met:  \n\\- If two entities have common characters, then one of them is fully contained inside another.  \n\\- _bold_, _italic_, _underline_, _strikethrough_, and _spoiler_ entities can contain and can be part of any other entities, except _pre_ and _code_.  \n\\- _blockquote_ and _expandable\\_blockquote_ entities can't be nested.  \n\\- All other entities can't contain each other.\n\nLinks `tg://user?id=<user_id>` can be used to mention a user by their identifier without using a username. Please note:",
-      "fields": []
-    },
-    {
-      "name": "#paid-broadcasts",
-      "anchor": "#paid-broadcasts",
-      "description": "By default, all bots are able to broadcast up to [30 messages](https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this) per second to their users. Developers can increase this limit by enabling _Paid Broadcasts_ in [@Botfather](https://t.me/botfather) - allowing their bot to broadcast **up to 1000 messages** per second.\n\nEach message broadcasted over the free amount of 30 messages per second incurs a cost of 0.1 Stars per message, paid with Telegram Stars from the bot's balance. In order to use this feature, a bot must have at least _10,000 Stars_ on its balance.",
-      "fields": []
-    },
-    {
-      "name": "#inline-mode-methods",
-      "anchor": "#inline-mode-methods",
-      "description": "Methods and objects used in the inline mode are described in the [Inline mode section](#inline-mode).",
-      "fields": []
-    },
-    {
-      "name": "#sticker",
+      "name": "Sticker",
       "anchor": "#sticker",
       "description": "This object represents a sticker.",
       "fields": [
@@ -14441,7 +14643,7 @@
       ]
     },
     {
-      "name": "#stickerset",
+      "name": "StickerSet",
       "anchor": "#stickerset",
       "description": "This object represents a sticker set.",
       "fields": [
@@ -14484,7 +14686,7 @@
       ]
     },
     {
-      "name": "#maskposition",
+      "name": "MaskPosition",
       "anchor": "#maskposition",
       "description": "This object describes the position on faces where a mask should be placed by default.",
       "fields": [
@@ -14523,7 +14725,7 @@
       ]
     },
     {
-      "name": "#inputsticker",
+      "name": "InputSticker",
       "anchor": "#inputsticker",
       "description": "This object describes a sticker to be added to a sticker set.",
       "fields": [
@@ -14565,7 +14767,7 @@
       ]
     },
     {
-      "name": "#inlinequery",
+      "name": "InlineQuery",
       "anchor": "#inlinequery",
       "description": "This object represents an incoming inline query. When the user sends an empty query, your bot could return some default or trending results.",
       "fields": [
@@ -14610,7 +14812,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultsbutton",
+      "name": "InlineQueryResultsButton",
       "anchor": "#inlinequeryresultsbutton",
       "description": "This object represents a button to be shown above inline query results. You **must** use exactly one of the optional fields.",
       "fields": [
@@ -14636,13 +14838,154 @@
       ]
     },
     {
-      "name": "#inlinequeryresult",
+      "name": "InlineQueryResult",
       "anchor": "#inlinequeryresult",
       "description": "This object represents one result of an inline query. Telegram clients currently support results of the following 20 types:",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultCachedAudio",
+            "anchor": "#inlinequeryresultcachedaudio"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultCachedDocument",
+            "anchor": "#inlinequeryresultcacheddocument"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultCachedGif",
+            "anchor": "#inlinequeryresultcachedgif"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultCachedMpeg4Gif",
+            "anchor": "#inlinequeryresultcachedmpeg4gif"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultCachedPhoto",
+            "anchor": "#inlinequeryresultcachedphoto"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultCachedSticker",
+            "anchor": "#inlinequeryresultcachedsticker"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultCachedVideo",
+            "anchor": "#inlinequeryresultcachedvideo"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultCachedVoice",
+            "anchor": "#inlinequeryresultcachedvoice"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultArticle",
+            "anchor": "#inlinequeryresultarticle"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultAudio",
+            "anchor": "#inlinequeryresultaudio"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultContact",
+            "anchor": "#inlinequeryresultcontact"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultGame",
+            "anchor": "#inlinequeryresultgame"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultDocument",
+            "anchor": "#inlinequeryresultdocument"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultGif",
+            "anchor": "#inlinequeryresultgif"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultLocation",
+            "anchor": "#inlinequeryresultlocation"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultMpeg4Gif",
+            "anchor": "#inlinequeryresultmpeg4gif"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultPhoto",
+            "anchor": "#inlinequeryresultphoto"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultVenue",
+            "anchor": "#inlinequeryresultvenue"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultVideo",
+            "anchor": "#inlinequeryresultvideo"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InlineQueryResultVoice",
+            "anchor": "#inlinequeryresultvoice"
+          }
+        }
+      ]
     },
     {
-      "name": "#inlinequeryresultarticle",
+      "name": "InlineQueryResultArticle",
       "anchor": "#inlinequeryresultarticle",
       "description": "Represents a link to an article or web page.",
       "fields": [
@@ -14707,7 +15050,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultphoto",
+      "name": "InlineQueryResultPhoto",
       "anchor": "#inlinequeryresultphoto",
       "description": "Represents a link to a photo. By default, this photo will be sent by the user with optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the photo.",
       "fields": [
@@ -14799,7 +15142,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultgif",
+      "name": "InlineQueryResultGif",
       "anchor": "#inlinequeryresultgif",
       "description": "Represents a link to an animated GIF file. By default, this animated GIF file will be sent by the user with optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the animation.",
       "fields": [
@@ -14896,7 +15239,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultmpeg4gif",
+      "name": "InlineQueryResultMpeg4Gif",
       "anchor": "#inlinequeryresultmpeg4gif",
       "description": "Represents a link to a video animation (H.264/MPEG-4 AVC video without sound). By default, this animated MPEG-4 file will be sent by the user with optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the animation.",
       "fields": [
@@ -14993,7 +15336,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultvideo",
+      "name": "InlineQueryResultVideo",
       "anchor": "#inlinequeryresultvideo",
       "description": "Represents a link to a page containing an embedded video player or a video file. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the video.",
       "fields": [
@@ -15095,7 +15438,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultaudio",
+      "name": "InlineQueryResultAudio",
       "anchor": "#inlinequeryresultaudio",
       "description": "Represents a link to an MP3 audio file. By default, this audio file will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the audio.",
       "fields": [
@@ -15172,7 +15515,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultvoice",
+      "name": "InlineQueryResultVoice",
       "anchor": "#inlinequeryresultvoice",
       "description": "Represents a link to a voice recording in an .OGG container encoded with OPUS. By default, this voice recording will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the the voice message.",
       "fields": [
@@ -15244,7 +15587,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultdocument",
+      "name": "InlineQueryResultDocument",
       "anchor": "#inlinequeryresultdocument",
       "description": "Represents a link to a file. By default, this file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the file. Currently, only **.PDF** and **.ZIP** files can be sent using this method.",
       "fields": [
@@ -15336,7 +15679,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultlocation",
+      "name": "InlineQueryResultLocation",
       "anchor": "#inlinequeryresultlocation",
       "description": "Represents a location on a map. By default, the location will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the location.",
       "fields": [
@@ -15422,7 +15765,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultvenue",
+      "name": "InlineQueryResultVenue",
       "anchor": "#inlinequeryresultvenue",
       "description": "Represents a venue. By default, the venue will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the venue.",
       "fields": [
@@ -15512,7 +15855,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcontact",
+      "name": "InlineQueryResultContact",
       "anchor": "#inlinequeryresultcontact",
       "description": "Represents a contact with a phone number. By default, this contact will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the contact.",
       "fields": [
@@ -15582,7 +15925,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultgame",
+      "name": "InlineQueryResultGame",
       "anchor": "#inlinequeryresultgame",
       "description": "Represents a [Game](#games).",
       "fields": [
@@ -15613,7 +15956,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcachedphoto",
+      "name": "InlineQueryResultCachedPhoto",
       "anchor": "#inlinequeryresultcachedphoto",
       "description": "Represents a link to a photo stored on the Telegram servers. By default, this photo will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the photo.",
       "fields": [
@@ -15690,7 +16033,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcachedgif",
+      "name": "InlineQueryResultCachedGif",
       "anchor": "#inlinequeryresultcachedgif",
       "description": "Represents a link to an animated GIF file stored on the Telegram servers. By default, this animated GIF file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with specified content instead of the animation.",
       "fields": [
@@ -15762,7 +16105,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcachedmpeg4gif",
+      "name": "InlineQueryResultCachedMpeg4Gif",
       "anchor": "#inlinequeryresultcachedmpeg4gif",
       "description": "Represents a link to a video animation (H.264/MPEG-4 AVC video without sound) stored on the Telegram servers. By default, this animated MPEG-4 file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the animation.",
       "fields": [
@@ -15834,7 +16177,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcachedsticker",
+      "name": "InlineQueryResultCachedSticker",
       "anchor": "#inlinequeryresultcachedsticker",
       "description": "Represents a link to a sticker stored on the Telegram servers. By default, this sticker will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the sticker.",
       "fields": [
@@ -15874,7 +16217,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcacheddocument",
+      "name": "InlineQueryResultCachedDocument",
       "anchor": "#inlinequeryresultcacheddocument",
       "description": "Represents a link to a file stored on the Telegram servers. By default, this file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the file.",
       "fields": [
@@ -15946,7 +16289,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcachedvideo",
+      "name": "InlineQueryResultCachedVideo",
       "anchor": "#inlinequeryresultcachedvideo",
       "description": "Represents a link to a video file stored on the Telegram servers. By default, this video file will be sent by the user with an optional caption. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the video.",
       "fields": [
@@ -16023,7 +16366,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcachedvoice",
+      "name": "InlineQueryResultCachedVoice",
       "anchor": "#inlinequeryresultcachedvoice",
       "description": "Represents a link to a voice message stored on the Telegram servers. By default, this voice message will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the voice message.",
       "fields": [
@@ -16090,7 +16433,7 @@
       ]
     },
     {
-      "name": "#inlinequeryresultcachedaudio",
+      "name": "InlineQueryResultCachedAudio",
       "anchor": "#inlinequeryresultcachedaudio",
       "description": "Represents a link to an MP3 audio file stored on the Telegram servers. By default, this audio file will be sent by the user. Alternatively, you can use _input\\_message\\_content_ to send a message with the specified content instead of the audio.",
       "fields": [
@@ -16152,13 +16495,49 @@
       ]
     },
     {
-      "name": "#inputmessagecontent",
+      "name": "InputMessageContent",
       "anchor": "#inputmessagecontent",
       "description": "This object represents the content of a message to be sent as a result of an inline query. Telegram clients currently support the following 5 types:",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputTextMessageContent",
+            "anchor": "#inputtextmessagecontent"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputLocationMessageContent",
+            "anchor": "#inputlocationmessagecontent"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputVenueMessageContent",
+            "anchor": "#inputvenuemessagecontent"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputContactMessageContent",
+            "anchor": "#inputcontactmessagecontent"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "InputInvoiceMessageContent",
+            "anchor": "#inputinvoicemessagecontent"
+          }
+        }
+      ]
     },
     {
-      "name": "#inputtextmessagecontent",
+      "name": "InputTextMessageContent",
       "anchor": "#inputtextmessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of a text message to be sent as the result of an inline query.",
       "fields": [
@@ -16196,7 +16575,7 @@
       ]
     },
     {
-      "name": "#inputlocationmessagecontent",
+      "name": "InputLocationMessageContent",
       "anchor": "#inputlocationmessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of a location message to be sent as the result of an inline query.",
       "fields": [
@@ -16234,7 +16613,7 @@
       ]
     },
     {
-      "name": "#inputvenuemessagecontent",
+      "name": "InputVenueMessageContent",
       "anchor": "#inputvenuemessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of a venue message to be sent as the result of an inline query.",
       "fields": [
@@ -16281,7 +16660,7 @@
       ]
     },
     {
-      "name": "#inputcontactmessagecontent",
+      "name": "InputContactMessageContent",
       "anchor": "#inputcontactmessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of a contact message to be sent as the result of an inline query.",
       "fields": [
@@ -16308,7 +16687,7 @@
       ]
     },
     {
-      "name": "#inputinvoicemessagecontent",
+      "name": "InputInvoiceMessageContent",
       "anchor": "#inputinvoicemessagecontent",
       "description": "Represents the [content](#inputmessagecontent) of an invoice message to be sent as the result of an inline query.",
       "fields": [
@@ -16427,7 +16806,7 @@
       ]
     },
     {
-      "name": "#choseninlineresult",
+      "name": "ChosenInlineResult",
       "anchor": "#choseninlineresult",
       "description": "Represents a [result](#inlinequeryresult) of an inline query that was chosen by the user and sent to their chat partner.",
       "fields": [
@@ -16467,7 +16846,7 @@
       ]
     },
     {
-      "name": "#sentwebappmessage",
+      "name": "SentWebAppMessage",
       "anchor": "#sentwebappmessage",
       "description": "Describes an inline message sent by a [Web App](/bots/webapps) on behalf of a user.",
       "fields": [
@@ -16479,7 +16858,7 @@
       ]
     },
     {
-      "name": "#preparedinlinemessage",
+      "name": "PreparedInlineMessage",
       "anchor": "#preparedinlinemessage",
       "description": "Describes an inline message to be sent by a user of a Mini App.",
       "fields": [
@@ -16496,7 +16875,7 @@
       ]
     },
     {
-      "name": "#labeledprice",
+      "name": "LabeledPrice",
       "anchor": "#labeledprice",
       "description": "This object represents a portion of the price for goods or services.",
       "fields": [
@@ -16513,7 +16892,7 @@
       ]
     },
     {
-      "name": "#invoice",
+      "name": "Invoice",
       "anchor": "#invoice",
       "description": "This object contains basic information about an invoice.",
       "fields": [
@@ -16545,7 +16924,7 @@
       ]
     },
     {
-      "name": "#shippingaddress",
+      "name": "ShippingAddress",
       "anchor": "#shippingaddress",
       "description": "This object represents a shipping address.",
       "fields": [
@@ -16582,7 +16961,7 @@
       ]
     },
     {
-      "name": "#orderinfo",
+      "name": "OrderInfo",
       "anchor": "#orderinfo",
       "description": "This object represents information about an order.",
       "fields": [
@@ -16613,7 +16992,7 @@
       ]
     },
     {
-      "name": "#shippingoption",
+      "name": "ShippingOption",
       "anchor": "#shippingoption",
       "description": "This object represents one shipping option.",
       "fields": [
@@ -16642,7 +17021,7 @@
       ]
     },
     {
-      "name": "#successfulpayment",
+      "name": "SuccessfulPayment",
       "anchor": "#successfulpayment",
       "description": "This object contains basic information about a successful payment. Note that if the buyer initiates a chargeback with the relevant payment provider following this transaction, the funds may be debited from your balance. This is outside of Telegram's control.",
       "fields": [
@@ -16705,7 +17084,7 @@
       ]
     },
     {
-      "name": "#refundedpayment",
+      "name": "RefundedPayment",
       "anchor": "#refundedpayment",
       "description": "This object contains basic information about a refunded payment.",
       "fields": [
@@ -16737,7 +17116,7 @@
       ]
     },
     {
-      "name": "#shippingquery",
+      "name": "ShippingQuery",
       "anchor": "#shippingquery",
       "description": "This object contains information about an incoming shipping query.",
       "fields": [
@@ -16772,7 +17151,7 @@
       ]
     },
     {
-      "name": "#precheckoutquery",
+      "name": "PreCheckoutQuery",
       "anchor": "#precheckoutquery",
       "description": "This object contains information about an incoming pre-checkout query.",
       "fields": [
@@ -16822,7 +17201,7 @@
       ]
     },
     {
-      "name": "#paidmediapurchased",
+      "name": "PaidMediaPurchased",
       "anchor": "#paidmediapurchased",
       "description": "This object contains information about a paid media purchase.",
       "fields": [
@@ -16843,13 +17222,35 @@
       ]
     },
     {
-      "name": "#revenuewithdrawalstate",
+      "name": "RevenueWithdrawalState",
       "anchor": "#revenuewithdrawalstate",
       "description": "This object describes the state of a revenue withdrawal operation. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "RevenueWithdrawalStatePending",
+            "anchor": "#revenuewithdrawalstatepending"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "RevenueWithdrawalStateSucceeded",
+            "anchor": "#revenuewithdrawalstatesucceeded"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "RevenueWithdrawalStateFailed",
+            "anchor": "#revenuewithdrawalstatefailed"
+          }
+        }
+      ]
     },
     {
-      "name": "#revenuewithdrawalstatepending",
+      "name": "RevenueWithdrawalStatePending",
       "anchor": "#revenuewithdrawalstatepending",
       "description": "The withdrawal is in progress.",
       "fields": [
@@ -16861,7 +17262,7 @@
       ]
     },
     {
-      "name": "#revenuewithdrawalstatesucceeded",
+      "name": "RevenueWithdrawalStateSucceeded",
       "anchor": "#revenuewithdrawalstatesucceeded",
       "description": "The withdrawal succeeded.",
       "fields": [
@@ -16883,7 +17284,7 @@
       ]
     },
     {
-      "name": "#revenuewithdrawalstatefailed",
+      "name": "RevenueWithdrawalStateFailed",
       "anchor": "#revenuewithdrawalstatefailed",
       "description": "The withdrawal failed and the transaction was refunded.",
       "fields": [
@@ -16895,7 +17296,7 @@
       ]
     },
     {
-      "name": "#affiliateinfo",
+      "name": "AffiliateInfo",
       "anchor": "#affiliateinfo",
       "description": "Contains information about the affiliate that received a commission via this transaction.",
       "fields": [
@@ -16935,13 +17336,63 @@
       ]
     },
     {
-      "name": "#transactionpartner",
+      "name": "TransactionPartner",
       "anchor": "#transactionpartner",
       "description": "This object describes the source of a transaction, or its recipient for outgoing transactions. Currently, it can be one of",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "TransactionPartnerUser",
+            "anchor": "#transactionpartneruser"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "TransactionPartnerChat",
+            "anchor": "#transactionpartnerchat"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "TransactionPartnerAffiliateProgram",
+            "anchor": "#transactionpartneraffiliateprogram"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "TransactionPartnerFragment",
+            "anchor": "#transactionpartnerfragment"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "TransactionPartnerTelegramAds",
+            "anchor": "#transactionpartnertelegramads"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "TransactionPartnerTelegramApi",
+            "anchor": "#transactionpartnertelegramapi"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "TransactionPartnerOther",
+            "anchor": "#transactionpartnerother"
+          }
+        }
+      ]
     },
     {
-      "name": "#transactionpartneruser",
+      "name": "TransactionPartnerUser",
       "anchor": "#transactionpartneruser",
       "description": "Describes a transaction with a user.",
       "fields": [
@@ -17017,7 +17468,7 @@
       ]
     },
     {
-      "name": "#transactionpartnerchat",
+      "name": "TransactionPartnerChat",
       "anchor": "#transactionpartnerchat",
       "description": "Describes a transaction with a chat.",
       "fields": [
@@ -17047,7 +17498,7 @@
       ]
     },
     {
-      "name": "#transactionpartneraffiliateprogram",
+      "name": "TransactionPartnerAffiliateProgram",
       "anchor": "#transactionpartneraffiliateprogram",
       "description": "Describes the affiliate program that issued the affiliate commission received via this transaction.",
       "fields": [
@@ -17073,7 +17524,7 @@
       ]
     },
     {
-      "name": "#transactionpartnerfragment",
+      "name": "TransactionPartnerFragment",
       "anchor": "#transactionpartnerfragment",
       "description": "Describes a withdrawal transaction with Fragment.",
       "fields": [
@@ -17094,7 +17545,7 @@
       ]
     },
     {
-      "name": "#transactionpartnertelegramads",
+      "name": "TransactionPartnerTelegramAds",
       "anchor": "#transactionpartnertelegramads",
       "description": "Describes a withdrawal transaction to the Telegram Ads platform.",
       "fields": [
@@ -17106,7 +17557,7 @@
       ]
     },
     {
-      "name": "#transactionpartnertelegramapi",
+      "name": "TransactionPartnerTelegramApi",
       "anchor": "#transactionpartnertelegramapi",
       "description": "Describes a transaction with payment for [paid broadcasting](#paid-broadcasts).",
       "fields": [
@@ -17123,7 +17574,7 @@
       ]
     },
     {
-      "name": "#transactionpartnerother",
+      "name": "TransactionPartnerOther",
       "anchor": "#transactionpartnerother",
       "description": "Describes a transaction with an unknown source or recipient.",
       "fields": [
@@ -17135,7 +17586,7 @@
       ]
     },
     {
-      "name": "#startransaction",
+      "name": "StarTransaction",
       "anchor": "#startransaction",
       "description": "Describes a Telegram Star transaction. Note that if the buyer initiates a chargeback with the payment provider from whom they acquired Stars (e.g., Apple, Google) following this transaction, the refunded Stars will be deducted from the bot's balance. This is outside of Telegram's control.",
       "fields": [
@@ -17180,7 +17631,7 @@
       ]
     },
     {
-      "name": "#startransactions",
+      "name": "StarTransactions",
       "anchor": "#startransactions",
       "description": "Contains a list of Telegram Star transactions.",
       "fields": [
@@ -17199,7 +17650,7 @@
       ]
     },
     {
-      "name": "#passportdata",
+      "name": "PassportData",
       "anchor": "#passportdata",
       "description": "Describes Telegram Passport data shared with the bot by the user.",
       "fields": [
@@ -17227,7 +17678,7 @@
       ]
     },
     {
-      "name": "#passportfile",
+      "name": "PassportFile",
       "anchor": "#passportfile",
       "description": "This object represents a file uploaded to Telegram Passport. Currently all Telegram Passport files are in JPEG format when decrypted and don't exceed 10MB.",
       "fields": [
@@ -17254,7 +17705,7 @@
       ]
     },
     {
-      "name": "#encryptedpassportelement",
+      "name": "EncryptedPassportElement",
       "anchor": "#encryptedpassportelement",
       "description": "Describes documents or other Telegram Passport elements shared with the bot by the user.",
       "fields": [
@@ -17337,7 +17788,7 @@
       ]
     },
     {
-      "name": "#encryptedcredentials",
+      "name": "EncryptedCredentials",
       "anchor": "#encryptedcredentials",
       "description": "Describes data required for decrypting and authenticating [EncryptedPassportElement](#encryptedpassportelement). See the [Telegram Passport Documentation](/passport#receiving-information) for a complete description of the data decryption and authentication processes.",
       "fields": [
@@ -17359,13 +17810,77 @@
       ]
     },
     {
-      "name": "#passportelementerror",
+      "name": "PassportElementError",
       "anchor": "#passportelementerror",
       "description": "This object represents an error in the Telegram Passport element which was submitted that should be resolved by the user. It should be one of:",
-      "fields": []
+      "oneOf": [
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorDataField",
+            "anchor": "#passportelementerrordatafield"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorFrontSide",
+            "anchor": "#passportelementerrorfrontside"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorReverseSide",
+            "anchor": "#passportelementerrorreverseside"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorSelfie",
+            "anchor": "#passportelementerrorselfie"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorFile",
+            "anchor": "#passportelementerrorfile"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorFiles",
+            "anchor": "#passportelementerrorfiles"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorTranslationFile",
+            "anchor": "#passportelementerrortranslationfile"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorTranslationFiles",
+            "anchor": "#passportelementerrortranslationfiles"
+          }
+        },
+        {
+          "type": "reference",
+          "reference": {
+            "name": "PassportElementErrorUnspecified",
+            "anchor": "#passportelementerrorunspecified"
+          }
+        }
+      ]
     },
     {
-      "name": "#passportelementerrordatafield",
+      "name": "PassportElementErrorDataField",
       "anchor": "#passportelementerrordatafield",
       "description": "Represents an issue in one of the data fields that was provided by the user. The error is considered resolved when the field's value changes.",
       "fields": [
@@ -17397,7 +17912,7 @@
       ]
     },
     {
-      "name": "#passportelementerrorfrontside",
+      "name": "PassportElementErrorFrontSide",
       "anchor": "#passportelementerrorfrontside",
       "description": "Represents an issue with the front side of a document. The error is considered resolved when the file with the front side of the document changes.",
       "fields": [
@@ -17424,7 +17939,7 @@
       ]
     },
     {
-      "name": "#passportelementerrorreverseside",
+      "name": "PassportElementErrorReverseSide",
       "anchor": "#passportelementerrorreverseside",
       "description": "Represents an issue with the reverse side of a document. The error is considered resolved when the file with reverse side of the document changes.",
       "fields": [
@@ -17451,7 +17966,7 @@
       ]
     },
     {
-      "name": "#passportelementerrorselfie",
+      "name": "PassportElementErrorSelfie",
       "anchor": "#passportelementerrorselfie",
       "description": "Represents an issue with the selfie with a document. The error is considered resolved when the file with the selfie changes.",
       "fields": [
@@ -17478,7 +17993,7 @@
       ]
     },
     {
-      "name": "#passportelementerrorfile",
+      "name": "PassportElementErrorFile",
       "anchor": "#passportelementerrorfile",
       "description": "Represents an issue with a document scan. The error is considered resolved when the file with the document scan changes.",
       "fields": [
@@ -17505,7 +18020,7 @@
       ]
     },
     {
-      "name": "#passportelementerrorfiles",
+      "name": "PassportElementErrorFiles",
       "anchor": "#passportelementerrorfiles",
       "description": "Represents an issue with a list of scans. The error is considered resolved when the list of files containing the scans changes.",
       "fields": [
@@ -17535,7 +18050,7 @@
       ]
     },
     {
-      "name": "#passportelementerrortranslationfile",
+      "name": "PassportElementErrorTranslationFile",
       "anchor": "#passportelementerrortranslationfile",
       "description": "Represents an issue with one of the files that constitute the translation of a document. The error is considered resolved when the file changes.",
       "fields": [
@@ -17562,7 +18077,7 @@
       ]
     },
     {
-      "name": "#passportelementerrortranslationfiles",
+      "name": "PassportElementErrorTranslationFiles",
       "anchor": "#passportelementerrortranslationfiles",
       "description": "Represents an issue with the translated version of a document. The error is considered resolved when a file with the document translation change.",
       "fields": [
@@ -17592,7 +18107,7 @@
       ]
     },
     {
-      "name": "#passportelementerrorunspecified",
+      "name": "PassportElementErrorUnspecified",
       "anchor": "#passportelementerrorunspecified",
       "description": "Represents an issue in an unspecified place. The error is considered resolved when new data is added.",
       "fields": [
@@ -17619,7 +18134,7 @@
       ]
     },
     {
-      "name": "#game",
+      "name": "Game",
       "anchor": "#game",
       "description": "This object represents a game. Use BotFather to create and edit games, their short names will act as unique identifiers.",
       "fields": [
@@ -17674,13 +18189,12 @@
       ]
     },
     {
-      "name": "#callbackgame",
+      "name": "CallbackGame",
       "anchor": "#callbackgame",
-      "description": "A placeholder, currently holds no information. Use [BotFather](https://t.me/botfather) to set up your game.",
-      "fields": []
+      "description": "A placeholder, currently holds no information. Use [BotFather](https://t.me/botfather) to set up your game."
     },
     {
-      "name": "#gamehighscore",
+      "name": "GameHighScore",
       "anchor": "#gamehighscore",
       "description": "This object represents one row of the high scores table for a game.",
       "fields": [

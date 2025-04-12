@@ -16,7 +16,9 @@ console.log(lastVersion);
 
 const navbar = parseNavigation($);
 
-const sections = parseSections($, navbar.slice(3));
+const sections = parseSections($, navbar.slice(3)).filter(
+	(x) => !x.title.includes(" "),
+);
 
 console.log(sections);
 

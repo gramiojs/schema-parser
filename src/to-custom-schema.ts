@@ -2,6 +2,7 @@ import type { ParsedSection } from "./parsers/archor.ts";
 import type { Version } from "./parsers/index.ts";
 import {
 	type Field,
+	parseTypeText,
 	resolveReturnType,
 	tableRowToField,
 } from "./parsers/types.ts";
@@ -19,7 +20,8 @@ interface Object {
 	name: string;
 	anchor: string;
 	description?: string;
-	fields: Field[];
+	fields?: Field[];
+	oneOf?: Field[];
 }
 
 export interface CustomSchema {
@@ -63,10 +65,11 @@ export function toCustomSchema(
 			}
 
 			schema.objects.push({
-				name: section.anchor,
+				name: section.title,
 				anchor: section.anchor,
 				description: htmlToMarkdown(section.description),
-				fields,
+				fields: fields.length > 0 ? fields : undefined,
+				oneOf: section.oneOf?.map((typeInfo) => parseTypeText(typeInfo)),
 			});
 		}
 	}
