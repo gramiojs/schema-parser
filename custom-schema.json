@@ -17,7 +17,7 @@
         {
           "type": "integer",
           "key": "offset",
-          "required": true,
+          "required": false,
           "description": "Identifier of the first update to be returned. Must be greater by one than the highest among the identifiers of previously received updates. By default, updates starting with the earliest unconfirmed update are returned. An update is considered confirmed as soon as [getUpdates](#getupdates) is called with an _offset_ higher than its _update\\_id_. The negative offset can be specified to retrieve updates starting from _\\-offset_ update from the end of the updates queue. All previous updates will be forgotten."
         },
         {
@@ -40,7 +40,7 @@
             "type": "string"
           },
           "key": "allowed_updates",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of the update types you want your bot to receive. For example, specify `[\"message\", \"edited_channel_post\", \"callback_query\"]` to only receive updates of these types. See [Update](#update) for a complete list of available update types. Specify an empty list to receive all update types except _chat\\_member_, _message\\_reaction_, and _message\\_reaction\\_count_ (default). If not specified, the previous setting will be used.  \n  \nPlease note that this parameter doesn't affect updates created before the call to getUpdates, so unwanted updates may be received for a short period of time."
         }
       ],
@@ -73,20 +73,20 @@
             "anchor": "#inputfile"
           },
           "key": "certificate",
-          "required": true,
+          "required": false,
           "description": "Upload your public key certificate so that the root certificate in use can be checked. See our [self-signed guide](/bots/self-signed) for details."
         },
         {
           "type": "string",
           "key": "ip_address",
-          "required": true,
+          "required": false,
           "description": "The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS"
         },
         {
           "type": "integer",
           "max": 1,
           "key": "max_connections",
-          "required": true,
+          "required": false,
           "description": "The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to _40_. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput."
         },
         {
@@ -95,19 +95,19 @@
             "type": "string"
           },
           "key": "allowed_updates",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of the update types you want your bot to receive. For example, specify `[\"message\", \"edited_channel_post\", \"callback_query\"]` to only receive updates of these types. See [Update](#update) for a complete list of available update types. Specify an empty list to receive all update types except _chat\\_member_, _message\\_reaction_, and _message\\_reaction\\_count_ (default). If not specified, the previous setting will be used.  \nPlease note that this parameter doesn't affect updates created before the call to the setWebhook, so unwanted updates may be received for a short period of time."
         },
         {
           "type": "boolean",
           "key": "drop_pending_updates",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to drop all pending updates"
         },
         {
           "type": "string",
           "key": "secret_token",
-          "required": true,
+          "required": false,
           "description": "A secret token to be sent in a header “X-Telegram-Bot-Api-Secret-Token” in every webhook request, 1-256 characters. Only characters `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed. The header is useful to ensure that the request comes from a webhook set by you."
         }
       ],
@@ -124,7 +124,7 @@
         {
           "type": "boolean",
           "key": "drop_pending_updates",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to drop all pending updates"
         }
       ],
@@ -187,7 +187,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -207,7 +207,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -219,7 +219,7 @@
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the message text. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -232,7 +232,7 @@
             }
           },
           "key": "entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in message text, which can be specified instead of _parse\\_mode_"
         },
         {
@@ -242,31 +242,31 @@
             "anchor": "#linkpreviewoptions"
           },
           "key": "link_preview_options",
-          "required": true,
+          "required": false,
           "description": "Link preview generation options for the message"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -276,7 +276,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -312,7 +312,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -342,7 +342,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -362,19 +362,19 @@
         {
           "type": "integer",
           "key": "video_start_timestamp",
-          "required": true,
+          "required": false,
           "description": "New start timestamp for the forwarded video in the message"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the forwarded message from forwarding and saving"
         },
         {
@@ -410,7 +410,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -439,13 +439,13 @@
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the forwarded messages from forwarding and saving"
         }
       ],
@@ -475,7 +475,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -501,19 +501,19 @@
         {
           "type": "integer",
           "key": "video_start_timestamp",
-          "required": true,
+          "required": false,
           "description": "New start timestamp for the copied video in the message"
         },
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the new caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -526,31 +526,31 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "boolean",
           "key": "show_caption_above_media",
-          "required": true,
+          "required": false,
           "description": "Pass _True_, if the caption must be shown above the message media. Ignored if a new caption isn't specified."
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
@@ -560,7 +560,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -596,7 +596,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -630,7 +630,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -659,19 +659,19 @@
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent messages from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "remove_caption",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to copy the messages without their captions"
         }
       ],
@@ -687,7 +687,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -707,7 +707,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -731,13 +731,13 @@
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Photo caption (may also be used when resending photos by _file\\_id_), 0-1024 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the photo caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -750,43 +750,43 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "boolean",
           "key": "show_caption_above_media",
-          "required": true,
+          "required": false,
           "description": "Pass _True_, if the caption must be shown above the message media"
         },
         {
           "type": "boolean",
           "key": "has_spoiler",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the photo needs to be covered with a spoiler animation"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -796,7 +796,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -832,7 +832,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -848,7 +848,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -868,7 +868,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -892,13 +892,13 @@
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Audio caption, 0-1024 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the audio caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -911,25 +911,25 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "integer",
           "key": "duration",
-          "required": true,
+          "required": false,
           "description": "Duration of the audio in seconds"
         },
         {
           "type": "string",
           "key": "performer",
-          "required": true,
+          "required": false,
           "description": "Performer"
         },
         {
           "type": "string",
           "key": "title",
-          "required": true,
+          "required": false,
           "description": "Track name"
         },
         {
@@ -947,31 +947,31 @@
             }
           ],
           "key": "thumbnail",
-          "required": true,
+          "required": false,
           "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file\\_attach\\_name>” if the thumbnail was uploaded using multipart/form-data under <file\\_attach\\_name>. [More information on Sending Files »](#sending-files)"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -981,7 +981,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -1017,7 +1017,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -1033,7 +1033,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -1053,7 +1053,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -1089,19 +1089,19 @@
             }
           ],
           "key": "thumbnail",
-          "required": true,
+          "required": false,
           "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file\\_attach\\_name>” if the thumbnail was uploaded using multipart/form-data under <file\\_attach\\_name>. [More information on Sending Files »](#sending-files)"
         },
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Document caption (may also be used when resending documents by _file\\_id_), 0-1024 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the document caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -1114,37 +1114,37 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "boolean",
           "key": "disable_content_type_detection",
-          "required": true,
+          "required": false,
           "description": "Disables automatic server-side content type detection for files uploaded using multipart/form-data"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -1154,7 +1154,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -1190,7 +1190,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -1206,7 +1206,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -1226,7 +1226,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -1250,19 +1250,19 @@
         {
           "type": "integer",
           "key": "duration",
-          "required": true,
+          "required": false,
           "description": "Duration of sent video in seconds"
         },
         {
           "type": "integer",
           "key": "width",
-          "required": true,
+          "required": false,
           "description": "Video width"
         },
         {
           "type": "integer",
           "key": "height",
-          "required": true,
+          "required": false,
           "description": "Video height"
         },
         {
@@ -1280,7 +1280,7 @@
             }
           ],
           "key": "thumbnail",
-          "required": true,
+          "required": false,
           "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file\\_attach\\_name>” if the thumbnail was uploaded using multipart/form-data under <file\\_attach\\_name>. [More information on Sending Files »](#sending-files)"
         },
         {
@@ -1298,25 +1298,25 @@
             }
           ],
           "key": "cover",
-          "required": true,
+          "required": false,
           "description": "Cover for the video in the message. Pass a file\\_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass “attach://<file\\_attach\\_name>” to upload a new one using multipart/form-data under <file\\_attach\\_name> name. [More information on Sending Files »](#sending-files)"
         },
         {
           "type": "integer",
           "key": "start_timestamp",
-          "required": true,
+          "required": false,
           "description": "Start timestamp for the video in the message"
         },
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Video caption (may also be used when resending videos by _file\\_id_), 0-1024 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the video caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -1329,49 +1329,49 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "boolean",
           "key": "show_caption_above_media",
-          "required": true,
+          "required": false,
           "description": "Pass _True_, if the caption must be shown above the message media"
         },
         {
           "type": "boolean",
           "key": "has_spoiler",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the video needs to be covered with a spoiler animation"
         },
         {
           "type": "boolean",
           "key": "supports_streaming",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the uploaded video is suitable for streaming"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -1381,7 +1381,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -1417,7 +1417,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -1433,7 +1433,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -1453,7 +1453,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -1477,19 +1477,19 @@
         {
           "type": "integer",
           "key": "duration",
-          "required": true,
+          "required": false,
           "description": "Duration of sent animation in seconds"
         },
         {
           "type": "integer",
           "key": "width",
-          "required": true,
+          "required": false,
           "description": "Animation width"
         },
         {
           "type": "integer",
           "key": "height",
-          "required": true,
+          "required": false,
           "description": "Animation height"
         },
         {
@@ -1507,19 +1507,19 @@
             }
           ],
           "key": "thumbnail",
-          "required": true,
+          "required": false,
           "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file\\_attach\\_name>” if the thumbnail was uploaded using multipart/form-data under <file\\_attach\\_name>. [More information on Sending Files »](#sending-files)"
         },
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Animation caption (may also be used when resending animation by _file\\_id_), 0-1024 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the animation caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -1532,43 +1532,43 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "boolean",
           "key": "show_caption_above_media",
-          "required": true,
+          "required": false,
           "description": "Pass _True_, if the caption must be shown above the message media"
         },
         {
           "type": "boolean",
           "key": "has_spoiler",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the animation needs to be covered with a spoiler animation"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -1578,7 +1578,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -1614,7 +1614,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -1630,7 +1630,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -1650,7 +1650,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -1674,13 +1674,13 @@
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Voice message caption, 0-1024 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the voice message caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -1693,37 +1693,37 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "integer",
           "key": "duration",
-          "required": true,
+          "required": false,
           "description": "Duration of the voice message in seconds"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -1733,7 +1733,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -1769,7 +1769,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -1785,7 +1785,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -1805,7 +1805,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -1829,13 +1829,13 @@
         {
           "type": "integer",
           "key": "duration",
-          "required": true,
+          "required": false,
           "description": "Duration of sent video in seconds"
         },
         {
           "type": "integer",
           "key": "length",
-          "required": true,
+          "required": false,
           "description": "Video width and height, i.e. diameter of the video message"
         },
         {
@@ -1853,31 +1853,31 @@
             }
           ],
           "key": "thumbnail",
-          "required": true,
+          "required": false,
           "description": "Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file\\_attach\\_name>” if the thumbnail was uploaded using multipart/form-data under <file\\_attach\\_name>. [More information on Sending Files »](#sending-files)"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -1887,7 +1887,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -1923,7 +1923,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -1939,7 +1939,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -1980,19 +1980,19 @@
         {
           "type": "string",
           "key": "payload",
-          "required": true,
+          "required": false,
           "description": "Bot-defined paid media payload, 0-128 bytes. This will not be displayed to the user, use it for your internal processes."
         },
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Media caption, 0-1024 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the media caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -2005,31 +2005,31 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "boolean",
           "key": "show_caption_above_media",
-          "required": true,
+          "required": false,
           "description": "Pass _True_, if the caption must be shown above the message media"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
@@ -2039,7 +2039,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -2075,7 +2075,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -2091,7 +2091,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -2111,7 +2111,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -2130,25 +2130,25 @@
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends messages [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent messages from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -2158,7 +2158,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         }
       ],
@@ -2174,7 +2174,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -2194,7 +2194,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -2212,50 +2212,50 @@
         {
           "type": "float",
           "key": "horizontal_accuracy",
-          "required": true,
+          "required": false,
           "description": "The radius of uncertainty for the location, measured in meters; 0-1500"
         },
         {
           "type": "integer",
           "key": "live_period",
-          "required": true,
+          "required": false,
           "description": "Period in seconds during which the location will be updated (see [Live Locations](https://telegram.org/blog/live-locations), should be between 60 and 86400, or 0x7FFFFFFF for live locations that can be edited indefinitely."
         },
         {
           "type": "integer",
           "key": "heading",
-          "required": true,
+          "required": false,
           "description": "For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."
         },
         {
           "type": "integer",
           "max": 1,
           "key": "proximity_alert_radius",
-          "required": true,
+          "required": false,
           "description": "For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -2265,7 +2265,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -2301,7 +2301,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -2317,7 +2317,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -2337,7 +2337,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -2367,49 +2367,49 @@
         {
           "type": "string",
           "key": "foursquare_id",
-          "required": true,
+          "required": false,
           "description": "Foursquare identifier of the venue"
         },
         {
           "type": "string",
           "key": "foursquare_type",
-          "required": true,
+          "required": false,
           "description": "Foursquare type of the venue, if known. (For example, “arts\\_entertainment/default”, “arts\\_entertainment/aquarium” or “food/icecream”.)"
         },
         {
           "type": "string",
           "key": "google_place_id",
-          "required": true,
+          "required": false,
           "description": "Google Places identifier of the venue"
         },
         {
           "type": "string",
           "key": "google_place_type",
-          "required": true,
+          "required": false,
           "description": "Google Places type of the venue. (See [supported types](https://developers.google.com/places/web-service/supported_types).)"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -2419,7 +2419,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -2455,7 +2455,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -2471,7 +2471,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -2491,7 +2491,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -2509,37 +2509,37 @@
         {
           "type": "string",
           "key": "last_name",
-          "required": true,
+          "required": false,
           "description": "Contact's last name"
         },
         {
           "type": "string",
           "key": "vcard",
-          "required": true,
+          "required": false,
           "description": "Additional data about the contact in the form of a [vCard](https://en.wikipedia.org/wiki/VCard), 0-2048 bytes"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -2549,7 +2549,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -2585,7 +2585,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -2601,7 +2601,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -2621,7 +2621,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -2633,7 +2633,7 @@
         {
           "type": "string",
           "key": "question_parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the question. See [formatting options](#formatting-options) for more details. Currently, only custom emoji entities are allowed"
         },
         {
@@ -2646,7 +2646,7 @@
             }
           },
           "key": "question_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of _question\\_parse\\_mode_"
         },
         {
@@ -2665,37 +2665,37 @@
         {
           "type": "boolean",
           "key": "is_anonymous",
-          "required": true,
+          "required": false,
           "description": "_True_, if the poll needs to be anonymous, defaults to _True_"
         },
         {
           "type": "string",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Poll type, “quiz” or “regular”, defaults to “regular”"
         },
         {
           "type": "boolean",
           "key": "allows_multiple_answers",
-          "required": true,
+          "required": false,
           "description": "_True_, if the poll allows multiple answers, ignored for polls in quiz mode, defaults to _False_"
         },
         {
           "type": "integer",
           "key": "correct_option_id",
-          "required": true,
+          "required": false,
           "description": "0-based identifier of the correct answer option, required for polls in quiz mode"
         },
         {
           "type": "string",
           "key": "explanation",
-          "required": true,
+          "required": false,
           "description": "Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing"
         },
         {
           "type": "string",
           "key": "explanation_parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the explanation. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -2708,7 +2708,7 @@
             }
           },
           "key": "explanation_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the poll explanation. It can be specified instead of _explanation\\_parse\\_mode_"
         },
         {
@@ -2716,43 +2716,43 @@
           "min": 5,
           "max": 600,
           "key": "open_period",
-          "required": true,
+          "required": false,
           "description": "Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with _close\\_date_."
         },
         {
           "type": "integer",
           "key": "close_date",
-          "required": true,
+          "required": false,
           "description": "Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with _open\\_period_."
         },
         {
           "type": "boolean",
           "key": "is_closed",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the poll needs to be immediately closed. This can be useful for poll preview."
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -2762,7 +2762,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -2798,7 +2798,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -2814,7 +2814,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -2834,7 +2834,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -2855,31 +2855,31 @@
             "🎲"
           ],
           "key": "emoji",
-          "required": true,
+          "required": false,
           "description": "Emoji on which the dice throw animation is based. Currently, must be one of “![🎲](//telegram.org/img/emoji/40/F09F8EB2.png)”, “![🎯](//telegram.org/img/emoji/40/F09F8EAF.png)”, “![🏀](//telegram.org/img/emoji/40/F09F8F80.png)”, “![⚽](//telegram.org/img/emoji/40/E29ABD.png)”, “![🎳](//telegram.org/img/emoji/40/F09F8EB3.png)”, or “![🎰](//telegram.org/img/emoji/40/F09F8EB0.png)”. Dice can have values 1-6 for “![🎲](//telegram.org/img/emoji/40/F09F8EB2.png)”, “![🎯](//telegram.org/img/emoji/40/F09F8EAF.png)” and “![🎳](//telegram.org/img/emoji/40/F09F8EB3.png)”, values 1-5 for “![🏀](//telegram.org/img/emoji/40/F09F8F80.png)” and “![⚽](//telegram.org/img/emoji/40/E29ABD.png)”, and values 1-64 for “![🎰](//telegram.org/img/emoji/40/F09F8EB0.png)”. Defaults to “![🎲](//telegram.org/img/emoji/40/F09F8EB2.png)”"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -2889,7 +2889,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -2925,7 +2925,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -2941,7 +2941,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the action will be sent"
         },
         {
@@ -2961,7 +2961,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread; for supergroups only"
         },
         {
@@ -3011,13 +3011,13 @@
             }
           },
           "key": "reaction",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of reaction types to set on the message. Currently, as non-premium users, bots can set up to one reaction per message. A custom emoji reaction can be used if it is either already present on the message or explicitly allowed by chat administrators. Paid reactions can't be used by bots."
         },
         {
           "type": "boolean",
           "key": "is_big",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to set the reaction with a big animation"
         }
       ],
@@ -3040,7 +3040,7 @@
         {
           "type": "integer",
           "key": "offset",
-          "required": true,
+          "required": false,
           "description": "Sequential number of the first photo to be returned. By default, all photos are returned."
         },
         {
@@ -3073,13 +3073,13 @@
         {
           "type": "string",
           "key": "emoji_status_custom_emoji_id",
-          "required": true,
+          "required": false,
           "description": "Custom emoji identifier of the emoji status to set. Pass an empty string to remove the status."
         },
         {
           "type": "integer",
           "key": "emoji_status_expiration_date",
-          "required": true,
+          "required": false,
           "description": "Expiration date of the emoji status, if any"
         }
       ],
@@ -3132,13 +3132,13 @@
         {
           "type": "integer",
           "key": "until_date",
-          "required": true,
+          "required": false,
           "description": "Date when the user will be unbanned; Unix time. If user is banned for more than 366 days or less than 30 seconds from the current time they are considered to be banned forever. Applied for supergroups and channels only."
         },
         {
           "type": "boolean",
           "key": "revoke_messages",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to delete all messages from the chat for the user that is being removed. If _False_, the user will be able to see messages in the group that were sent before the user was removed. Always _True_ for supergroups and channels."
         }
       ],
@@ -3175,7 +3175,7 @@
         {
           "type": "boolean",
           "key": "only_if_banned",
-          "required": true,
+          "required": false,
           "description": "Do nothing if the user is not banned"
         }
       ],
@@ -3222,13 +3222,13 @@
         {
           "type": "boolean",
           "key": "use_independent_chat_permissions",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if chat permissions are set independently. Otherwise, the _can\\_send\\_other\\_messages_ and _can\\_add\\_web\\_page\\_previews_ permissions will imply the _can\\_send\\_messages_, _can\\_send\\_audios_, _can\\_send\\_documents_, _can\\_send\\_photos_, _can\\_send\\_videos_, _can\\_send\\_video\\_notes_, and _can\\_send\\_voice\\_notes_ permissions; the _can\\_send\\_polls_ permission will imply the _can\\_send\\_messages_ permission."
         },
         {
           "type": "integer",
           "key": "until_date",
-          "required": true,
+          "required": false,
           "description": "Date when restrictions will be lifted for the user; Unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever"
         }
       ],
@@ -3265,91 +3265,91 @@
         {
           "type": "boolean",
           "key": "is_anonymous",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator's presence in the chat is hidden"
         },
         {
           "type": "boolean",
           "key": "can_manage_chat",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can access the chat event log, get boost list, see hidden supergroup and channel members, report spam messages and ignore slow mode. Implied by any other administrator privilege."
         },
         {
           "type": "boolean",
           "key": "can_delete_messages",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can delete messages of other users"
         },
         {
           "type": "boolean",
           "key": "can_manage_video_chats",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can manage video chats"
         },
         {
           "type": "boolean",
           "key": "can_restrict_members",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can restrict, ban or unban chat members, or access supergroup statistics"
         },
         {
           "type": "boolean",
           "key": "can_promote_members",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can add new administrators with a subset of their own privileges or demote administrators that they have promoted, directly or indirectly (promoted by administrators that were appointed by him)"
         },
         {
           "type": "boolean",
           "key": "can_change_info",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can change chat title, photo and other settings"
         },
         {
           "type": "boolean",
           "key": "can_invite_users",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can invite new users to the chat"
         },
         {
           "type": "boolean",
           "key": "can_post_stories",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can post stories to the chat"
         },
         {
           "type": "boolean",
           "key": "can_edit_stories",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can edit stories posted by other users, post stories to the chat page, pin chat stories, and access the chat's story archive"
         },
         {
           "type": "boolean",
           "key": "can_delete_stories",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can delete stories posted by other users"
         },
         {
           "type": "boolean",
           "key": "can_post_messages",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can post messages in the channel, or access channel statistics; for channels only"
         },
         {
           "type": "boolean",
           "key": "can_edit_messages",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can edit messages of other users and can pin messages; for channels only"
         },
         {
           "type": "boolean",
           "key": "can_pin_messages",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the administrator can pin messages; for supergroups only"
         },
         {
           "type": "boolean",
           "key": "can_manage_topics",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the user is allowed to create, rename, close, and reopen forum topics; for supergroups only"
         }
       ],
@@ -3489,7 +3489,7 @@
         {
           "type": "boolean",
           "key": "use_independent_chat_permissions",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if chat permissions are set independently. Otherwise, the _can\\_send\\_other\\_messages_ and _can\\_add\\_web\\_page\\_previews_ permissions will imply the _can\\_send\\_messages_, _can\\_send\\_audios_, _can\\_send\\_documents_, _can\\_send\\_photos_, _can\\_send\\_videos_, _can\\_send\\_video\\_notes_, and _can\\_send\\_voice\\_notes_ permissions; the _can\\_send\\_polls_ permission will imply the _can\\_send\\_messages_ permission."
         }
       ],
@@ -3544,13 +3544,13 @@
         {
           "type": "string",
           "key": "name",
-          "required": true,
+          "required": false,
           "description": "Invite link name; 0-32 characters"
         },
         {
           "type": "integer",
           "key": "expire_date",
-          "required": true,
+          "required": false,
           "description": "Point in time (Unix timestamp) when the link will expire"
         },
         {
@@ -3558,13 +3558,13 @@
           "min": 1,
           "max": 1,
           "key": "member_limit",
-          "required": true,
+          "required": false,
           "description": "The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
         },
         {
           "type": "boolean",
           "key": "creates_join_request",
-          "required": true,
+          "required": false,
           "description": "_True_, if users joining the chat via the link need to be approved by chat administrators. If _True_, _member\\_limit_ can't be specified"
         }
       ],
@@ -3604,13 +3604,13 @@
         {
           "type": "string",
           "key": "name",
-          "required": true,
+          "required": false,
           "description": "Invite link name; 0-32 characters"
         },
         {
           "type": "integer",
           "key": "expire_date",
-          "required": true,
+          "required": false,
           "description": "Point in time (Unix timestamp) when the link will expire"
         },
         {
@@ -3618,13 +3618,13 @@
           "min": 1,
           "max": 1,
           "key": "member_limit",
-          "required": true,
+          "required": false,
           "description": "The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
         },
         {
           "type": "boolean",
           "key": "creates_join_request",
-          "required": true,
+          "required": false,
           "description": "_True_, if users joining the chat via the link need to be approved by chat administrators. If _True_, _member\\_limit_ can't be specified"
         }
       ],
@@ -3658,7 +3658,7 @@
         {
           "type": "string",
           "key": "name",
-          "required": true,
+          "required": false,
           "description": "Invite link name; 0-32 characters"
         },
         {
@@ -3712,7 +3712,7 @@
         {
           "type": "string",
           "key": "name",
-          "required": true,
+          "required": false,
           "description": "Invite link name; 0-32 characters"
         }
       ],
@@ -3933,7 +3933,7 @@
         {
           "type": "string",
           "key": "description",
-          "required": true,
+          "required": false,
           "description": "New chat description, 0-255 characters"
         }
       ],
@@ -3950,7 +3950,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be pinned"
         },
         {
@@ -3976,7 +3976,7 @@
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats."
         }
       ],
@@ -3993,7 +3993,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be unpinned"
         },
         {
@@ -4013,7 +4013,7 @@
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Identifier of the message to unpin. Required if _business\\_connection\\_id_ is specified. If not specified, the most recent pinned message (by sending date) will be unpinned."
         }
       ],
@@ -4289,13 +4289,13 @@
         {
           "type": "integer",
           "key": "icon_color",
-          "required": true,
+          "required": false,
           "description": "Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)"
         },
         {
           "type": "string",
           "key": "icon_custom_emoji_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the custom emoji shown as the topic icon. Use [getForumTopicIconStickers](#getforumtopiciconstickers) to get all allowed custom emoji identifiers."
         }
       ],
@@ -4335,13 +4335,13 @@
         {
           "type": "string",
           "key": "name",
-          "required": true,
+          "required": false,
           "description": "New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept"
         },
         {
           "type": "string",
           "key": "icon_custom_emoji_id",
-          "required": true,
+          "required": false,
           "description": "New unique identifier of the custom emoji shown as the topic icon. Use [getForumTopicIconStickers](#getforumtopiciconstickers) to get all allowed custom emoji identifiers. Pass an empty string to remove the icon. If not specified, the current icon will be kept"
         }
       ],
@@ -4644,19 +4644,19 @@
         {
           "type": "string",
           "key": "text",
-          "required": true,
+          "required": false,
           "description": "Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters"
         },
         {
           "type": "boolean",
           "key": "show_alert",
-          "required": true,
+          "required": false,
           "description": "If _True_, an alert will be shown by the client instead of a notification at the top of the chat screen. Defaults to _false_."
         },
         {
           "type": "string",
           "key": "url",
-          "required": true,
+          "required": false,
           "description": "URL that will be opened by the user's client. If you have created a [Game](#game) and accepted the conditions via [@BotFather](https://t.me/botfather), specify the URL that opens your game - note that this will only work if the query comes from a [_callback\\_game_](#inlinekeyboardbutton) button.  \n  \nOtherwise, you may use links like `t.me/your_bot?start=XXXX` that open your bot with a parameter."
         },
         {
@@ -4751,13 +4751,13 @@
             "anchor": "#botcommandscope"
           },
           "key": "scope",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](#botcommandscopedefault)."
         },
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands"
         }
       ],
@@ -4778,13 +4778,13 @@
             "anchor": "#botcommandscope"
           },
           "key": "scope",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to [BotCommandScopeDefault](#botcommandscopedefault)."
         },
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands"
         }
       ],
@@ -4805,13 +4805,13 @@
             "anchor": "#botcommandscope"
           },
           "key": "scope",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object, describing scope of users. Defaults to [BotCommandScopeDefault](#botcommandscopedefault)."
         },
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code or an empty string"
         }
       ],
@@ -4834,13 +4834,13 @@
         {
           "type": "string",
           "key": "name",
-          "required": true,
+          "required": false,
           "description": "New bot name; 0-64 characters. Pass an empty string to remove the dedicated name for the given language."
         },
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code. If empty, the name will be shown to all users for whose language there is no dedicated name."
         }
       ],
@@ -4857,7 +4857,7 @@
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code or an empty string"
         }
       ],
@@ -4877,13 +4877,13 @@
         {
           "type": "string",
           "key": "description",
-          "required": true,
+          "required": false,
           "description": "New bot description; 0-512 characters. Pass an empty string to remove the dedicated description for the given language."
         },
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code. If empty, the description will be applied to all users for whose language there is no dedicated description."
         }
       ],
@@ -4900,7 +4900,7 @@
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code or an empty string"
         }
       ],
@@ -4920,13 +4920,13 @@
         {
           "type": "string",
           "key": "short_description",
-          "required": true,
+          "required": false,
           "description": "New short description for the bot; 0-120 characters. Pass an empty string to remove the dedicated short description for the given language."
         },
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code. If empty, the short description will be applied to all users for whose language there is no dedicated short description."
         }
       ],
@@ -4943,7 +4943,7 @@
         {
           "type": "string",
           "key": "language_code",
-          "required": true,
+          "required": false,
           "description": "A two-letter ISO 639-1 language code or an empty string"
         }
       ],
@@ -4963,7 +4963,7 @@
         {
           "type": "integer",
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target private chat. If not specified, default bot's menu button will be changed"
         },
         {
@@ -4973,7 +4973,7 @@
             "anchor": "#menubutton"
           },
           "key": "menu_button",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for the bot's new menu button. Defaults to [MenuButtonDefault](#menubuttondefault)"
         }
       ],
@@ -4990,7 +4990,7 @@
         {
           "type": "integer",
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target private chat. If not specified, default bot's menu button will be returned"
         }
       ],
@@ -5014,13 +5014,13 @@
             "anchor": "#chatadministratorrights"
           },
           "key": "rights",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object describing new default administrator rights. If not specified, the default administrator rights will be cleared."
         },
         {
           "type": "boolean",
           "key": "for_channels",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to change the default administrator rights of the bot in channels. Otherwise, the default administrator rights of the bot for groups and supergroups will be changed."
         }
       ],
@@ -5037,7 +5037,7 @@
         {
           "type": "boolean",
           "key": "for_channels",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to get default administrator rights of the bot in channels. Otherwise, default administrator rights of the bot for groups and supergroups will be returned."
         }
       ],
@@ -5057,7 +5057,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
         },
         {
@@ -5071,19 +5071,19 @@
             }
           ],
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)"
         },
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Identifier of the message to edit"
         },
         {
           "type": "string",
           "key": "inline_message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ and _message\\_id_ are not specified. Identifier of the inline message"
         },
         {
@@ -5095,7 +5095,7 @@
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the message text. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -5108,7 +5108,7 @@
             }
           },
           "key": "entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in message text, which can be specified instead of _parse\\_mode_"
         },
         {
@@ -5118,7 +5118,7 @@
             "anchor": "#linkpreviewoptions"
           },
           "key": "link_preview_options",
-          "required": true,
+          "required": false,
           "description": "Link preview generation options for the message"
         },
         {
@@ -5128,7 +5128,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards)."
         }
       ],
@@ -5144,7 +5144,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
         },
         {
@@ -5158,31 +5158,31 @@
             }
           ],
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)"
         },
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Identifier of the message to edit"
         },
         {
           "type": "string",
           "key": "inline_message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ and _message\\_id_ are not specified. Identifier of the inline message"
         },
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "New caption of the message, 0-1024 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the message caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -5195,13 +5195,13 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
           "type": "boolean",
           "key": "show_caption_above_media",
-          "required": true,
+          "required": false,
           "description": "Pass _True_, if the caption must be shown above the message media. Supported only for animation, photo and video messages."
         },
         {
@@ -5211,7 +5211,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards)."
         }
       ],
@@ -5227,7 +5227,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
         },
         {
@@ -5241,19 +5241,19 @@
             }
           ],
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)"
         },
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Identifier of the message to edit"
         },
         {
           "type": "string",
           "key": "inline_message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ and _message\\_id_ are not specified. Identifier of the inline message"
         },
         {
@@ -5273,7 +5273,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for a new [inline keyboard](/bots/features#inline-keyboards)."
         }
       ],
@@ -5289,7 +5289,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
         },
         {
@@ -5303,19 +5303,19 @@
             }
           ],
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)"
         },
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Identifier of the message to edit"
         },
         {
           "type": "string",
           "key": "inline_message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ and _message\\_id_ are not specified. Identifier of the inline message"
         },
         {
@@ -5333,26 +5333,26 @@
         {
           "type": "integer",
           "key": "live_period",
-          "required": true,
+          "required": false,
           "description": "New period in seconds during which the location can be updated, starting from the message send date. If 0x7FFFFFFF is specified, then the location can be updated forever. Otherwise, the new value must not exceed the current _live\\_period_ by more than a day, and the live location expiration date must remain within the next 90 days. If not specified, then _live\\_period_ remains unchanged"
         },
         {
           "type": "float",
           "key": "horizontal_accuracy",
-          "required": true,
+          "required": false,
           "description": "The radius of uncertainty for the location, measured in meters; 0-1500"
         },
         {
           "type": "integer",
           "key": "heading",
-          "required": true,
+          "required": false,
           "description": "Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."
         },
         {
           "type": "integer",
           "max": 1,
           "key": "proximity_alert_radius",
-          "required": true,
+          "required": false,
           "description": "The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
         },
         {
@@ -5362,7 +5362,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for a new [inline keyboard](/bots/features#inline-keyboards)."
         }
       ],
@@ -5378,7 +5378,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
         },
         {
@@ -5392,19 +5392,19 @@
             }
           ],
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)"
         },
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Identifier of the message with live location to stop"
         },
         {
           "type": "string",
           "key": "inline_message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ and _message\\_id_ are not specified. Identifier of the inline message"
         },
         {
@@ -5414,7 +5414,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for a new [inline keyboard](/bots/features#inline-keyboards)."
         }
       ],
@@ -5430,7 +5430,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
         },
         {
@@ -5444,19 +5444,19 @@
             }
           ],
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Unique identifier for the target chat or username of the target channel (in the format `@channelusername`)"
         },
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Identifier of the message to edit"
         },
         {
           "type": "string",
           "key": "inline_message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ and _message\\_id_ are not specified. Identifier of the inline message"
         },
         {
@@ -5466,7 +5466,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards)."
         }
       ],
@@ -5482,7 +5482,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message to be edited was sent"
         },
         {
@@ -5512,7 +5512,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for a new message [inline keyboard](/bots/features#inline-keyboards)."
         }
       ],
@@ -5609,7 +5609,7 @@
         {
           "type": "integer",
           "key": "user_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ is not specified. Unique identifier of the target user who will receive the gift."
         },
         {
@@ -5623,7 +5623,7 @@
             }
           ],
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _user\\_id_ is not specified. Unique identifier for the chat or username of the channel (in the format `@channelusername`) that will receive the gift."
         },
         {
@@ -5635,19 +5635,19 @@
         {
           "type": "boolean",
           "key": "pay_for_upgrade",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to pay for the gift upgrade from the bot's balance, thereby making the upgrade free for the receiver"
         },
         {
           "type": "string",
           "key": "text",
-          "required": true,
+          "required": false,
           "description": "Text that will be shown along with the gift; 0-128 characters"
         },
         {
           "type": "string",
           "key": "text_parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the text. See [formatting options](#formatting-options) for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\\_emoji” are ignored."
         },
         {
@@ -5660,7 +5660,7 @@
             }
           },
           "key": "text_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of _text\\_parse\\_mode_. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\\_emoji” are ignored."
         }
       ],
@@ -5695,13 +5695,13 @@
         {
           "type": "string",
           "key": "text",
-          "required": true,
+          "required": false,
           "description": "Text that will be shown along with the service message about the subscription; 0-128 characters"
         },
         {
           "type": "string",
           "key": "text_parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the text. See [formatting options](#formatting-options) for more details. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\\_emoji” are ignored."
         },
         {
@@ -5714,7 +5714,7 @@
             }
           },
           "key": "text_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the gift text. It can be specified instead of _text\\_parse\\_mode_. Entities other than “bold”, “italic”, “underline”, “strikethrough”, “spoiler”, and “custom\\_emoji” are ignored."
         }
       ],
@@ -5737,7 +5737,7 @@
         {
           "type": "string",
           "key": "custom_description",
-          "required": true,
+          "required": false,
           "description": "Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description."
         }
       ],
@@ -5768,7 +5768,7 @@
         {
           "type": "string",
           "key": "custom_description",
-          "required": true,
+          "required": false,
           "description": "Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description."
         }
       ],
@@ -5894,7 +5894,7 @@
         {
           "type": "string",
           "key": "last_name",
-          "required": true,
+          "required": false,
           "description": "The new value of the last name for the business account; 0-64 characters"
         }
       ],
@@ -5917,7 +5917,7 @@
         {
           "type": "string",
           "key": "username",
-          "required": true,
+          "required": false,
           "description": "The new value of the username for the business account; 0-32 characters"
         }
       ],
@@ -5940,7 +5940,7 @@
         {
           "type": "string",
           "key": "bio",
-          "required": true,
+          "required": false,
           "description": "The new value of the bio for the business account; 0-140 characters"
         }
       ],
@@ -5973,7 +5973,7 @@
         {
           "type": "boolean",
           "key": "is_public",
-          "required": true,
+          "required": false,
           "description": "Pass True to set the public photo, which will be visible even if the main photo is hidden by the business account's privacy settings. An account can have only one public photo."
         }
       ],
@@ -5996,7 +5996,7 @@
         {
           "type": "boolean",
           "key": "is_public",
-          "required": true,
+          "required": false,
           "description": "Pass True to remove the public photo, which is visible even if the main photo is hidden by the business account's privacy settings. After the main photo is removed, the previous profile photo (if present) becomes the main photo."
         }
       ],
@@ -6093,43 +6093,43 @@
         {
           "type": "boolean",
           "key": "exclude_unsaved",
-          "required": true,
+          "required": false,
           "description": "Pass True to exclude gifts that aren't saved to the account's profile page"
         },
         {
           "type": "boolean",
           "key": "exclude_saved",
-          "required": true,
+          "required": false,
           "description": "Pass True to exclude gifts that are saved to the account's profile page"
         },
         {
           "type": "boolean",
           "key": "exclude_unlimited",
-          "required": true,
+          "required": false,
           "description": "Pass True to exclude gifts that can be purchased an unlimited number of times"
         },
         {
           "type": "boolean",
           "key": "exclude_limited",
-          "required": true,
+          "required": false,
           "description": "Pass True to exclude gifts that can be purchased a limited number of times"
         },
         {
           "type": "boolean",
           "key": "exclude_unique",
-          "required": true,
+          "required": false,
           "description": "Pass True to exclude unique gifts"
         },
         {
           "type": "boolean",
           "key": "sort_by_price",
-          "required": true,
+          "required": false,
           "description": "Pass True to sort results by gift price instead of send date. Sorting is applied before pagination."
         },
         {
           "type": "string",
           "key": "offset",
-          "required": true,
+          "required": false,
           "description": "Offset of the first entry to return as received from the previous request; use empty string to get the first chunk of results"
         },
         {
@@ -6188,13 +6188,13 @@
         {
           "type": "boolean",
           "key": "keep_original_details",
-          "required": true,
+          "required": false,
           "description": "Pass True to keep the original gift text, sender and receiver in the upgraded gift"
         },
         {
           "type": "integer",
           "key": "star_count",
-          "required": true,
+          "required": false,
           "description": "The amount of Telegram Stars that will be paid for the upgrade from the business account balance. If `gift.prepaid_upgrade_star_count > 0`, then pass 0, otherwise, the _can\\_transfer\\_stars_ business bot right is required and `gift.upgrade_star_count` must be passed."
         }
       ],
@@ -6229,7 +6229,7 @@
         {
           "type": "integer",
           "key": "star_count",
-          "required": true,
+          "required": false,
           "description": "The amount of Telegram Stars that will be paid for the transfer from the business account balance. If positive, then the _can\\_transfer\\_stars_ business bot right is required."
         }
       ],
@@ -6268,13 +6268,13 @@
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Caption of the story, 0-2048 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the story caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -6287,7 +6287,7 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
@@ -6300,19 +6300,19 @@
             }
           },
           "key": "areas",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of clickable areas to be shown on the story"
         },
         {
           "type": "boolean",
           "key": "post_to_chat_page",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to keep the story accessible after it expires"
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the content of the story must be protected from forwarding and screenshotting"
         }
       ],
@@ -6354,13 +6354,13 @@
         {
           "type": "string",
           "key": "caption",
-          "required": true,
+          "required": false,
           "description": "Caption of the story, 0-2048 characters after entities parsing"
         },
         {
           "type": "string",
           "key": "parse_mode",
-          "required": true,
+          "required": false,
           "description": "Mode for parsing entities in the story caption. See [formatting options](#formatting-options) for more details."
         },
         {
@@ -6373,7 +6373,7 @@
             }
           },
           "key": "caption_entities",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of special entities that appear in the caption, which can be specified instead of _parse\\_mode_"
         },
         {
@@ -6386,7 +6386,7 @@
             }
           },
           "key": "areas",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of clickable areas to be shown on the story"
         }
       ],
@@ -6429,7 +6429,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -6449,7 +6449,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -6473,31 +6473,31 @@
         {
           "type": "string",
           "key": "emoji",
-          "required": true,
+          "required": false,
           "description": "Emoji associated with the sticker; only for just uploaded stickers"
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -6507,7 +6507,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -6543,7 +6543,7 @@
             }
           ],
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "Additional interface options. A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards), [custom reply keyboard](/bots/features#keyboards), instructions to remove a reply keyboard or to force a reply from the user"
         }
       ],
@@ -6668,13 +6668,13 @@
         {
           "type": "string",
           "key": "sticker_type",
-          "required": true,
+          "required": false,
           "description": "Type of stickers in the set, pass “regular”, “mask”, or “custom\\_emoji”. By default, a regular sticker set is created."
         },
         {
           "type": "boolean",
           "key": "needs_repainting",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if stickers in the sticker set must be repainted to the color of text when used in messages, the accent color if used as emoji status, white on chat photos, or another appropriate color based on context; for custom emoji sticker sets only"
         }
       ],
@@ -6838,7 +6838,7 @@
             "type": "string"
           },
           "key": "keywords",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized list of 0-20 search keywords for the sticker with total length of up to 64 characters"
         }
       ],
@@ -6865,7 +6865,7 @@
             "anchor": "#maskposition"
           },
           "key": "mask_position",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object with the position where the mask should be placed on faces. Omit the parameter to remove the mask position."
         }
       ],
@@ -6929,7 +6929,7 @@
             }
           ],
           "key": "thumbnail",
-          "required": true,
+          "required": false,
           "description": "A **.WEBP** or **.PNG** image with the thumbnail, must be up to 128 kilobytes in size and have a width and height of exactly 100px, or a **.TGS** animation with a thumbnail up to 32 kilobytes in size (see [](/stickers#animation-requirements)[https://core.telegram.org/stickers#animation-requirements](https://core.telegram.org/stickers#animation-requirements) for animated sticker technical requirements), or a **.WEBM** video with the thumbnail up to 32 kilobytes in size; see [](/stickers#video-requirements)[https://core.telegram.org/stickers#video-requirements](https://core.telegram.org/stickers#video-requirements) for video sticker technical requirements. Pass a _file\\_id_ as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. [More information on Sending Files »](#sending-files). Animated and video sticker set thumbnails can't be uploaded via HTTP URL. If omitted, then the thumbnail is dropped and the first sticker is used as the thumbnail."
         },
         {
@@ -6958,7 +6958,7 @@
         {
           "type": "string",
           "key": "custom_emoji_id",
-          "required": true,
+          "required": false,
           "description": "Custom emoji identifier of a sticker from the sticker set; pass an empty string to drop the thumbnail and use the first sticker as the thumbnail."
         }
       ],
@@ -7019,13 +7019,13 @@
         {
           "type": "boolean",
           "key": "is_personal",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if results may be cached on the server side only for the user that sent the query. By default, results may be returned to any user who sends the same query."
         },
         {
           "type": "string",
           "key": "next_offset",
-          "required": true,
+          "required": false,
           "description": "Pass the offset that a client should send in the next query with the same text to receive more results. Pass an empty string if there are no more results or if you don't support pagination. Offset length can't exceed 64 bytes."
         },
         {
@@ -7035,7 +7035,7 @@
             "anchor": "#inlinequeryresultsbutton"
           },
           "key": "button",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object describing a button to be shown above inline query results"
         }
       ],
@@ -7093,25 +7093,25 @@
         {
           "type": "boolean",
           "key": "allow_user_chats",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the message can be sent to private chats with users"
         },
         {
           "type": "boolean",
           "key": "allow_bot_chats",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the message can be sent to private chats with bots"
         },
         {
           "type": "boolean",
           "key": "allow_group_chats",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the message can be sent to group and supergroup chats"
         },
         {
           "type": "boolean",
           "key": "allow_channel_chats",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the message can be sent to channel chats"
         }
       ],
@@ -7145,7 +7145,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -7169,7 +7169,7 @@
         {
           "type": "string",
           "key": "provider_token",
-          "required": true,
+          "required": false,
           "description": "Payment provider token, obtained via [@BotFather](https://t.me/botfather). Pass an empty string for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
@@ -7205,109 +7205,109 @@
             "type": "integer"
           },
           "key": "suggested_tip_amounts",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized array of suggested amounts of tips in the _smallest units_ of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed _max\\_tip\\_amount_."
         },
         {
           "type": "string",
           "key": "start_parameter",
-          "required": true,
+          "required": false,
           "description": "Unique deep-linking parameter. If left empty, **forwarded copies** of the sent message will have a _Pay_ button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a _URL_ button with a deep link to the bot (instead of a _Pay_ button), with the value used as the start parameter"
         },
         {
           "type": "string",
           "key": "provider_data",
-          "required": true,
+          "required": false,
           "description": "JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider."
         },
         {
           "type": "string",
           "key": "photo_url",
-          "required": true,
+          "required": false,
           "description": "URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service. People like it better when they see what they are paying for."
         },
         {
           "type": "integer",
           "key": "photo_size",
-          "required": true,
+          "required": false,
           "description": "Photo size in bytes"
         },
         {
           "type": "integer",
           "key": "photo_width",
-          "required": true,
+          "required": false,
           "description": "Photo width"
         },
         {
           "type": "integer",
           "key": "photo_height",
-          "required": true,
+          "required": false,
           "description": "Photo height"
         },
         {
           "type": "boolean",
           "key": "need_name",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if you require the user's full name to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "need_phone_number",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if you require the user's phone number to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "need_email",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if you require the user's email address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "need_shipping_address",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if you require the user's shipping address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "send_phone_number_to_provider",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the user's phone number should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "send_email_to_provider",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the user's email address should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "is_flexible",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the final price depends on the shipping method. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -7317,7 +7317,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -7327,7 +7327,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards). If empty, one 'Pay `total price`' button will be shown. If not empty, the first button must be a Pay button."
         }
       ],
@@ -7343,7 +7343,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the link will be created. For payments in [Telegram Stars](https://t.me/BotNews/90) only."
         },
         {
@@ -7367,7 +7367,7 @@
         {
           "type": "string",
           "key": "provider_token",
-          "required": true,
+          "required": false,
           "description": "Payment provider token, obtained via [@BotFather](https://t.me/botfather). Pass an empty string for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
@@ -7392,7 +7392,7 @@
         {
           "type": "integer",
           "key": "subscription_period",
-          "required": true,
+          "required": false,
           "description": "The number of seconds the subscription will be active for before the next payment. The currency must be set to “XTR” (Telegram Stars) if the parameter is used. Currently, it must always be 2592000 (30 days) if specified. Any number of subscriptions can be active for a given bot at the same time, including multiple concurrent subscriptions from the same user. Subscription price must no exceed 10000 Telegram Stars."
         },
         {
@@ -7409,79 +7409,79 @@
             "type": "integer"
           },
           "key": "suggested_tip_amounts",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized array of suggested amounts of tips in the _smallest units_ of the currency (integer, **not** float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed _max\\_tip\\_amount_."
         },
         {
           "type": "string",
           "key": "provider_data",
-          "required": true,
+          "required": false,
           "description": "JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider."
         },
         {
           "type": "string",
           "key": "photo_url",
-          "required": true,
+          "required": false,
           "description": "URL of the product photo for the invoice. Can be a photo of the goods or a marketing image for a service."
         },
         {
           "type": "integer",
           "key": "photo_size",
-          "required": true,
+          "required": false,
           "description": "Photo size in bytes"
         },
         {
           "type": "integer",
           "key": "photo_width",
-          "required": true,
+          "required": false,
           "description": "Photo width"
         },
         {
           "type": "integer",
           "key": "photo_height",
-          "required": true,
+          "required": false,
           "description": "Photo height"
         },
         {
           "type": "boolean",
           "key": "need_name",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if you require the user's full name to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "need_phone_number",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if you require the user's phone number to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "need_email",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if you require the user's email address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "need_shipping_address",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if you require the user's shipping address to complete the order. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "send_phone_number_to_provider",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the user's phone number should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "send_email_to_provider",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the user's email address should be sent to the provider. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         },
         {
           "type": "boolean",
           "key": "is_flexible",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the final price depends on the shipping method. Ignored for payments in [Telegram Stars](https://t.me/BotNews/90)."
         }
       ],
@@ -7516,13 +7516,13 @@
             }
           },
           "key": "shipping_options",
-          "required": true,
+          "required": false,
           "description": "Required if _ok_ is _True_. A JSON-serialized array of available shipping options."
         },
         {
           "type": "string",
           "key": "error_message",
-          "required": true,
+          "required": false,
           "description": "Required if _ok_ is _False_. Error message in human readable form that explains why it is impossible to complete the order (e.g. “Sorry, delivery to your desired address is unavailable”). Telegram will display this message to the user."
         }
       ],
@@ -7550,7 +7550,7 @@
         {
           "type": "string",
           "key": "error_message",
-          "required": true,
+          "required": false,
           "description": "Required if _ok_ is _False_. Error message in human readable form that explains the reason for failure to proceed with the checkout (e.g. \"Sorry, somebody just bought the last of our amazing black T-shirts while you were busy filling out your payment details. Please choose a different color or garment!\"). Telegram will display this message to the user."
         }
       ],
@@ -7566,7 +7566,7 @@
         {
           "type": "integer",
           "key": "offset",
-          "required": true,
+          "required": false,
           "description": "Number of transactions to skip in the response"
         },
         {
@@ -7672,7 +7672,7 @@
         {
           "type": "string",
           "key": "business_connection_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the business connection on behalf of which the message will be sent"
         },
         {
@@ -7684,7 +7684,7 @@
         {
           "type": "integer",
           "key": "message_thread_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"
         },
         {
@@ -7696,25 +7696,25 @@
         {
           "type": "boolean",
           "key": "disable_notification",
-          "required": true,
+          "required": false,
           "description": "Sends the message [silently](https://telegram.org/blog/channels-2-0#silent-messages). Users will receive a notification with no sound."
         },
         {
           "type": "boolean",
           "key": "protect_content",
-          "required": true,
+          "required": false,
           "description": "Protects the contents of the sent message from forwarding and saving"
         },
         {
           "type": "boolean",
           "key": "allow_paid_broadcast",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ to allow up to 1000 messages per second, ignoring [broadcasting limits](https://core.telegram.org/bots/faq#how-can-i-message-all-of-my-bot-39s-subscribers-at-once) for a fee of 0.1 Telegram Stars per message. The relevant Stars will be withdrawn from the bot's balance"
         },
         {
           "type": "string",
           "key": "message_effect_id",
-          "required": true,
+          "required": false,
           "description": "Unique identifier of the message effect to be added to the message; for private chats only"
         },
         {
@@ -7724,7 +7724,7 @@
             "anchor": "#replyparameters"
           },
           "key": "reply_parameters",
-          "required": true,
+          "required": false,
           "description": "Description of the message to reply to"
         },
         {
@@ -7734,7 +7734,7 @@
             "anchor": "#inlinekeyboardmarkup"
           },
           "key": "reply_markup",
-          "required": true,
+          "required": false,
           "description": "A JSON-serialized object for an [inline keyboard](/bots/features#inline-keyboards). If empty, one 'Play game\\_title' button will be shown. If not empty, the first button must launch the game."
         }
       ],
@@ -7762,31 +7762,31 @@
         {
           "type": "boolean",
           "key": "force",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters"
         },
         {
           "type": "boolean",
           "key": "disable_edit_message",
-          "required": true,
+          "required": false,
           "description": "Pass _True_ if the game message should not be automatically edited to include the current scoreboard"
         },
         {
           "type": "integer",
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Unique identifier for the target chat"
         },
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Identifier of the sent message"
         },
         {
           "type": "string",
           "key": "inline_message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ and _message\\_id_ are not specified. Identifier of the inline message"
         }
       ],
@@ -7809,19 +7809,19 @@
         {
           "type": "integer",
           "key": "chat_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Unique identifier for the target chat"
         },
         {
           "type": "integer",
           "key": "message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _inline\\_message\\_id_ is not specified. Identifier of the sent message"
         },
         {
           "type": "string",
           "key": "inline_message_id",
-          "required": true,
+          "required": false,
           "description": "Required if _chat\\_id_ and _message\\_id_ are not specified. Identifier of the inline message"
         }
       ],

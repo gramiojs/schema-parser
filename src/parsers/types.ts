@@ -360,7 +360,9 @@ export function tableRowToField(tableRow: TableRow): Field {
 
 	const required = tableRow.required?.toLowerCase().includes("yes")
 		? true
-		: !$.text().toLowerCase().startsWith("optional");
+		: tableRow.required?.toLowerCase().includes("optional")
+			? false
+			: !$.text().toLowerCase().startsWith("optional");
 
 	return {
 		...typeField,
