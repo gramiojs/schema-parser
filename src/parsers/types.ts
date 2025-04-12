@@ -407,28 +407,47 @@ function parseFieldDetails(description: string, type: "number" | "string") {
 
 export function resolveReturnType(description: string): Omit<Field, "key"> {
 	const $ = cheerio.load(description);
-	const returnClause =
-		$.root()
-			.text()
-			.match(/Returns (.*?)(\.|$)/i)?.[1] || "";
-	const htmlReturnClause =
-		$.root()
-			.html()
-			?.match(/Returns (.*?)(\.|$)/i)?.[1] || "";
 
+	// https://core.telegram.org/bots/api#getavailablegifts
+	// !DIRTY FIX because telegram description is not always correct
 	if (
-		returnClause.toLowerCase().includes("true") ||
-		returnClause.toLowerCase().includes("false")
+		description.startsWith("Returns the list of gifts") &&
+		description.includes('Returns a <a href="#gifts">gifts</a> object.')
 	) {
 		return {
+			type: "array",
+			arrayOf: {
+				type: "reference",
+				reference: { name: "Gifts", anchor: "#gifts" },
+			},
+		} as FieldArray;
+	}
+
+	const allReturns =
+		$.root()
+			.text()
+			.match(/Returns (.*?)(\.|$)/gi) || [];
+	const lastReturnClause =
+		allReturns[allReturns.length - 1]?.match(/Returns (.*?)(\.|$)/i)?.[1] || "";
+
+	const htmlReturns =
+		$.root()
+			.html()
+			?.match(/Returns (.*?)(\.|$)/gi) || [];
+	const lastHtmlReturn =
+		htmlReturns[htmlReturns.length - 1]?.match(/Returns (.*?)(\.|$)/i)?.[1] ||
+		"";
+
+	if (/(?:^|\W)(true|false)(?:$|\W)/i.test(lastReturnClause)) {
+		return {
 			type: "boolean",
-			const: returnClause.toLowerCase().includes("true"),
+			const: lastReturnClause.toLowerCase().includes("true"),
 		} as FieldBoolean;
 	}
 
-	const arrayMatch = returnClause.match(/(?:Array|list) of (.+)/i);
+	const arrayMatch = lastReturnClause.match(/(?:Array|list) of (.+)/i);
 	if (arrayMatch) {
-		const arrayContent = cheerio.load(htmlReturnClause);
+		const arrayContent = cheerio.load(lastHtmlReturn);
 		const firstLink = arrayContent("a").first();
 		const rawInnerText = arrayContent.root().text().trim();
 
@@ -454,9 +473,7 @@ export function resolveReturnType(description: string): Omit<Field, "key"> {
 		} as FieldArray;
 	}
 
-	const linkMatch = htmlReturnClause.match(
-		/<a href="([^"]+)"[^>]*>([^<]+)<\/a>/,
-	);
+	const linkMatch = lastHtmlReturn.match(/<a href="([^"]+)"[^>]*>([^<]+)<\/a>/);
 	if (linkMatch) {
 		return {
 			type: "reference",

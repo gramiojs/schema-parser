@@ -534,6 +534,20 @@ describe("Type Parser", () => {
 				description: "Returns basic information about the bot.",
 				expected: { type: "string" },
 			},
+			{
+				description:
+					'Returns the list of gifts that can be sent by the bot to users and channel chats. Requires no parameters. Returns a <a href="#gifts">gifts</a> object.',
+				expected: {
+					type: "array",
+					arrayOf: {
+						type: "reference",
+						reference: {
+							name: "Gifts",
+							anchor: "#gifts",
+						},
+					},
+				},
+			},
 		];
 
 		test.each(testCases)(
