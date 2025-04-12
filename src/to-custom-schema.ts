@@ -1,10 +1,15 @@
 import type { ParsedSection } from "./parsers/archor.ts";
 import type { Version } from "./parsers/index.ts";
-import { type Field, tableRowToField } from "./parsers/types.ts";
+import {
+	type Field,
+	resolveReturnType,
+	tableRowToField,
+} from "./parsers/types.ts";
 import { htmlToMarkdown } from "./parsers/utils.ts";
 
 interface Method {
 	name: string;
+	anchor: string;
 	description?: string;
 	parameters: Field[];
 	returns: Omit<Field, "key">;
@@ -12,6 +17,7 @@ interface Method {
 
 interface Object {
 	name: string;
+	anchor: string;
 	description?: string;
 	fields: Field[];
 }
@@ -42,12 +48,10 @@ export function toCustomSchema(
 
 			schema.methods.push({
 				name: section.title,
-				description: section.description,
+				anchor: section.anchor,
+				description: htmlToMarkdown(section.description),
 				parameters,
-				returns: {
-					type: "string",
-					description: "The result of the method",
-				},
+				returns: resolveReturnType(section.description ?? ""),
 			});
 		}
 
@@ -60,6 +64,7 @@ export function toCustomSchema(
 
 			schema.objects.push({
 				name: section.anchor,
+				anchor: section.anchor,
 				description: htmlToMarkdown(section.description),
 				fields,
 			});

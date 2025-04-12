@@ -8,7 +8,7 @@ import {
 	getTelegramBotAPIContentFromFile,
 } from "./utils.ts";
 
-const $ = await fetchTelegramBotAPIContent();
+const $ = await getTelegramBotAPIContentFromFile();
 
 const lastVersion = parseLastVersion($);
 

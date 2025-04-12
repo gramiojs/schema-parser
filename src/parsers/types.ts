@@ -112,7 +112,7 @@ function detectPatterns(description: string) {
 			result.enum = match[1]
 				.split(/, ?/)
 				.map((v) => v.replace(/^"|"$/g, ""))
-				.map((v) => (isNaN(Number(v)) ? v : Number(v)));
+				.map((v) => (Number.isNaN(Number(v)) ? v : Number(v)));
 			break;
 		}
 	}
@@ -289,7 +289,7 @@ function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 
 	switch (text.trim()) {
 		case "Integer": {
-			const details = parseFieldDetails(description || "");
+			const details = parseFieldDetails(description || "", "number");
 			return {
 				type: "integer",
 				...(details.min !== undefined && { min: details.min }),
@@ -368,16 +368,82 @@ function parseFieldDetails(description: string, type: "number" | "string") {
 		min: constraints.min,
 		max: constraints.max,
 		default: patterns.default,
-		enum: patterns.enum?.length
-			? patterns.enum.filter((v) =>
-					typeof v === "number"
-						? v !== patterns.default &&
-							v !== constraints.min &&
-							v !== constraints.max
-						: true,
-				)
-			: filteredNumbers.length > 1
-				? filteredNumbers
-				: undefined,
+		enum:
+			patterns.enum?.length && type === "string"
+				? patterns.enum.filter((v) =>
+						typeof v === "number"
+							? v !== patterns.default &&
+								v !== constraints.min &&
+								v !== constraints.max
+							: true,
+					)
+				: filteredNumbers.length > 1
+					? filteredNumbers
+					: undefined,
 	};
+}
+
+export function resolveReturnType(description: string): Omit<Field, "key"> {
+	const $ = cheerio.load(description);
+	const returnClause =
+		$.root()
+			.text()
+			.match(/Returns (.*?)(\.|$)/i)?.[1] || "";
+	const htmlReturnClause =
+		$.root()
+			.html()
+			?.match(/Returns (.*?)(\.|$)/i)?.[1] || "";
+
+	if (
+		returnClause.toLowerCase().includes("true") ||
+		returnClause.toLowerCase().includes("false")
+	) {
+		return {
+			type: "boolean",
+			const: returnClause.toLowerCase().includes("true"),
+		} as FieldBoolean;
+	}
+
+	const arrayMatch = returnClause.match(/(?:Array|list) of (.+)/i);
+	if (arrayMatch) {
+		const arrayContent = cheerio.load(htmlReturnClause);
+		const firstLink = arrayContent("a").first();
+		const rawInnerText = arrayContent.root().text().trim();
+
+		const parts = rawInnerText.split(/ of /i);
+		const lastPart = parts[parts.length - 1].trim();
+		const typeNameMatch = lastPart.match(/^([A-Z][a-zA-Z]+)/);
+		const typeName = typeNameMatch ? typeNameMatch[1] : lastPart;
+
+		const innerType =
+			firstLink.length > 0
+				? {
+						text: firstLink.text().trim(),
+						href: firstLink.attr("href"),
+					}
+				: {
+						text: typeName,
+						href: `#${typeName.toLowerCase()}`,
+					};
+
+		return {
+			type: "array",
+			arrayOf: parseTypeText(innerType),
+		} as FieldArray;
+	}
+
+	const linkMatch = htmlReturnClause.match(
+		/<a href="([^"]+)"[^>]*>([^<]+)<\/a>/,
+	);
+	if (linkMatch) {
+		return {
+			type: "reference",
+			reference: {
+				name: linkMatch[2],
+				anchor: linkMatch[1],
+			},
+		} as FieldReference;
+	}
+
+	return { type: "string" } as FieldString;
 }

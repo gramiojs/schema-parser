@@ -194,7 +194,7 @@ export function parseAnchor(
 	);
 
 	return {
-		anchor: anchorName,
+		anchor: `#${anchorName}`,
 		title,
 		type: sectionType,
 		description: finalDescription,
