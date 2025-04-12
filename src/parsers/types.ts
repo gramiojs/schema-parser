@@ -406,6 +406,7 @@ function parseFieldDetails(description: string, type: "number" | "string") {
 }
 
 export function resolveReturnType(description: string): Omit<Field, "key"> {
+	// I am tired so there many dirty fixes which will be fixed later (i hope)
 	if (
 		description.toLowerCase().startsWith("returns the list of gifts") &&
 		description
@@ -421,9 +422,78 @@ export function resolveReturnType(description: string): Omit<Field, "key"> {
 		} as FieldArray;
 	}
 
+	if (description.includes('Returns the <a href="#messageid">MessageId</a>')) {
+		return {
+			type: "reference",
+			reference: { name: "MessageId", anchor: "#messageid" },
+		} as Omit<FieldReference, "key">;
+	}
+
+	if (
+		description.includes(
+			'On success, an array of <a href="#messageid">MessageId</a>',
+		)
+	) {
+		return {
+			type: "array",
+			arrayOf: {
+				type: "reference",
+				reference: { name: "MessageId", anchor: "#messageid" },
+			},
+		} as Omit<FieldArray, "key">;
+	}
+
+	if (description.includes('Returns the uploaded <a href="#file">File</a>')) {
+		return {
+			type: "reference",
+			reference: { name: "File", anchor: "#file" },
+		} as Omit<FieldReference, "key">;
+	}
+
+	if (
+		description.includes(
+			'Returns the new invite link as a <a href="#chatinvitelink">ChatInviteLink</a> object',
+		) ||
+		description.includes(
+			'Returns the new invite link as <a href="#chatinvitelink">ChatInviteLink</a> object.',
+		)
+	) {
+		return {
+			type: "reference",
+			reference: { name: "ChatInviteLink", anchor: "#chatinvitelink" },
+		} as Omit<FieldReference, "key">;
+	}
+
+	if (
+		description.includes(
+			'<a href="#message">Message</a> is returned, otherwise <em>True</em>',
+		)
+	) {
+		return {
+			type: "one_of",
+			variants: [
+				{
+					type: "reference",
+					reference: { name: "Message", anchor: "#message" },
+				},
+				{ type: "boolean", const: true },
+			],
+		} as Omit<FieldOneOf, "key">;
+	}
+
+	if (description.includes('<a href="#message">Message</a> is returned')) {
+		return {
+			type: "reference",
+			reference: { name: "Message", anchor: "#message" },
+		} as Omit<FieldReference, "key">;
+	}
+
 	const $ = cheerio.load(description);
 
-	if ($.text().match(/Returns (an |the )?(True|False)/i)) {
+	if (
+		$.text().match(/Returns (an |the )?(True|False)/i) ||
+		$.text().match(/(True|False) is returned/i)
+	) {
 		return { type: "boolean", const: $.text().includes("True") };
 	}
 
@@ -431,6 +501,11 @@ export function resolveReturnType(description: string): Omit<Field, "key"> {
 
 	const returnText =
 		$.root().text().split("Returns").pop()?.split(".")[0] || "";
+
+	// TODO: test
+	if (returnText.includes("Int")) {
+		return { type: "integer" };
+	}
 
 	if (returnText.includes("otherwise") || returnText.includes("either")) {
 		const variants: Field[] = [];
