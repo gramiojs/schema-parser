@@ -3,9 +3,9 @@ import { parseLastVersion } from "./src/parsers/index.ts";
 import { parseNavigation } from "./src/parsers/navbar.ts";
 import { toCustomSchema } from "./src/to-custom-schema.ts";
 
-import { getTelegramBotAPIContentFromFile } from "./src/utils.ts";
+import { fetchTelegramBotAPIContent, getTelegramBotAPIContentFromFile } from "./src/utils.ts";
 
-const $ = await getTelegramBotAPIContentFromFile();
+const $ = await fetchTelegramBotAPIContent();
 
 const lastVersion = parseLastVersion($);
 
