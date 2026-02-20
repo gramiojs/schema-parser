@@ -2,6 +2,7 @@ import type { ParsedSection } from "./parsers/archor.ts";
 import type { Version } from "./parsers/index.ts";
 import {
 	type Field,
+	maybeFileToSend,
 	parseTypeText,
 	resolveReturnType,
 	tableRowToField,
@@ -14,6 +15,7 @@ export interface Method {
 	description?: string;
 	parameters: Field[];
 	returns: Omit<Field, "key">;
+	hasMultipart: boolean;
 }
 
 export interface ObjectBasic {
@@ -32,7 +34,11 @@ export interface ObjectWithOneOf extends ObjectBasic {
 	oneOf: Field[];
 }
 
-export type Object = ObjectWithFields | ObjectWithOneOf;
+export interface ObjectUnknown extends ObjectBasic {
+	type: "unknown";
+}
+
+export type Object = ObjectWithFields | ObjectWithOneOf | ObjectUnknown;
 
 export interface CustomSchema {
 	version: Version;
@@ -64,6 +70,7 @@ export function toCustomSchema(
 				description: htmlToMarkdown(section.description),
 				parameters,
 				returns: resolveReturnType(section.description ?? ""),
+				hasMultipart: parameters.some(maybeFileToSend),
 			});
 		}
 
@@ -74,23 +81,30 @@ export function toCustomSchema(
 				fields.push(tableRowToField(row));
 			}
 
-			const type =
-				fields.length > 0
-					? "fields"
-					: section.oneOf?.length
-						? "oneOf"
-						: undefined;
-
-			schema.objects.push({
-				name: section.title,
-				anchor: section.anchor,
-				description: htmlToMarkdown(section.description),
-				// @ts-expect-error
-				type,
-				fields: fields.length > 0 ? fields : undefined,
-				// @ts-ignore
-				oneOf: section.oneOf?.map((typeInfo) => parseTypeText(typeInfo)),
-			});
+			if (fields.length > 0) {
+				schema.objects.push({
+					name: section.title,
+					anchor: section.anchor,
+					description: htmlToMarkdown(section.description),
+					type: "fields",
+					fields,
+				});
+			} else if (section.oneOf?.length) {
+				schema.objects.push({
+					name: section.title,
+					anchor: section.anchor,
+					description: htmlToMarkdown(section.description),
+					type: "oneOf",
+					oneOf: section.oneOf.map((typeInfo) => parseTypeText(typeInfo)),
+				});
+			} else {
+				schema.objects.push({
+					name: section.title,
+					anchor: section.anchor,
+					description: htmlToMarkdown(section.description),
+					type: "unknown",
+				});
+			}
 		}
 	}
 

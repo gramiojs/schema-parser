@@ -11,8 +11,8 @@ const TELEGRAM_BOT_API_URL = `${TELEGRAM_URL}/bots/api`;
 
 turndownService.addRule("link", {
 	filter: ["a"],
-	replacement: (content, node, options) => {
-		let href = node.getAttribute("href");
+	replacement: (content, node, _options) => {
+		let href = (node as HTMLElement).getAttribute("href");
 
 		if (!href) {
 			return content;

@@ -1,5 +1,15 @@
 import * as cheerio from "cheerio";
 import type { TableRow, TypeInfo } from "./archor.ts";
+import {
+	type ExtractedType,
+	extractDefault,
+	extractMinMax,
+	extractOneOf,
+	extractReturnType,
+	extractTypeFromParts,
+	parseDescriptionToSentences,
+	stripPluralEnding,
+} from "./sentence.ts";
 import { htmlToMarkdown } from "./utils.ts";
 
 export type TypeUnion =
@@ -21,18 +31,25 @@ export interface FieldInteger extends FieldBasic {
 	type: "integer";
 	enum?: number[];
 	default?: number;
+	min?: number;
+	max?: number;
 }
 
 export interface FieldFloat extends FieldBasic {
 	type: "float";
 	default?: number;
 	enum?: number[];
+	min?: number;
+	max?: number;
 }
 
 export interface FieldString extends FieldBasic {
 	type: "string";
 	const?: string;
 	enum?: string[];
+	default?: string;
+	minLen?: number;
+	maxLen?: number;
 }
 
 export interface FieldBoolean extends FieldBasic {
@@ -69,72 +86,6 @@ export type Field =
 	| FieldReference
 	| FieldOneOf;
 
-const PATTERNS = {
-	DEFAULT: [/defaults? to (\d+)/i, /always "([^"]+)"/gi],
-	MIN_MAX: [
-		/values? between (\d+)[-\s]+(?:and|to) (\d+)/gi,
-		/(\d+)\s*-\s*(\d+)/g,
-		/must be between (\d+) and (\d+)/gi,
-	],
-	ONE_OF: [
-		/can be (?:one of|either) ("[^"]+"(?:, ?"[^"]+")+)/g,
-		/possible values are ((?:\d+|"[^"]+")(?:, ?(?:\d+|"[^"]+"))+)/gi,
-	],
-};
-
-function detectPatterns(description: string) {
-	const result: {
-		min?: number;
-		max?: number;
-		default?: number;
-		enum?: (string | number)[];
-	} = {};
-
-	for (const pattern of PATTERNS.DEFAULT) {
-		const match = description.match(pattern);
-		if (match) {
-			result.default = Number.parseInt(match[1], 10);
-			break;
-		}
-	}
-
-	for (const pattern of PATTERNS.MIN_MAX) {
-		const match = description.match(pattern);
-		if (match) {
-			result.min = Number.parseInt(match[1], 10);
-			result.max = Number.parseInt(match[2], 10);
-			break;
-		}
-	}
-
-	for (const pattern of PATTERNS.ONE_OF) {
-		const match = description.match(pattern);
-		if (match) {
-			result.enum = match[1]
-				.split(/, ?/)
-				.map((v) => v.replace(/^"|"$/g, ""))
-				.map((v) => (Number.isNaN(Number(v)) ? v : Number(v)));
-			break;
-		}
-	}
-
-	return result;
-}
-
-function detectDefault(description: string): number | undefined {
-	const $ = cheerio.load(description);
-
-	const defaultMatch = $.text().match(
-		/(?:default(?:s to)?|default is)\D*(?<![-–])(\d+)(?!\s*[-–])/i,
-	);
-
-	if (defaultMatch) {
-		return Number(defaultMatch[1]);
-	}
-
-	return undefined;
-}
-
 function uniqueArray(array: (string | number)[]): (string | number)[] {
 	return [...new Set(array)];
 }
@@ -156,6 +107,18 @@ function detectEnum(
 		return uniqueArray(emojiAlts as string[]);
 	}
 
+	// Try sentence-based oneOf extraction (require at least 2 values for enum)
+	const sentences = parseDescriptionToSentences(description);
+	const oneOfValues = extractOneOf(sentences);
+	if (oneOfValues && oneOfValues.length > 1) {
+		if (type === "number") {
+			const nums = oneOfValues.map(Number).filter((n) => !Number.isNaN(n));
+			return nums.length > 1 ? uniqueArray(nums) : undefined;
+		}
+		return uniqueArray(oneOfValues);
+	}
+
+	// Fallback: quoted strings from clean description
 	const cleanDescription = description
 		.replace(/<img[^>]+>/g, "")
 		.replace(/<[^>]+>/g, " ")
@@ -167,87 +130,7 @@ function detectEnum(
 		return uniqueArray(quotedMatches.map((m) => m[2]));
 	}
 
-	for (const pattern of PATTERNS.ONE_OF) {
-		const matches = Array.from(cleanDescription.matchAll(pattern));
-		if (matches.length > 0) {
-			return uniqueArray(
-				matches
-					.flatMap((m) => m.slice(1).filter(Boolean))
-					.map((v) => v.replace(/^["']+|["']+$/g, ""))
-					.filter((v) => v.length > 0),
-			);
-		}
-	}
-
-	if (type === "number") {
-		const numbers: number[] = [];
-		const numberRegex = /\b(\d+)\b/g;
-		let match: RegExpExecArray | null;
-
-		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-		while ((match = numberRegex.exec(description)) !== null) {
-			const num = Number(match[1]);
-			if (!Number.isNaN(num)) numbers.push(num);
-		}
-
-		const constraints = detectConstraints(description);
-		const filtered = numbers.filter(
-			(n) =>
-				n !== constraints.min &&
-				n !== constraints.max &&
-				n !== constraints.default,
-		);
-
-		return filtered.length > 1 ? uniqueArray(filtered) : undefined;
-	}
-
 	return undefined;
-}
-
-function detectConstraints(description: string): {
-	min?: number;
-	max?: number;
-	default?: number;
-} {
-	const constraints: { min?: number; max?: number; default?: number } = {};
-
-	const rangeMatch = description.match(/(\d+)\s*[-–]\s*(\d+)(?=\D*$)/);
-	if (rangeMatch) {
-		const min = Number.parseInt(rangeMatch[1], 10);
-		const max = Number.parseInt(rangeMatch[2], 10);
-		if (!Number.isNaN(min)) constraints.min = min;
-		if (!Number.isNaN(max)) constraints.max = max;
-	}
-
-	const minMatch = description.match(/(?:\bmin(?:imum)?\D*)(\d+)/i);
-	const maxMatch = description.match(/(?:\bmax(?:imum)?\D*)(\d+)/i);
-	if (minMatch) constraints.min = Number.parseInt(minMatch[1], 10);
-	if (maxMatch) constraints.max = Number.parseInt(maxMatch[1], 10);
-
-	const defaultMatch = description.match(/(?:\bdefault(?:s to)?\D*)(\d+)/i);
-	if (defaultMatch) constraints.default = Number.parseInt(defaultMatch[1], 10);
-
-	return constraints;
-}
-
-function detectNumbers(description: string) {
-	const numbers: number[] = [];
-	const numberFormats = [
-		/(\d+\.?\d*)\s*\([^)]+\)/g,
-		/\b\d+\.?\d*\b/g,
-		/\\u\{\w+\}/g,
-	];
-
-	for (const format of numberFormats) {
-		let match: RegExpExecArray | null;
-		while ((match = format.exec(description)) !== null) {
-			const numValue = match[1] || match[0];
-			const num = Number.parseFloat(numValue);
-			if (!Number.isNaN(num)) numbers.push(num);
-		}
-	}
-
-	return [...new Set(numbers)];
 }
 
 function extractTypeAndRef(html: string): { text: string; href?: string } {
@@ -269,8 +152,25 @@ function extractTypeAndRef(html: string): { text: string; href?: string } {
 function detectConst(description: string) {
 	const $ = cheerio.load(description);
 
-	const constMatch = $.text().match(/always\s+[""“]([^""“]+)[""“]/i);
+	const constMatch = $.text().match(/always\s+["""]([^"""]+)["""]/i);
 	return constMatch ? constMatch[1] : undefined;
+}
+
+function parseFieldDetailsSentence(description: string): {
+	min?: number;
+	max?: number;
+	default?: number;
+} {
+	const sentences = parseDescriptionToSentences(description);
+
+	const defaultStr = extractDefault(sentences);
+	const minMax = extractMinMax(sentences);
+
+	return {
+		min: minMax ? Number(minMax.min) : undefined,
+		max: minMax ? Number(minMax.max) : undefined,
+		default: defaultStr !== undefined ? Number(defaultStr) : undefined,
+	};
 }
 
 export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
@@ -303,28 +203,32 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 
 	switch (text.trim()) {
 		case "Integer": {
-			const details = parseFieldDetails(description || "", "number");
-			return {
-				type: "integer",
-				...(details.min !== undefined && { min: details.min }),
-				...(details.max !== undefined && { max: details.max }),
-				...(details.default !== undefined && { default: details.default }),
-				...(details.enum?.length ? { enum: details.enum } : {}),
-			} as FieldInteger;
-		}
-		case "Float": {
+			const details = parseFieldDetailsSentence(description || "");
 			const enumValues = description
-				? detectEnum(description, "number")?.map(Number)
+				? (detectEnum(description, "number") as number[] | undefined)
 				: undefined;
 
-			const defaultNumber = description
-				? detectDefault(description)
+			return {
+				type: "integer",
+				...(details.min !== undefined && !Number.isNaN(details.min) && { min: details.min }),
+				...(details.max !== undefined && !Number.isNaN(details.max) && { max: details.max }),
+				...(details.default !== undefined && !Number.isNaN(details.default) && { default: details.default }),
+				...(enumValues?.length ? { enum: enumValues } : {}),
+			} as FieldInteger;
+		}
+		case "Float":
+		case "Float number": {
+			const details = parseFieldDetailsSentence(description || "");
+			const enumValues = description
+				? (detectEnum(description, "number") as number[] | undefined)
 				: undefined;
 
 			return {
 				type: "float",
+				...(details.min !== undefined && !Number.isNaN(details.min) && { min: details.min }),
+				...(details.max !== undefined && !Number.isNaN(details.max) && { max: details.max }),
+				...(details.default !== undefined && !Number.isNaN(details.default) && { default: details.default }),
 				...(enumValues?.length ? { enum: enumValues } : {}),
-				...(defaultNumber ? { default: defaultNumber } : {}),
 			} as FieldFloat;
 		}
 		case "String": {
@@ -334,10 +238,23 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 
 			const constValue = description ? detectConst(description) : undefined;
 
+			const sentences = description
+				? parseDescriptionToSentences(description)
+				: [];
+			const defaultStr = extractDefault(sentences);
+			const minMax = extractMinMax(sentences);
+
 			return {
 				type: "string",
 				enum: enumValues?.length ? enumValues : undefined,
 				const: constValue,
+				...(defaultStr !== undefined && { default: defaultStr }),
+				...(minMax
+					? {
+							...(minMax.min && { minLen: Number(minMax.min) }),
+							...(minMax.max && { maxLen: Number(minMax.max) }),
+						}
+					: {}),
 			} as FieldString;
 		}
 		case "Boolean":
@@ -381,172 +298,87 @@ export function tableRowToField(tableRow: TableRow): Field {
 	};
 }
 
-function parseFieldDetails(description: string, type: "number" | "string") {
-	const patterns = detectPatterns(description);
-	// const numbers = detectNumbers(description);
-	const numbers: number[] = [];
-	const constraints = detectConstraints(description);
+function extractedTypeToField(extracted: ExtractedType): Omit<Field, "key"> {
+	switch (extracted.kind) {
+		case "single": {
+			const name = extracted.name || "";
 
-	const filteredNumbers = numbers.filter(
-		(n) =>
-			n !== patterns.default && n !== constraints.min && n !== constraints.max,
-	);
+			if (name === "True")
+				return { type: "boolean", const: true } as Omit<FieldBoolean, "key">;
+			if (name === "False")
+				return { type: "boolean", const: false } as Omit<FieldBoolean, "key">;
+			if (name === "Int" || name === "Integer")
+				return { type: "integer" } as Omit<FieldInteger, "key">;
+			if (name === "String")
+				return { type: "string" } as Omit<FieldString, "key">;
+			if (name === "Boolean")
+				return { type: "boolean" } as Omit<FieldBoolean, "key">;
 
-	return {
-		min: constraints.min,
-		max: constraints.max,
-		default: patterns.default,
-		enum:
-			patterns.enum?.length && type === "string"
-				? patterns.enum.filter((v) =>
-						typeof v === "number"
-							? v !== patterns.default &&
-								v !== constraints.min &&
-								v !== constraints.max
-							: true,
-					)
-				: filteredNumbers.length > 1
-					? filteredNumbers
-					: undefined,
-	};
+			const anchor =
+				extracted.href || `#${name.toLowerCase().replace(/ objects?/i, "")}`;
+			return {
+				type: "reference",
+				reference: {
+					name: name.replace(/ objects?/i, ""),
+					anchor,
+				},
+			} as Omit<FieldReference, "key">;
+		}
+		case "array": {
+			if (!extracted.inner)
+				return { type: "string" } as Omit<FieldString, "key">;
+			return {
+				type: "array",
+				arrayOf: extractedTypeToField(extracted.inner) as Field,
+			} as Omit<FieldArray, "key">;
+		}
+		case "or": {
+			if (!extracted.variants || extracted.variants.length === 0)
+				return { type: "string" } as Omit<FieldString, "key">;
+			return {
+				type: "one_of",
+				variants: extracted.variants.map(
+					(v) => extractedTypeToField(v) as Field,
+				),
+			} as Omit<FieldOneOf, "key">;
+		}
+	}
 }
 
 export function resolveReturnType(description: string): Omit<Field, "key"> {
-	// I am tired so there many dirty fixes which will be fixed later (i hope)
-	if (
-		description.toLowerCase().startsWith("returns the list of gifts") &&
-		description
-			.toLowerCase()
-			.includes('returns a <a href="#gifts">gifts</a> object')
-	) {
-		return {
-			type: "array",
-			arrayOf: {
-				type: "reference",
-				reference: { name: "Gifts", anchor: "#gifts" },
-			},
-		} as FieldArray;
-	}
-
-	if (description.includes('Returns the <a href="#messageid">MessageId</a>')) {
-		return {
-			type: "reference",
-			reference: { name: "MessageId", anchor: "#messageid" },
-		} as Omit<FieldReference, "key">;
-	}
-
-	if (
-		description.includes(
-			'On success, an array of <a href="#messageid">MessageId</a>',
-		)
-	) {
-		return {
-			type: "array",
-			arrayOf: {
-				type: "reference",
-				reference: { name: "MessageId", anchor: "#messageid" },
-			},
-		} as Omit<FieldArray, "key">;
-	}
-
-	if (description.includes('Returns the uploaded <a href="#file">File</a>')) {
-		return {
-			type: "reference",
-			reference: { name: "File", anchor: "#file" },
-		} as Omit<FieldReference, "key">;
-	}
-
-	if (
-		description.includes(
-			'Returns the new invite link as a <a href="#chatinvitelink">ChatInviteLink</a> object',
-		) ||
-		description.includes(
-			'Returns the new invite link as <a href="#chatinvitelink">ChatInviteLink</a> object.',
-		)
-	) {
-		return {
-			type: "reference",
-			reference: { name: "ChatInviteLink", anchor: "#chatinvitelink" },
-		} as Omit<FieldReference, "key">;
-	}
-
-	if (
-		description.includes(
-			'<a href="#message">Message</a> is returned, otherwise <em>True</em>',
-		)
-	) {
-		return {
-			type: "one_of",
-			variants: [
-				{
-					type: "reference",
-					reference: { name: "Message", anchor: "#message" },
-				},
-				{ type: "boolean", const: true },
-			],
-		} as Omit<FieldOneOf, "key">;
-	}
-
-	if (description.includes('<a href="#message">Message</a> is returned')) {
-		return {
-			type: "reference",
-			reference: { name: "Message", anchor: "#message" },
-		} as Omit<FieldReference, "key">;
-	}
-
 	const $ = cheerio.load(description);
+	const text = $.text();
 
-	if (
-		$.text().match(/Returns (an |the )?(True|False)/i) ||
-		$.text().match(/(True|False) is returned/i)
-	) {
-		return { type: "boolean", const: $.text().includes("True") };
+	// Check for simple True/False returns (only when no "otherwise" present)
+	if (!text.includes("otherwise")) {
+		if (
+			text.match(/Returns\s+(an\s+|the\s+)?(True|False)/i) ||
+			text.match(/(True|False)\s+is\s+returned/i)
+		) {
+			return {
+				type: "boolean",
+				const: text.includes("True"),
+			} as Omit<FieldBoolean, "key">;
+		}
 	}
 
-	const hasAnyExplicitLink = $('a[href^="#"]').length > 0;
+	// Use sentence parser for structured extraction
+	const sentences = parseDescriptionToSentences(description);
+	const returnParts = extractReturnType(sentences);
 
-	const returnText =
-		$.root().text().split("Returns").pop()?.split(".")[0] || "";
-
-	// TODO: test
-	if (returnText.includes("Int")) {
-		return { type: "integer" };
-	}
-
-	if (returnText.includes("otherwise") || returnText.includes("either")) {
-		const variants: Field[] = [];
-
-		const mainMatch = returnText.match(/([A-Z][a-zA-Z]+)/);
-		if (mainMatch) {
-			variants.push(
-				hasAnyExplicitLink ? createReference(mainMatch[1]) : { type: "string" },
-			);
+	if (returnParts && returnParts.length > 0) {
+		// Check for Int/Integer in parts
+		if (returnParts.some((p) => p.inner === "Int" || p.inner === "Integer")) {
+			return { type: "integer" };
 		}
 
-		const altMatch = returnText.match(/otherwise (\w+)/i);
-		if (altMatch) {
-			const altType =
-				altMatch[1].toLowerCase() === "true"
-					? { type: "boolean", const: true }
-					: hasAnyExplicitLink
-						? createReference(altMatch[1])
-						: { type: "string" };
-			variants.push(altType);
+		const extracted = extractTypeFromParts(returnParts);
+		if (extracted) {
+			return extractedTypeToField(extracted);
 		}
-
-		if (variants.length > 0) return { type: "one_of", variants };
 	}
 
-	const arrayMatch = returnText.match(/(Array|list) of (\w+)/i);
-	if (arrayMatch) {
-		return {
-			type: "array",
-			arrayOf: hasAnyExplicitLink
-				? createReference(arrayMatch[2])
-				: { type: "string" },
-		};
-	}
-
+	// Fallback: direct link
 	const directLink = $('a[href^="#"]').first();
 	if (directLink.length) {
 		return {
@@ -555,18 +387,23 @@ export function resolveReturnType(description: string): Omit<Field, "key"> {
 				name: directLink.text().trim(),
 				anchor: directLink.attr("href") || "",
 			},
-		};
+		} as Omit<FieldReference, "key">;
 	}
 
-	return { type: "string" };
+	return { type: "string" } as Omit<FieldString, "key">;
 }
 
-function createReference(typeName: string): Field {
-	return {
-		type: "reference",
-		reference: {
-			name: typeName.replace(/ objects?/i, ""),
-			anchor: `#${typeName.toLowerCase()}`,
-		},
-	};
+export function maybeFileToSend(field: Field): boolean {
+	if (field.type === "reference") {
+		const name = field.reference.name;
+		if (name === "InputPollOption") return false;
+		return name.startsWith("Input");
+	}
+	if (field.type === "array") {
+		return maybeFileToSend(field.arrayOf);
+	}
+	if (field.type === "one_of") {
+		return field.variants.some(maybeFileToSend);
+	}
+	return false;
 }

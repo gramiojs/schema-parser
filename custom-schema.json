@@ -22,6 +22,8 @@
         },
         {
           "type": "integer",
+          "min": 1,
+          "max": 100,
           "default": 100,
           "key": "limit",
           "required": false,
@@ -53,7 +55,8 @@
             "anchor": "#update"
           }
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setWebhook",
@@ -84,7 +87,7 @@
         },
         {
           "type": "integer",
-          "max": 1,
+          "default": 40,
           "key": "max_connections",
           "required": false,
           "description": "The maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to *40*. Use lower values to limit the load on your bot's server, and higher values to increase your bot's throughput."
@@ -106,6 +109,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 256,
           "key": "secret_token",
           "required": false,
           "description": "A secret token to be sent in a header “X-Telegram-Bot-Api-Secret-Token” in every webhook request, 1-256 characters. Only characters `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed. The header is useful to ensure that the request comes from a webhook set by you."
@@ -114,7 +119,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "deleteWebhook",
@@ -131,7 +137,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getWebhookInfo",
@@ -144,7 +151,8 @@
           "name": "WebhookInfo",
           "anchor": "#webhookinfo"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getMe",
@@ -157,7 +165,8 @@
           "name": "User",
           "anchor": "#user"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "logOut",
@@ -167,7 +176,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "close",
@@ -177,7 +187,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendMessage",
@@ -212,6 +223,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 4096,
           "key": "text",
           "required": true,
           "description": "Text of the message to be sent, 1-4096 characters after entities parsing"
@@ -322,7 +335,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "forwardMessage",
@@ -394,7 +408,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "forwardMessages",
@@ -466,7 +481,8 @@
             "anchor": "#messageid"
           }
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "copyMessage",
@@ -521,6 +537,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept"
@@ -621,7 +639,8 @@
           "name": "MessageId",
           "anchor": "#messageid"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "copyMessages",
@@ -699,7 +718,8 @@
             "anchor": "#messageid"
           }
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendPhoto",
@@ -752,6 +772,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "Photo caption (may also be used when resending photos by *file\\_id*), 0-1024 characters after entities parsing"
@@ -864,7 +886,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendAudio",
@@ -917,6 +940,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "Audio caption, 0-1024 characters after entities parsing"
@@ -1053,7 +1078,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendDocument",
@@ -1124,6 +1150,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "Document caption (may also be used when resending documents by *file\\_id*), 0-1024 characters after entities parsing"
@@ -1230,7 +1258,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendVideo",
@@ -1343,6 +1372,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "Video caption (may also be used when resending videos by *file\\_id*), 0-1024 characters after entities parsing"
@@ -1461,7 +1492,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendAnimation",
@@ -1550,6 +1582,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "Animation caption (may also be used when resending animation by *file\\_id*), 0-1024 characters after entities parsing"
@@ -1662,7 +1696,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendVoice",
@@ -1715,6 +1750,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "Voice message caption, 0-1024 characters after entities parsing"
@@ -1821,7 +1858,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendVideoNote",
@@ -1979,7 +2017,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendPaidMedia",
@@ -2008,8 +2047,6 @@
         },
         {
           "type": "integer",
-          "min": 1,
-          "max": 10000,
           "key": "star_count",
           "required": true,
           "description": "The number of Telegram Stars that must be paid to buy access to the media; 1-10000"
@@ -2035,6 +2072,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "Media caption, 0-1024 characters after entities parsing"
@@ -2135,7 +2174,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendMediaGroup",
@@ -2217,12 +2257,16 @@
         }
       ],
       "returns": {
-        "type": "reference",
-        "reference": {
-          "name": "Messages",
-          "anchor": "#message"
+        "type": "array",
+        "arrayOf": {
+          "type": "reference",
+          "reference": {
+            "name": "Message",
+            "anchor": "#message"
+          }
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "sendLocation",
@@ -2287,7 +2331,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "key": "proximity_alert_radius",
           "required": false,
           "description": "For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
@@ -2369,7 +2412,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendVenue",
@@ -2527,7 +2571,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendContact",
@@ -2661,7 +2706,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendPoll",
@@ -2696,6 +2742,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 300,
           "key": "question",
           "required": true,
           "description": "Poll question, 1-300 characters"
@@ -2740,6 +2788,10 @@
         },
         {
           "type": "string",
+          "enum": [
+            "quiz",
+            "regular"
+          ],
           "key": "type",
           "required": false,
           "description": "Poll type, “quiz” or “regular”, defaults to “regular”"
@@ -2758,6 +2810,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 200,
           "key": "explanation",
           "required": false,
           "description": "Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing"
@@ -2783,8 +2837,6 @@
         },
         {
           "type": "integer",
-          "min": 5,
-          "max": 600,
           "key": "open_period",
           "required": false,
           "description": "Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with *close\\_date*."
@@ -2878,7 +2930,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendDice",
@@ -2921,6 +2974,7 @@
             "🎳",
             "🎰"
           ],
+          "default": "🎲",
           "key": "emoji",
           "required": false,
           "description": "Emoji on which the dice throw animation is based. Currently, must be one of “![🎲](//telegram.org/img/emoji/40/F09F8EB2.png)”, “![🎯](//telegram.org/img/emoji/40/F09F8EAF.png)”, “![🏀](//telegram.org/img/emoji/40/F09F8F80.png)”, “![⚽](//telegram.org/img/emoji/40/E29ABD.png)”, “![🎳](//telegram.org/img/emoji/40/F09F8EB3.png)”, or “![🎰](//telegram.org/img/emoji/40/F09F8EB0.png)”. Dice can have values 1-6 for “![🎲](//telegram.org/img/emoji/40/F09F8EB2.png)”, “![🎯](//telegram.org/img/emoji/40/F09F8EAF.png)” and “![🎳](//telegram.org/img/emoji/40/F09F8EB3.png)”, values 1-5 for “![🏀](//telegram.org/img/emoji/40/F09F8F80.png)” and “![⚽](//telegram.org/img/emoji/40/E29ABD.png)”, and values 1-64 for “![🎰](//telegram.org/img/emoji/40/F09F8EB0.png)”. Defaults to “![🎲](//telegram.org/img/emoji/40/F09F8EB2.png)”"
@@ -3002,7 +3056,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendChatAction",
@@ -3037,6 +3092,19 @@
         },
         {
           "type": "string",
+          "enum": [
+            "typing",
+            "upload_photo",
+            "record_video",
+            "upload_video",
+            "record_voice",
+            "upload_voice",
+            "upload_document",
+            "choose_sticker",
+            "find_location",
+            "record_video_note",
+            "upload_video_note"
+          ],
           "key": "action",
           "required": true,
           "description": "Type of action to broadcast. Choose one, depending on what the user is about to receive: *typing* for [text messages](https://core.telegram.org/bots/api#sendmessage), *upload\\_photo* for [photos](https://core.telegram.org/bots/api#sendphoto), *record\\_video* or *upload\\_video* for [videos](https://core.telegram.org/bots/api#sendvideo), *record\\_voice* or *upload\\_voice* for [voice notes](https://core.telegram.org/bots/api#sendvoice), *upload\\_document* for [general files](https://core.telegram.org/bots/api#senddocument), *choose\\_sticker* for [stickers](https://core.telegram.org/bots/api#sendsticker), *find\\_location* for [location data](https://core.telegram.org/bots/api#sendlocation), *record\\_video\\_note* or *upload\\_video\\_note* for [video notes](https://core.telegram.org/bots/api#sendvideonote)."
@@ -3045,7 +3113,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setMessageReaction",
@@ -3095,7 +3164,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getUserProfilePhotos",
@@ -3116,6 +3186,8 @@
         },
         {
           "type": "integer",
+          "min": 1,
+          "max": 100,
           "default": 100,
           "key": "limit",
           "required": false,
@@ -3128,7 +3200,8 @@
           "name": "UserProfilePhotos",
           "anchor": "#userprofilephotos"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setUserEmojiStatus",
@@ -3157,7 +3230,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getFile",
@@ -3177,7 +3251,8 @@
           "name": "File",
           "anchor": "#file"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "banChatMember",
@@ -3220,7 +3295,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "unbanChatMember",
@@ -3257,7 +3333,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "restrictChatMember",
@@ -3310,7 +3387,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "promoteChatMember",
@@ -3431,7 +3509,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setChatAdministratorCustomTitle",
@@ -3460,6 +3539,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 16,
           "key": "custom_title",
           "required": true,
           "description": "New custom title for the administrator; 0-16 characters, emoji are not allowed"
@@ -3468,7 +3549,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "banChatSenderChat",
@@ -3499,7 +3581,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "unbanChatSenderChat",
@@ -3530,7 +3613,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setChatPermissions",
@@ -3571,7 +3655,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "exportChatInviteLink",
@@ -3595,7 +3680,8 @@
       ],
       "returns": {
         "type": "string"
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "createChatInviteLink",
@@ -3618,6 +3704,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 32,
           "key": "name",
           "required": false,
           "description": "Invite link name; 0-32 characters"
@@ -3630,8 +3718,6 @@
         },
         {
           "type": "integer",
-          "min": 1,
-          "max": 1,
           "key": "member_limit",
           "required": false,
           "description": "The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
@@ -3649,7 +3735,8 @@
           "name": "ChatInviteLink",
           "anchor": "#chatinvitelink"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editChatInviteLink",
@@ -3678,6 +3765,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 32,
           "key": "name",
           "required": false,
           "description": "Invite link name; 0-32 characters"
@@ -3690,8 +3779,6 @@
         },
         {
           "type": "integer",
-          "min": 1,
-          "max": 1,
           "key": "member_limit",
           "required": false,
           "description": "The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
@@ -3709,7 +3796,8 @@
           "name": "ChatInviteLink",
           "anchor": "#chatinvitelink"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "createChatSubscriptionInviteLink",
@@ -3732,6 +3820,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 32,
           "key": "name",
           "required": false,
           "description": "Invite link name; 0-32 characters"
@@ -3744,8 +3834,6 @@
         },
         {
           "type": "integer",
-          "min": 1,
-          "max": 10000,
           "key": "subscription_price",
           "required": true,
           "description": "The amount of Telegram Stars a user must pay initially and after each subsequent subscription period to be a member of the chat; 1-10000"
@@ -3757,7 +3845,8 @@
           "name": "ChatInviteLink",
           "anchor": "#chatinvitelink"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editChatSubscriptionInviteLink",
@@ -3786,6 +3875,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 32,
           "key": "name",
           "required": false,
           "description": "Invite link name; 0-32 characters"
@@ -3797,7 +3888,8 @@
           "name": "ChatInviteLink",
           "anchor": "#chatinvitelink"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "revokeChatInviteLink",
@@ -3831,7 +3923,8 @@
           "name": "ChatInviteLink",
           "anchor": "#chatinvitelink"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "approveChatJoinRequest",
@@ -3862,7 +3955,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "declineChatJoinRequest",
@@ -3893,7 +3987,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setChatPhoto",
@@ -3928,7 +4023,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "deleteChatPhoto",
@@ -3953,7 +4049,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setChatTitle",
@@ -3976,6 +4073,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 128,
           "key": "title",
           "required": true,
           "description": "New chat title, 1-128 characters"
@@ -3984,7 +4083,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setChatDescription",
@@ -4007,6 +4107,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 255,
           "key": "description",
           "required": false,
           "description": "New chat description, 0-255 characters"
@@ -4015,7 +4117,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "pinChatMessage",
@@ -4058,7 +4161,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "unpinChatMessage",
@@ -4095,7 +4199,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "unpinAllChatMessages",
@@ -4120,7 +4225,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "leaveChat",
@@ -4145,7 +4251,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getChat",
@@ -4173,7 +4280,8 @@
           "name": "ChatFullInfo",
           "anchor": "#chatfullinfo"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getChatAdministrators",
@@ -4204,7 +4312,8 @@
             "anchor": "#chatmember"
           }
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getChatMemberCount",
@@ -4228,7 +4337,8 @@
       ],
       "returns": {
         "type": "integer"
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getChatMember",
@@ -4262,7 +4372,8 @@
           "name": "ChatMember",
           "anchor": "#chatmember"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setChatStickerSet",
@@ -4293,7 +4404,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "deleteChatStickerSet",
@@ -4318,7 +4430,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getForumTopicIconStickers",
@@ -4334,7 +4447,8 @@
             "anchor": "#sticker"
           }
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "createForumTopic",
@@ -4357,12 +4471,22 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 128,
           "key": "name",
           "required": true,
           "description": "Topic name, 1-128 characters"
         },
         {
           "type": "integer",
+          "enum": [
+            7322096,
+            16766590,
+            13338331,
+            9367192,
+            16749490,
+            16478047
+          ],
           "key": "icon_color",
           "required": false,
           "description": "Color of the topic icon in RGB format. Currently, must be one of 7322096 (0x6FB9F0), 16766590 (0xFFD67E), 13338331 (0xCB86DB), 9367192 (0x8EEE98), 16749490 (0xFF93B2), or 16478047 (0xFB6F5F)"
@@ -4380,7 +4504,8 @@
           "name": "ForumTopic",
           "anchor": "#forumtopic"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editForumTopic",
@@ -4409,6 +4534,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 128,
           "key": "name",
           "required": false,
           "description": "New topic name, 0-128 characters. If not specified or empty, the current name of the topic will be kept"
@@ -4423,7 +4550,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "closeForumTopic",
@@ -4454,7 +4582,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "reopenForumTopic",
@@ -4485,7 +4614,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "deleteForumTopic",
@@ -4516,7 +4646,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "unpinAllForumTopicMessages",
@@ -4547,7 +4678,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editGeneralForumTopic",
@@ -4570,6 +4702,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 128,
           "key": "name",
           "required": true,
           "description": "New topic name, 1-128 characters"
@@ -4578,7 +4712,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "closeGeneralForumTopic",
@@ -4603,7 +4738,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "reopenGeneralForumTopic",
@@ -4628,7 +4764,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "hideGeneralForumTopic",
@@ -4653,7 +4790,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "unhideGeneralForumTopic",
@@ -4678,7 +4816,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "unpinAllGeneralForumTopicMessages",
@@ -4703,7 +4842,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "answerCallbackQuery",
@@ -4718,6 +4858,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 200,
           "key": "text",
           "required": false,
           "description": "Text of the notification. If not specified, nothing will be shown to the user, 0-200 characters"
@@ -4736,7 +4878,6 @@
         },
         {
           "type": "integer",
-          "max": 3,
           "default": 0,
           "key": "cache_time",
           "required": false,
@@ -4746,7 +4887,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getUserChatBoosts",
@@ -4780,7 +4922,8 @@
           "name": "UserChatBoosts",
           "anchor": "#userchatboosts"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getBusinessConnection",
@@ -4800,7 +4943,8 @@
           "name": "BusinessConnection",
           "anchor": "#businessconnection"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setMyCommands",
@@ -4840,7 +4984,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "deleteMyCommands",
@@ -4867,7 +5012,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getMyCommands",
@@ -4900,7 +5046,8 @@
             "anchor": "#botcommand"
           }
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setMyName",
@@ -4909,6 +5056,8 @@
       "parameters": [
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 64,
           "key": "name",
           "required": false,
           "description": "New bot name; 0-64 characters. Pass an empty string to remove the dedicated name for the given language."
@@ -4923,7 +5072,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getMyName",
@@ -4943,7 +5093,8 @@
           "name": "BotName",
           "anchor": "#botname"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setMyDescription",
@@ -4952,6 +5103,8 @@
       "parameters": [
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 512,
           "key": "description",
           "required": false,
           "description": "New bot description; 0-512 characters. Pass an empty string to remove the dedicated description for the given language."
@@ -4966,7 +5119,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getMyDescription",
@@ -4986,7 +5140,8 @@
           "name": "BotDescription",
           "anchor": "#botdescription"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setMyShortDescription",
@@ -4995,6 +5150,8 @@
       "parameters": [
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 120,
           "key": "short_description",
           "required": false,
           "description": "New short description for the bot; 0-120 characters. Pass an empty string to remove the dedicated short description for the given language."
@@ -5009,7 +5166,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getMyShortDescription",
@@ -5029,7 +5187,8 @@
           "name": "BotShortDescription",
           "anchor": "#botshortdescription"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setChatMenuButton",
@@ -5056,7 +5215,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getChatMenuButton",
@@ -5076,7 +5236,8 @@
           "name": "MenuButton",
           "anchor": "#menubutton"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setMyDefaultAdministratorRights",
@@ -5103,7 +5264,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getMyDefaultAdministratorRights",
@@ -5123,7 +5285,8 @@
           "name": "ChatAdministratorRights",
           "anchor": "#chatadministratorrights"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editMessageText",
@@ -5164,6 +5327,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 4096,
           "key": "text",
           "required": true,
           "description": "New text of the message, 1-4096 characters after entities parsing"
@@ -5223,7 +5388,8 @@
             "const": true
           }
         ]
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editMessageCaption",
@@ -5264,6 +5430,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "New caption of the message, 0-1024 characters after entities parsing"
@@ -5319,7 +5487,8 @@
             "const": true
           }
         ]
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editMessageMedia",
@@ -5394,7 +5563,8 @@
             "const": true
           }
         ]
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "editMessageLiveLocation",
@@ -5465,7 +5635,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "key": "proximity_alert_radius",
           "required": false,
           "description": "The maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
@@ -5496,7 +5665,8 @@
             "const": true
           }
         ]
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "stopMessageLiveLocation",
@@ -5561,7 +5731,8 @@
             "const": true
           }
         ]
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editMessageReplyMarkup",
@@ -5626,7 +5797,8 @@
             "const": true
           }
         ]
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "stopPoll",
@@ -5676,7 +5848,8 @@
           "name": "Poll",
           "anchor": "#poll"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "deleteMessage",
@@ -5707,7 +5880,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "deleteMessages",
@@ -5741,7 +5915,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getAvailableGifts",
@@ -5754,7 +5929,8 @@
           "name": "Gifts",
           "anchor": "#gifts"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendGift",
@@ -5795,6 +5971,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 128,
           "key": "text",
           "required": false,
           "description": "Text that will be shown along with the gift; 0-128 characters"
@@ -5822,7 +6000,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "giftPremiumSubscription",
@@ -5837,6 +6016,11 @@
         },
         {
           "type": "integer",
+          "enum": [
+            3,
+            6,
+            12
+          ],
           "key": "month_count",
           "required": true,
           "description": "Number of months the Telegram Premium subscription will be active for the user; must be one of 3, 6, or 12"
@@ -5849,6 +6033,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 128,
           "key": "text",
           "required": false,
           "description": "Text that will be shown along with the service message about the subscription; 0-128 characters"
@@ -5876,7 +6062,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "verifyUser",
@@ -5891,6 +6078,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 70,
           "key": "custom_description",
           "required": false,
           "description": "Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description."
@@ -5899,7 +6088,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "verifyChat",
@@ -5922,6 +6112,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 70,
           "key": "custom_description",
           "required": false,
           "description": "Custom description for the verification; 0-70 characters. Must be empty if the organization isn't allowed to provide a custom verification description."
@@ -5930,7 +6122,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "removeUserVerification",
@@ -5947,7 +6140,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "removeChatVerification",
@@ -5972,7 +6166,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "readBusinessMessage",
@@ -6001,7 +6196,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "deleteBusinessMessages",
@@ -6027,7 +6223,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setBusinessAccountName",
@@ -6042,12 +6239,16 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 64,
           "key": "first_name",
           "required": true,
           "description": "The new value of the first name for the business account; 1-64 characters"
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 64,
           "key": "last_name",
           "required": false,
           "description": "The new value of the last name for the business account; 0-64 characters"
@@ -6056,7 +6257,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setBusinessAccountUsername",
@@ -6071,6 +6273,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 32,
           "key": "username",
           "required": false,
           "description": "The new value of the username for the business account; 0-32 characters"
@@ -6079,7 +6283,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setBusinessAccountBio",
@@ -6094,6 +6299,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 140,
           "key": "bio",
           "required": false,
           "description": "The new value of the bio for the business account; 0-140 characters"
@@ -6102,7 +6309,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setBusinessAccountProfilePhoto",
@@ -6135,7 +6343,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "removeBusinessAccountProfilePhoto",
@@ -6158,7 +6367,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setBusinessAccountGiftSettings",
@@ -6191,7 +6401,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getBusinessAccountStarBalance",
@@ -6211,7 +6422,8 @@
           "name": "StarAmount",
           "anchor": "#staramount"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "transferBusinessAccountStars",
@@ -6226,8 +6438,6 @@
         },
         {
           "type": "integer",
-          "min": 1,
-          "max": 10000,
           "key": "star_count",
           "required": true,
           "description": "Number of Telegram Stars to transfer; 1-10000"
@@ -6236,7 +6446,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getBusinessAccountGifts",
@@ -6293,7 +6504,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "default": 100,
           "key": "limit",
           "required": false,
@@ -6306,7 +6516,8 @@
           "name": "OwnedGifts",
           "anchor": "#ownedgifts"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "convertGiftToStars",
@@ -6329,7 +6540,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "upgradeGift",
@@ -6364,7 +6576,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "transferGift",
@@ -6399,7 +6612,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "postStory",
@@ -6424,12 +6638,20 @@
         },
         {
           "type": "integer",
+          "enum": [
+            21600,
+            43200,
+            86400,
+            172800
+          ],
           "key": "active_period",
           "required": true,
           "description": "Period after which the story is moved to the archive, in seconds; must be one of `6 * 3600`, `12 * 3600`, `86400`, or `2 * 86400`"
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 2048,
           "key": "caption",
           "required": false,
           "description": "Caption of the story, 0-2048 characters after entities parsing"
@@ -6485,7 +6707,8 @@
           "name": "Story",
           "anchor": "#story"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "editStory",
@@ -6516,6 +6739,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 2048,
           "key": "caption",
           "required": false,
           "description": "Caption of the story, 0-2048 characters after entities parsing"
@@ -6559,7 +6784,8 @@
           "name": "Story",
           "anchor": "#story"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "deleteStory",
@@ -6582,7 +6808,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendSticker",
@@ -6716,7 +6943,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "getStickerSet",
@@ -6736,7 +6964,8 @@
           "name": "StickerSet",
           "anchor": "#stickerset"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getCustomEmojiStickers",
@@ -6762,7 +6991,8 @@
             "anchor": "#sticker"
           }
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "uploadStickerFile",
@@ -6787,6 +7017,11 @@
         },
         {
           "type": "string",
+          "enum": [
+            "static",
+            "animated",
+            "video"
+          ],
           "key": "sticker_format",
           "required": true,
           "description": "Format of the sticker, must be one of “static”, “animated”, “video”"
@@ -6798,7 +7033,8 @@
           "name": "File",
           "anchor": "#file"
         }
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "createNewStickerSet",
@@ -6813,12 +7049,16 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 64,
           "key": "name",
           "required": true,
           "description": "Short name of sticker set, to be used in `t.me/addstickers/` URLs (e.g., *animals*). Can contain only English letters, digits and underscores. Must begin with a letter, can't contain consecutive underscores and must end in `\"_by_<bot_username>\"`. `<bot_username>` is case insensitive. 1-64 characters."
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 64,
           "key": "title",
           "required": true,
           "description": "Sticker set title, 1-64 characters"
@@ -6838,6 +7078,10 @@
         },
         {
           "type": "string",
+          "enum": [
+            "mask",
+            "custom_emoji"
+          ],
           "key": "sticker_type",
           "required": false,
           "description": "Type of stickers in the set, pass “regular”, “mask”, or “custom\\_emoji”. By default, a regular sticker set is created."
@@ -6852,7 +7096,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "addStickerToSet",
@@ -6885,7 +7130,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "setStickerPositionInSet",
@@ -6908,7 +7154,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "deleteStickerFromSet",
@@ -6925,7 +7172,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "replaceStickerInSet",
@@ -6964,7 +7212,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "setStickerEmojiList",
@@ -6990,7 +7239,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setStickerKeywords",
@@ -7016,7 +7266,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setStickerMaskPosition",
@@ -7043,7 +7294,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setStickerSetTitle",
@@ -7058,6 +7310,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 64,
           "key": "title",
           "required": true,
           "description": "Sticker set title, 1-64 characters"
@@ -7066,7 +7320,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setStickerSetThumbnail",
@@ -7105,6 +7360,11 @@
         },
         {
           "type": "string",
+          "enum": [
+            "static",
+            "animated",
+            "video"
+          ],
           "key": "format",
           "required": true,
           "description": "Format of the thumbnail, must be one of “static” for a **.WEBP** or **.PNG** image, “animated” for a **.TGS** animation, or “video” for a **.WEBM** video"
@@ -7113,7 +7373,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": true
     },
     {
       "name": "setCustomEmojiStickerSetThumbnail",
@@ -7136,7 +7397,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "deleteStickerSet",
@@ -7153,7 +7415,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "answerInlineQuery",
@@ -7181,7 +7444,6 @@
         },
         {
           "type": "integer",
-          "max": 300,
           "default": 300,
           "key": "cache_time",
           "required": false,
@@ -7213,7 +7475,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "answerWebAppQuery",
@@ -7243,7 +7506,8 @@
           "name": "SentWebAppMessage",
           "anchor": "#sentwebappmessage"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "savePreparedInlineMessage",
@@ -7297,7 +7561,8 @@
           "name": "PreparedInlineMessage",
           "anchor": "#preparedinlinemessage"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendInvoice",
@@ -7326,12 +7591,16 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 32,
           "key": "title",
           "required": true,
           "description": "Product name, 1-32 characters"
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 255,
           "key": "description",
           "required": true,
           "description": "Product description, 1-255 characters"
@@ -7369,7 +7638,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "default": 0,
           "key": "max_tip_amount",
           "required": false,
@@ -7513,7 +7781,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "createInvoiceLink",
@@ -7528,12 +7797,16 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 32,
           "key": "title",
           "required": true,
           "description": "Product name, 1-32 characters"
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 255,
           "key": "description",
           "required": true,
           "description": "Product description, 1-255 characters"
@@ -7577,7 +7850,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "default": 0,
           "key": "max_tip_amount",
           "required": false,
@@ -7667,7 +7939,8 @@
       ],
       "returns": {
         "type": "string"
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "answerShippingQuery",
@@ -7709,7 +7982,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "answerPreCheckoutQuery",
@@ -7738,7 +8012,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getStarTransactions",
@@ -7753,7 +8028,8 @@
         },
         {
           "type": "integer",
-          "max": 1,
+          "min": 1,
+          "max": 100,
           "default": 100,
           "key": "limit",
           "required": false,
@@ -7766,7 +8042,8 @@
           "name": "StarTransactions",
           "anchor": "#startransactions"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "refundStarPayment",
@@ -7789,7 +8066,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "editUserStarSubscription",
@@ -7818,7 +8096,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setPassportDataErrors",
@@ -7848,7 +8127,8 @@
       "returns": {
         "type": "boolean",
         "const": true
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "sendGame",
@@ -7930,7 +8210,8 @@
           "name": "Message",
           "anchor": "#message"
         }
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "setGameScore",
@@ -7995,7 +8276,8 @@
             "const": true
           }
         ]
-      }
+      },
+      "hasMultipart": false
     },
     {
       "name": "getGameHighScores",
@@ -8036,7 +8318,8 @@
             "anchor": "#gamehighscore"
           }
         }
-      }
+      },
+      "hasMultipart": false
     }
   ],
   "objects": [
@@ -8451,6 +8734,12 @@
         },
         {
           "type": "string",
+          "enum": [
+            "private",
+            "group",
+            "supergroup",
+            "channel"
+          ],
           "key": "type",
           "required": true,
           "description": "Type of the chat, can be either “private”, “group”, “supergroup” or “channel”"
@@ -8502,6 +8791,12 @@
         },
         {
           "type": "string",
+          "enum": [
+            "private",
+            "group",
+            "supergroup",
+            "channel"
+          ],
           "key": "type",
           "required": true,
           "description": "Type of the chat, can be either “private”, “group”, “supergroup” or “channel”"
@@ -9720,6 +10015,27 @@
       "fields": [
         {
           "type": "string",
+          "enum": [
+            "mention",
+            "hashtag",
+            "cashtag",
+            "bot_command",
+            "url",
+            "email",
+            "phone_number",
+            "bold",
+            "italic",
+            "underline",
+            "strikethrough",
+            "spoiler",
+            "blockquote",
+            "expandable_blockquote",
+            "code",
+            "pre",
+            "text_link",
+            "text_mention",
+            "custom_emoji"
+          ],
           "key": "type",
           "required": true,
           "description": "Type of the entity. Currently, can be “mention” (`@username`), “hashtag” (`#hashtag` or `#hashtag@chatusername`), “cashtag” (`$USD` or `$USD@chatusername`), “bot\\_command” (`/start@jobs_bot`), “url” (`https://telegram.org`), “email” (`do-not-reply@telegram.org`), “phone\\_number” (`+1-212-555-0123`), “bold” (**bold text**), “italic” (*italic text*), “underline” (underlined text), “strikethrough” (strikethrough text), “spoiler” (spoiler message), “blockquote” (block quotation), “expandable\\_blockquote” (collapsed-by-default block quotation), “code” (monowidth string), “pre” (monowidth block), “text\\_link” (for clickable text URLs), “text\\_mention” (for users [without usernames](https://telegram.org/blog/edit#new-mentions)), “custom\\_emoji” (for inline custom emoji stickers)"
@@ -10084,6 +10400,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "quote",
           "required": false,
           "description": "*Optional*. Quoted part of the message to be replied to; 0-1024 characters after entities parsing. The quote must be an exact substring of the message to be replied to, including *bold*, *italic*, *underline*, *strikethrough*, *spoiler*, and *custom\\_emoji* entities. The message will fail to send if the quote isn't found in the original message."
@@ -10159,8 +10477,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "user",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the message origin, always “user”"
         },
         {
@@ -10189,8 +10508,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "hidden_user",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the message origin, always “hidden\\_user”"
         },
         {
@@ -10215,8 +10535,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "chat",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the message origin, always “chat”"
         },
         {
@@ -10251,8 +10572,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "channel",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the message origin, always “channel”"
         },
         {
@@ -10762,8 +11084,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "preview",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the paid media, always “preview”"
         },
         {
@@ -10794,8 +11117,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "photo",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the paid media, always “photo”"
         },
         {
@@ -10821,8 +11145,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "video",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the paid media, always “video”"
         },
         {
@@ -10889,6 +11214,14 @@
         },
         {
           "type": "integer",
+          "enum": [
+            "🎲",
+            "🎯",
+            "🎳",
+            "🏀",
+            "⚽",
+            "🎰"
+          ],
           "key": "value",
           "required": true,
           "description": "Value of the dice, 1-6 for “![🎲](//telegram.org/img/emoji/40/F09F8EB2.png)”, “![🎯](//telegram.org/img/emoji/40/F09F8EAF.png)” and “![🎳](//telegram.org/img/emoji/40/F09F8EB3.png)” base emoji, 1-5 for “![🏀](//telegram.org/img/emoji/40/F09F8F80.png)” and “![⚽](//telegram.org/img/emoji/40/E29ABD.png)” base emoji, 1-64 for “![🎰](//telegram.org/img/emoji/40/F09F8EB0.png)” base emoji"
@@ -10903,6 +11236,8 @@
       "fields": [
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 100,
           "key": "text",
           "required": true,
           "description": "Option text, 1-100 characters"
@@ -10936,6 +11271,8 @@
       "fields": [
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 100,
           "key": "text",
           "required": true,
           "description": "Option text, 1-100 characters"
@@ -11018,6 +11355,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 300,
           "key": "question",
           "required": true,
           "description": "Poll question, 1-300 characters"
@@ -11068,6 +11407,10 @@
         },
         {
           "type": "string",
+          "enum": [
+            "regular",
+            "quiz"
+          ],
           "key": "type",
           "required": true,
           "description": "Poll type, currently can be “regular” or “quiz”"
@@ -11086,6 +11429,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 200,
           "key": "explanation",
           "required": false,
           "description": "*Optional*. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters"
@@ -11149,8 +11494,6 @@
         },
         {
           "type": "integer",
-          "min": 1,
-          "max": 360,
           "key": "heading",
           "required": false,
           "description": "*Optional*. The direction in which user is moving, in degrees; 1-360. For active live locations only."
@@ -11336,8 +11679,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "solid",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the background fill, always “solid”"
         },
         {
@@ -11356,8 +11700,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "gradient",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the background fill, always “gradient”"
         },
         {
@@ -11374,8 +11719,6 @@
         },
         {
           "type": "integer",
-          "min": 0,
-          "max": 359,
           "key": "rotation_angle",
           "required": true,
           "description": "Clockwise rotation angle of the background fill in degrees; 0-359"
@@ -11390,8 +11733,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "freeform_gradient",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the background fill, always “freeform\\_gradient”"
         },
         {
@@ -11449,8 +11793,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "fill",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the background, always “fill”"
         },
         {
@@ -11465,8 +11810,6 @@
         },
         {
           "type": "integer",
-          "min": 0,
-          "max": 100,
           "key": "dark_theme_dimming",
           "required": true,
           "description": "Dimming of the background in dark themes, as a percentage; 0-100"
@@ -11481,8 +11824,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "wallpaper",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the background, always “wallpaper”"
         },
         {
@@ -11497,8 +11841,6 @@
         },
         {
           "type": "integer",
-          "min": 0,
-          "max": 100,
           "key": "dark_theme_dimming",
           "required": true,
           "description": "Dimming of the background in dark themes, as a percentage; 0-100"
@@ -11527,8 +11869,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "pattern",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the background, always “pattern”"
         },
         {
@@ -11553,8 +11896,6 @@
         },
         {
           "type": "integer",
-          "min": 0,
-          "max": 100,
           "key": "intensity",
           "required": true,
           "description": "Intensity of the pattern when it is shown above the filled background; 0-100"
@@ -11583,8 +11924,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "chat_theme",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the background, always “chat\\_theme”"
         },
         {
@@ -11642,7 +11984,8 @@
     {
       "name": "ForumTopicClosed",
       "anchor": "#forumtopicclosed",
-      "description": "This object represents a service message about a forum topic closed in the chat. Currently holds no information."
+      "description": "This object represents a service message about a forum topic closed in the chat. Currently holds no information.",
+      "type": "unknown"
     },
     {
       "name": "ForumTopicEdited",
@@ -11667,17 +12010,20 @@
     {
       "name": "ForumTopicReopened",
       "anchor": "#forumtopicreopened",
-      "description": "This object represents a service message about a forum topic reopened in the chat. Currently holds no information."
+      "description": "This object represents a service message about a forum topic reopened in the chat. Currently holds no information.",
+      "type": "unknown"
     },
     {
       "name": "GeneralForumTopicHidden",
       "anchor": "#generalforumtopichidden",
-      "description": "This object represents a service message about General forum topic hidden in the chat. Currently holds no information."
+      "description": "This object represents a service message about General forum topic hidden in the chat. Currently holds no information.",
+      "type": "unknown"
     },
     {
       "name": "GeneralForumTopicUnhidden",
       "anchor": "#generalforumtopicunhidden",
-      "description": "This object represents a service message about General forum topic unhidden in the chat. Currently holds no information."
+      "description": "This object represents a service message about General forum topic unhidden in the chat. Currently holds no information.",
+      "type": "unknown"
     },
     {
       "name": "SharedUser",
@@ -11839,7 +12185,8 @@
     {
       "name": "VideoChatStarted",
       "anchor": "#videochatstarted",
-      "description": "This object represents a service message about a video chat started in the chat. Currently holds no information."
+      "description": "This object represents a service message about a video chat started in the chat. Currently holds no information.",
+      "type": "unknown"
     },
     {
       "name": "VideoChatEnded",
@@ -12264,6 +12611,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 64,
           "key": "input_field_placeholder",
           "required": false,
           "description": "*Optional*. The placeholder to be shown in the input field when the keyboard is active; 1-64 characters"
@@ -12368,7 +12717,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "default": 1,
           "key": "max_quantity",
           "required": false,
@@ -12707,6 +13055,8 @@
       "fields": [
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 256,
           "key": "text",
           "required": true,
           "description": "The text to be copied to the clipboard; 1-256 characters"
@@ -12786,6 +13136,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 64,
           "key": "input_field_placeholder",
           "required": false,
           "description": "*Optional*. The placeholder to be shown in the input field when the reply is active; 1-64 characters"
@@ -12884,8 +13236,6 @@
         },
         {
           "type": "integer",
-          "min": 1,
-          "max": 1,
           "key": "member_limit",
           "required": false,
           "description": "*Optional*. The maximum number of users that can be members of the chat simultaneously after joining the chat via this invite link; 1-99999"
@@ -13142,8 +13492,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "creator",
           "key": "status",
-          "required": true,
+          "required": false,
           "description": "The member's status in the chat, always “creator”"
         },
         {
@@ -13178,8 +13529,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "administrator",
           "key": "status",
-          "required": true,
+          "required": false,
           "description": "The member's status in the chat, always “administrator”"
         },
         {
@@ -13304,8 +13656,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "member",
           "key": "status",
-          "required": true,
+          "required": false,
           "description": "The member's status in the chat, always “member”"
         },
         {
@@ -13334,8 +13687,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "restricted",
           "key": "status",
-          "required": true,
+          "required": false,
           "description": "The member's status in the chat, always “restricted”"
         },
         {
@@ -13454,8 +13808,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "left",
           "key": "status",
-          "required": true,
+          "required": false,
           "description": "The member's status in the chat, always “left”"
         },
         {
@@ -13478,8 +13833,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "kicked",
           "key": "status",
-          "required": true,
+          "required": false,
           "description": "The member's status in the chat, always “kicked”"
         },
         {
@@ -13656,16 +14012,12 @@
       "fields": [
         {
           "type": "integer",
-          "min": 1,
-          "max": 31,
           "key": "day",
           "required": true,
           "description": "Day of the user's birth; 1-31"
         },
         {
           "type": "integer",
-          "min": 1,
-          "max": 12,
           "key": "month",
           "required": true,
           "description": "Month of the user's birth; 1-12"
@@ -13740,14 +14092,12 @@
       "fields": [
         {
           "type": "integer",
-          "min": 0,
           "key": "opening_minute",
           "required": true,
           "description": "The minute's sequence number in a week, starting on Monday, marking the start of the time interval during which the business is open; 0 - 7 \\* 24 \\* 60"
         },
         {
           "type": "integer",
-          "min": 0,
           "key": "closing_minute",
           "required": true,
           "description": "The minute's sequence number in a week, starting on Monday, marking the end of the time interval during which the business is open; 0 - 8 \\* 24 \\* 60"
@@ -13908,8 +14258,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "location",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the area, always “location”"
         },
         {
@@ -13944,8 +14295,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "suggested_reaction",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the area, always “suggested\\_reaction”"
         },
         {
@@ -13980,8 +14332,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "link",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the area, always “link”"
         },
         {
@@ -14000,8 +14353,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "weather",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the area, always “weather”"
         },
         {
@@ -14032,8 +14386,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "unique_gift",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the area, always “unique\\_gift”"
         },
         {
@@ -14090,6 +14445,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 64,
           "key": "address",
           "required": true,
           "description": "Location address; 1-64 characters, as defined by the chat owner"
@@ -14133,8 +14490,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "emoji",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the reaction, always “emoji”"
         },
         {
@@ -14228,8 +14586,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "custom_emoji",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the reaction, always “custom\\_emoji”"
         },
         {
@@ -14248,8 +14607,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "paid",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the reaction, always “paid”"
         }
       ]
@@ -14763,6 +15123,10 @@
         },
         {
           "type": "string",
+          "enum": [
+            "upgrade",
+            "transfer"
+          ],
           "key": "origin",
           "required": true,
           "description": "Origin of the gift. Currently, either “upgrade” or “transfer”"
@@ -14811,8 +15175,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "regular",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the gift, always “regular”"
         },
         {
@@ -14916,8 +15281,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "unique",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the gift, always “unique”"
         },
         {
@@ -15067,12 +15433,16 @@
       "fields": [
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 32,
           "key": "command",
           "required": true,
           "description": "Text of the command; 1-32 characters. Can contain only lowercase English letters, digits and underscores."
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 256,
           "key": "description",
           "required": true,
           "description": "Description of the command; 1-256 characters."
@@ -15144,8 +15514,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "default",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Scope type, must be *default*"
         }
       ]
@@ -15158,8 +15529,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "all_private_chats",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Scope type, must be *all\\_private\\_chats*"
         }
       ]
@@ -15172,8 +15544,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "all_group_chats",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Scope type, must be *all\\_group\\_chats*"
         }
       ]
@@ -15186,8 +15559,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "all_chat_administrators",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Scope type, must be *all\\_chat\\_administrators*"
         }
       ]
@@ -15200,8 +15574,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "chat",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Scope type, must be *chat*"
         },
         {
@@ -15228,8 +15603,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "chat_administrators",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Scope type, must be *chat\\_administrators*"
         },
         {
@@ -15256,8 +15632,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "chat_member",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Scope type, must be *chat\\_member*"
         },
         {
@@ -15361,8 +15738,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "commands",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the button, must be *commands*"
         }
       ]
@@ -15375,8 +15753,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "web_app",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the button, must be *web\\_app*"
         },
         {
@@ -15405,8 +15784,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "default",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the button, must be *default*"
         }
       ]
@@ -15448,8 +15828,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "premium",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Source of the boost, always “premium”"
         },
         {
@@ -15472,8 +15853,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "gift_code",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Source of the boost, always “gift\\_code”"
         },
         {
@@ -15496,8 +15878,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "giveaway",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Source of the boost, always “giveaway”"
         },
         {
@@ -15918,8 +16301,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "photo",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *photo*"
         },
         {
@@ -15930,6 +16314,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing"
@@ -15975,8 +16361,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "video",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *video*"
         },
         {
@@ -16005,6 +16392,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing"
@@ -16074,8 +16463,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "animation",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *animation*"
         },
         {
@@ -16092,6 +16482,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the animation to be sent, 0-1024 characters after entities parsing"
@@ -16155,8 +16547,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "audio",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *audio*"
         },
         {
@@ -16173,6 +16566,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the audio to be sent, 0-1024 characters after entities parsing"
@@ -16224,8 +16619,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "document",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *document*"
         },
         {
@@ -16242,6 +16638,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing"
@@ -16276,7 +16674,8 @@
     {
       "name": "InputFile",
       "anchor": "#inputfile",
-      "description": "This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser."
+      "description": "This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.",
+      "type": "unknown"
     },
     {
       "name": "InputPaidMedia",
@@ -16308,8 +16707,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "photo",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the media, must be *photo*"
         },
         {
@@ -16328,8 +16728,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "video",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the media, must be *video*"
         },
         {
@@ -16444,6 +16845,7 @@
         },
         {
           "type": "float",
+          "default": 0,
           "key": "main_frame_timestamp",
           "required": false,
           "description": "*Optional*. Timestamp in seconds of the frame that will be used as the static profile photo. Defaults to 0.0."
@@ -16518,6 +16920,7 @@
         },
         {
           "type": "float",
+          "default": 0,
           "key": "cover_frame_timestamp",
           "required": false,
           "description": "*Optional*. Timestamp in seconds of the frame that will be used as the static cover for the story. Defaults to 0.0."
@@ -16550,6 +16953,11 @@
         },
         {
           "type": "string",
+          "enum": [
+            "regular",
+            "mask",
+            "custom_emoji"
+          ],
           "key": "type",
           "required": true,
           "description": "Type of the sticker, currently one of “regular”, “mask”, “custom\\_emoji”. The type of the sticker is independent from its format, which is determined by the fields *is\\_animated* and *is\\_video*."
@@ -16661,6 +17069,11 @@
         },
         {
           "type": "string",
+          "enum": [
+            "regular",
+            "mask",
+            "custom_emoji"
+          ],
           "key": "sticker_type",
           "required": true,
           "description": "Type of stickers in the set, currently one of “regular”, “mask”, “custom\\_emoji”"
@@ -16698,36 +17111,30 @@
       "fields": [
         {
           "type": "string",
+          "enum": [
+            "forehead",
+            "eyes",
+            "mouth",
+            "chin"
+          ],
           "key": "point",
           "required": true,
           "description": "The part of the face relative to which the mask should be placed. One of “forehead”, “eyes”, “mouth”, or “chin”."
         },
         {
           "type": "float",
-          "enum": [
-            1,
-            0
-          ],
           "key": "x_shift",
           "required": true,
           "description": "Shift by X-axis measured in widths of the mask scaled to the face size, from left to right. For example, choosing -1.0 will place mask just to the left of the default mask position."
         },
         {
           "type": "float",
-          "enum": [
-            1,
-            0
-          ],
           "key": "y_shift",
           "required": true,
           "description": "Shift by Y-axis measured in heights of the mask scaled to the face size, from top to bottom. For example, 1.0 will place the mask just below the default mask position."
         },
         {
           "type": "float",
-          "enum": [
-            2,
-            0
-          ],
           "key": "scale",
           "required": true,
           "description": "Mask scaling coefficient. For example, 2.0 means double size."
@@ -16748,6 +17155,11 @@
         },
         {
           "type": "string",
+          "enum": [
+            "static",
+            "animated",
+            "video"
+          ],
           "key": "format",
           "required": true,
           "description": "Format of the added sticker, must be one of “static” for a **.WEBP** or **.PNG** image, “animated” for a **.TGS** animation, “video” for a **.WEBM** video"
@@ -16818,6 +17230,13 @@
         },
         {
           "type": "string",
+          "enum": [
+            "sender",
+            "private",
+            "group",
+            "supergroup",
+            "channel"
+          ],
           "key": "chat_type",
           "required": false,
           "description": "*Optional*. Type of the chat from which the inline query was sent. Can be either “sender” for a private chat with the inline query sender, “private”, “group”, “supergroup”, or “channel”. The chat type should be always known for requests sent from official clients and most third-party clients, unless the request was sent from a secret chat"
@@ -16858,6 +17277,8 @@
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 64,
           "key": "start_parameter",
           "required": false,
           "description": "*Optional*. [Deep-linking](https://core.telegram.org/bots/features#deep-linking) parameter for the /start message sent to the bot when a user presses the button. 1-64 characters, only `A-Z`, `a-z`, `0-9`, `_` and `-` are allowed.  \n  \n*Example:* An inline bot that sends YouTube videos can ask the user to connect the bot to their YouTube account to adapt search results accordingly. To do this, it displays a 'Connect your YouTube account' button above the results, or even before showing any. The user presses the button, switches to a private chat with the bot and, in doing so, passes a start parameter that instructs the bot to return an OAuth link. Once done, the bot can offer a [switch_inline](https://core.telegram.org/bots/api#inlinekeyboardmarkup) button so that the user can easily return to the chat where they wanted to use the bot's inline capabilities."
@@ -17020,8 +17441,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "article",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *article*"
         },
         {
@@ -17096,8 +17518,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "photo",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *photo*"
         },
         {
@@ -17144,6 +17567,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing"
@@ -17203,8 +17628,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "gif",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *gif*"
         },
         {
@@ -17245,6 +17671,12 @@
         },
         {
           "type": "string",
+          "enum": [
+            "image/jpeg",
+            "image/gif",
+            "video/mp4"
+          ],
+          "default": "image/jpeg",
           "key": "thumbnail_mime_type",
           "required": false,
           "description": "*Optional*. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”"
@@ -17257,6 +17689,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing"
@@ -17316,8 +17750,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "mpeg4_gif",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *mpeg4\\_gif*"
         },
         {
@@ -17358,6 +17793,12 @@
         },
         {
           "type": "string",
+          "enum": [
+            "image/jpeg",
+            "image/gif",
+            "video/mp4"
+          ],
+          "default": "image/jpeg",
           "key": "thumbnail_mime_type",
           "required": false,
           "description": "*Optional*. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”"
@@ -17370,6 +17811,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing"
@@ -17429,8 +17872,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "video",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *video*"
         },
         {
@@ -17447,6 +17891,10 @@
         },
         {
           "type": "string",
+          "enum": [
+            "text/html",
+            "video/mp4"
+          ],
           "key": "mime_type",
           "required": true,
           "description": "MIME type of the content of the video URL, “text/html” or “video/mp4”"
@@ -17465,6 +17913,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing"
@@ -17548,8 +17998,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "audio",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *audio*"
         },
         {
@@ -17572,6 +18023,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption, 0-1024 characters after entities parsing"
@@ -17637,8 +18090,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "voice",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *voice*"
         },
         {
@@ -17661,6 +18115,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption, 0-1024 characters after entities parsing"
@@ -17720,8 +18176,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "document",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *document*"
         },
         {
@@ -17738,6 +18195,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing"
@@ -17769,6 +18228,10 @@
         },
         {
           "type": "string",
+          "enum": [
+            "application/pdf",
+            "application/zip"
+          ],
           "key": "mime_type",
           "required": true,
           "description": "MIME type of the content of the file, either “application/pdf” or “application/zip”"
@@ -17827,8 +18290,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "location",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *location*"
         },
         {
@@ -17875,7 +18339,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "key": "proximity_alert_radius",
           "required": false,
           "description": "*Optional*. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
@@ -17928,8 +18391,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "venue",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *venue*"
         },
         {
@@ -18034,8 +18498,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "contact",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *contact*"
         },
         {
@@ -18116,8 +18581,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "game",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *game*"
         },
         {
@@ -18152,8 +18618,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "photo",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *photo*"
         },
         {
@@ -18182,6 +18649,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing"
@@ -18241,8 +18710,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "gif",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *gif*"
         },
         {
@@ -18265,6 +18735,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing"
@@ -18324,8 +18796,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "mpeg4_gif",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *mpeg4\\_gif*"
         },
         {
@@ -18348,6 +18821,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the MPEG-4 file to be sent, 0-1024 characters after entities parsing"
@@ -18407,8 +18882,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "sticker",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *sticker*"
         },
         {
@@ -18453,8 +18929,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "document",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *document*"
         },
         {
@@ -18483,6 +18960,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the document to be sent, 0-1024 characters after entities parsing"
@@ -18536,8 +19015,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "video",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *video*"
         },
         {
@@ -18566,6 +19046,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption of the video to be sent, 0-1024 characters after entities parsing"
@@ -18625,8 +19107,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "voice",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *voice*"
         },
         {
@@ -18649,6 +19132,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption, 0-1024 characters after entities parsing"
@@ -18702,8 +19187,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "audio",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the result, must be *audio*"
         },
         {
@@ -18720,6 +19206,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 1024,
           "key": "caption",
           "required": false,
           "description": "*Optional*. Caption, 0-1024 characters after entities parsing"
@@ -18816,6 +19304,8 @@
       "fields": [
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 4096,
           "key": "message_text",
           "required": true,
           "description": "Text of the message to be sent, 1-4096 characters"
@@ -18889,7 +19379,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "key": "proximity_alert_radius",
           "required": false,
           "description": "*Optional*. For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."
@@ -18992,12 +19481,16 @@
       "fields": [
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 32,
           "key": "title",
           "required": true,
           "description": "Product name, 1-32 characters"
         },
         {
           "type": "string",
+          "minLen": 1,
+          "maxLen": 255,
           "key": "description",
           "required": true,
           "description": "Product description, 1-255 characters"
@@ -19035,7 +19528,6 @@
         },
         {
           "type": "integer",
-          "max": 1,
           "default": 0,
           "key": "max_tip_amount",
           "required": false,
@@ -19457,8 +19949,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "XTR",
           "key": "currency",
-          "required": true,
+          "required": false,
           "description": "Three-letter ISO 4217 [currency](https://core.telegram.org/bots/payments#supported-currencies) code, or “XTR” for payments in [Telegram Stars](https://t.me/BotNews/90). Currently, always “XTR”"
         },
         {
@@ -19646,8 +20139,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "pending",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the state, always “pending”"
         }
       ]
@@ -19660,8 +20154,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "succeeded",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the state, always “succeeded”"
         },
         {
@@ -19686,8 +20181,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "failed",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the state, always “failed”"
         }
       ]
@@ -19803,12 +20299,20 @@
       "fields": [
         {
           "type": "string",
+          "default": "user",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the transaction partner, always “user”"
         },
         {
           "type": "string",
+          "enum": [
+            "invoice_payment",
+            "paid_media_payment",
+            "gift_purchase",
+            "premium_purchase",
+            "business_account_transfer"
+          ],
           "key": "transaction_type",
           "required": true,
           "description": "Type of the transaction, currently one of “invoice\\_payment” for payments via invoices, “paid\\_media\\_payment” for payments for paid media, “gift\\_purchase” for gifts sent by the bot, “premium\\_purchase” for Telegram Premium subscriptions gifted by the bot, “business\\_account\\_transfer” for direct transfers from managed business accounts"
@@ -19890,8 +20394,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "chat",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the transaction partner, always “chat”"
         },
         {
@@ -19924,8 +20429,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "affiliate_program",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the transaction partner, always “affiliate\\_program”"
         },
         {
@@ -19954,8 +20460,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "fragment",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the transaction partner, always “fragment”"
         },
         {
@@ -19978,8 +20485,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "telegram_ads",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the transaction partner, always “telegram\\_ads”"
         }
       ]
@@ -19992,8 +20500,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "telegram_api",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the transaction partner, always “telegram\\_api”"
         },
         {
@@ -20012,8 +20521,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "other",
           "key": "type",
-          "required": true,
+          "required": false,
           "description": "Type of the transaction partner, always “other”"
         }
       ]
@@ -20162,6 +20672,21 @@
       "fields": [
         {
           "type": "string",
+          "enum": [
+            "personal_details",
+            "passport",
+            "driver_license",
+            "identity_card",
+            "internal_passport",
+            "address",
+            "utility_bill",
+            "bank_statement",
+            "rental_agreement",
+            "passport_registration",
+            "temporary_registration",
+            "phone_number",
+            "email"
+          ],
           "key": "type",
           "required": true,
           "description": "Element type. One of “personal\\_details”, “passport”, “driver\\_license”, “identity\\_card”, “internal\\_passport”, “address”, “utility\\_bill”, “bank\\_statement”, “rental\\_agreement”, “passport\\_registration”, “temporary\\_registration”, “phone\\_number”, “email”."
@@ -20353,12 +20878,21 @@
       "fields": [
         {
           "type": "string",
+          "default": "data",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *data*"
         },
         {
           "type": "string",
+          "enum": [
+            "personal_details",
+            "passport",
+            "driver_license",
+            "identity_card",
+            "internal_passport",
+            "address"
+          ],
           "key": "type",
           "required": true,
           "description": "The section of the user's Telegram Passport which has the error, one of “personal\\_details”, “passport”, “driver\\_license”, “identity\\_card”, “internal\\_passport”, “address”"
@@ -20391,12 +20925,19 @@
       "fields": [
         {
           "type": "string",
+          "default": "front_side",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *front\\_side*"
         },
         {
           "type": "string",
+          "enum": [
+            "passport",
+            "driver_license",
+            "identity_card",
+            "internal_passport"
+          ],
           "key": "type",
           "required": true,
           "description": "The section of the user's Telegram Passport which has the issue, one of “passport”, “driver\\_license”, “identity\\_card”, “internal\\_passport”"
@@ -20423,12 +20964,17 @@
       "fields": [
         {
           "type": "string",
+          "default": "reverse_side",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *reverse\\_side*"
         },
         {
           "type": "string",
+          "enum": [
+            "driver_license",
+            "identity_card"
+          ],
           "key": "type",
           "required": true,
           "description": "The section of the user's Telegram Passport which has the issue, one of “driver\\_license”, “identity\\_card”"
@@ -20455,12 +21001,19 @@
       "fields": [
         {
           "type": "string",
+          "default": "selfie",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *selfie*"
         },
         {
           "type": "string",
+          "enum": [
+            "passport",
+            "driver_license",
+            "identity_card",
+            "internal_passport"
+          ],
           "key": "type",
           "required": true,
           "description": "The section of the user's Telegram Passport which has the issue, one of “passport”, “driver\\_license”, “identity\\_card”, “internal\\_passport”"
@@ -20487,12 +21040,20 @@
       "fields": [
         {
           "type": "string",
+          "default": "file",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *file*"
         },
         {
           "type": "string",
+          "enum": [
+            "utility_bill",
+            "bank_statement",
+            "rental_agreement",
+            "passport_registration",
+            "temporary_registration"
+          ],
           "key": "type",
           "required": true,
           "description": "The section of the user's Telegram Passport which has the issue, one of “utility\\_bill”, “bank\\_statement”, “rental\\_agreement”, “passport\\_registration”, “temporary\\_registration”"
@@ -20519,12 +21080,20 @@
       "fields": [
         {
           "type": "string",
+          "default": "files",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *files*"
         },
         {
           "type": "string",
+          "enum": [
+            "utility_bill",
+            "bank_statement",
+            "rental_agreement",
+            "passport_registration",
+            "temporary_registration"
+          ],
           "key": "type",
           "required": true,
           "description": "The section of the user's Telegram Passport which has the issue, one of “utility\\_bill”, “bank\\_statement”, “rental\\_agreement”, “passport\\_registration”, “temporary\\_registration”"
@@ -20554,12 +21123,24 @@
       "fields": [
         {
           "type": "string",
+          "default": "translation_file",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *translation\\_file*"
         },
         {
           "type": "string",
+          "enum": [
+            "passport",
+            "driver_license",
+            "identity_card",
+            "internal_passport",
+            "utility_bill",
+            "bank_statement",
+            "rental_agreement",
+            "passport_registration",
+            "temporary_registration"
+          ],
           "key": "type",
           "required": true,
           "description": "Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver\\_license”, “identity\\_card”, “internal\\_passport”, “utility\\_bill”, “bank\\_statement”, “rental\\_agreement”, “passport\\_registration”, “temporary\\_registration”"
@@ -20586,12 +21167,24 @@
       "fields": [
         {
           "type": "string",
+          "default": "translation_files",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *translation\\_files*"
         },
         {
           "type": "string",
+          "enum": [
+            "passport",
+            "driver_license",
+            "identity_card",
+            "internal_passport",
+            "utility_bill",
+            "bank_statement",
+            "rental_agreement",
+            "passport_registration",
+            "temporary_registration"
+          ],
           "key": "type",
           "required": true,
           "description": "Type of element of the user's Telegram Passport which has the issue, one of “passport”, “driver\\_license”, “identity\\_card”, “internal\\_passport”, “utility\\_bill”, “bank\\_statement”, “rental\\_agreement”, “passport\\_registration”, “temporary\\_registration”"
@@ -20621,8 +21214,9 @@
       "fields": [
         {
           "type": "string",
+          "default": "unspecified",
           "key": "source",
-          "required": true,
+          "required": false,
           "description": "Error source, must be *unspecified*"
         },
         {
@@ -20678,6 +21272,8 @@
         },
         {
           "type": "string",
+          "minLen": 0,
+          "maxLen": 4096,
           "key": "text",
           "required": false,
           "description": "*Optional*. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls [setGameScore](https://core.telegram.org/bots/api#setgamescore), or manually edited using [editMessageText](https://core.telegram.org/bots/api#editmessagetext). 0-4096 characters."
@@ -20710,7 +21306,8 @@
     {
       "name": "CallbackGame",
       "anchor": "#callbackgame",
-      "description": "A placeholder, currently holds no information. Use [BotFather](https://t.me/botfather) to set up your game."
+      "description": "A placeholder, currently holds no information. Use [BotFather](https://t.me/botfather) to set up your game.",
+      "type": "unknown"
     },
     {
       "name": "GameHighScore",

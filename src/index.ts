@@ -8,6 +8,7 @@ export * from "./parsers/index.ts";
 export * from "./parsers/archor.ts";
 export * from "./parsers/navbar.ts";
 export * from "./parsers/types.ts";
+export * from "./parsers/sentence.ts";
 export * from "./to-custom-schema.ts";
 export * from "./utils.ts";
 
