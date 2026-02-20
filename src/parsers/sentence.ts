@@ -402,35 +402,73 @@ function tryEvalSimpleExpr(expr: string): string {
 	return expr;
 }
 
+function isValuePart(part: Part): boolean {
+	return (
+		part.hasQuotes ||
+		part.kind === "italic" ||
+		part.kind === "code" ||
+		/^\d+$/.test(part.inner)
+	);
+}
+
+function partToValue(part: Part): string {
+	return part.kind === "code" ? tryEvalSimpleExpr(part.inner) : part.inner;
+}
+
 export function extractOneOf(
 	sentences: Sentence[],
 ): string[] | undefined {
-	const result = matchPattern("OneOf", sentences);
-	if (!result || result.length === 0) return undefined;
+	const patterns = getPatterns("OneOf");
 
-	const values = result
-		.filter(
-			(part) =>
-				part.hasQuotes ||
-				part.kind === "italic" ||
-				part.kind === "code" ||
-				/^\d+$/.test(part.inner),
-		)
-		.map((part) =>
-			part.kind === "code" ? tryEvalSimpleExpr(part.inner) : part.inner,
-		);
+	for (const sentence of sentences) {
+		for (const searchPattern of patterns) {
+			const windowSize = searchPattern.parts.length;
+			if (windowSize > sentence.length) continue;
 
-	// Deduplicate
-	const seen = new Set<string>();
-	const deduped: string[] = [];
-	for (const v of values) {
-		if (!seen.has(v)) {
-			seen.add(v);
-			deduped.push(v);
+			for (let i = 0; i <= sentence.length - windowSize; i++) {
+				let matches = true;
+				for (let j = 0; j < windowSize; j++) {
+					if (!matchesPart(searchPattern.parts[j], sentence[i + j])) {
+						matches = false;
+						break;
+					}
+				}
+
+				if (!matches) continue;
+
+				// Collect values from the offset slice
+				const startIdx = Math.max(
+					0,
+					i + windowSize + searchPattern.offset,
+				);
+				const slice = sentence.slice(startIdx);
+				let values = slice.filter(isValuePart).map(partToValue);
+
+				// Also check the full sentence for values — handles cases like
+				// 'pass "a", "b", or "c"' where offset can't reach "a"
+				const fullValues = sentence
+					.filter(isValuePart)
+					.map(partToValue);
+				if (fullValues.length > values.length) {
+					values = fullValues;
+				}
+
+				// Deduplicate
+				const seen = new Set<string>();
+				const deduped: string[] = [];
+				for (const v of values) {
+					if (!seen.has(v)) {
+						seen.add(v);
+						deduped.push(v);
+					}
+				}
+
+				if (deduped.length > 0) return deduped;
+			}
 		}
 	}
 
-	return deduped.length > 0 ? deduped : undefined;
+	return undefined;
 }
 
 export function extractReturnType(

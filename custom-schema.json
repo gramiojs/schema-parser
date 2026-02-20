@@ -7079,6 +7079,7 @@
         {
           "type": "string",
           "enum": [
+            "regular",
             "mask",
             "custom_emoji"
           ],
