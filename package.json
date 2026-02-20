@@ -1,6 +1,6 @@
 {
 	"name": "@gramio/schema-parser",
-	"version": "0.0.2",
+	"version": "0.1.0",
 	"description": "Telegram Bot API Schema Parser",
 	"keywords": ["gramio", "telegram", "schema", "tma", "webapp"],
 	"homepage": "https://github.com/gramiojs/schema-parser",
