@@ -128,10 +128,7 @@ describe("Type Parser", () => {
 				type: "one_of",
 				variants: [
 					{
-						type: "reference",
-						reference: {
-							name: "InputFile",
-						},
+						type: "file",
 					},
 					{
 						type: "string",
@@ -156,11 +153,7 @@ describe("Type Parser", () => {
 				type: "one_of",
 				variants: [
 					{
-						type: "reference",
-						reference: {
-							name: "InputFile",
-							anchor: "#inputfile",
-						},
+						type: "file",
 					},
 					{
 						type: "string",
@@ -186,10 +179,7 @@ describe("Type Parser", () => {
 					type: "one_of",
 					variants: [
 						{
-							type: "reference",
-							reference: {
-								name: "InputFile",
-							},
+							type: "file",
 						},
 						{
 							type: "string",
@@ -282,7 +272,10 @@ describe("Type Parser", () => {
 					variants: [
 						{
 							type: "reference",
-							reference: { name: "InputMediaAudio", anchor: "#inputmediaaudio" },
+							reference: {
+								name: "InputMediaAudio",
+								anchor: "#inputmediaaudio",
+							},
 						},
 						{
 							type: "reference",
@@ -293,11 +286,17 @@ describe("Type Parser", () => {
 						},
 						{
 							type: "reference",
-							reference: { name: "InputMediaPhoto", anchor: "#inputmediaphoto" },
+							reference: {
+								name: "InputMediaPhoto",
+								anchor: "#inputmediaphoto",
+							},
 						},
 						{
 							type: "reference",
-							reference: { name: "InputMediaVideo", anchor: "#inputmediavideo" },
+							reference: {
+								name: "InputMediaVideo",
+								anchor: "#inputmediavideo",
+							},
 						},
 					],
 				},
@@ -378,7 +377,13 @@ describe("Type Parser", () => {
 			};
 
 			const result = tableRowToField(row) as FieldString;
-			expect(result.enum).toEqual(["\ud83d\udc4d", "\ud83d\udc4e", "\u2764", "\ud83d\udd25", "\ud83e\udd70"]);
+			expect(result.enum).toEqual([
+				"\ud83d\udc4d",
+				"\ud83d\udc4e",
+				"\u2764",
+				"\ud83d\udd25",
+				"\ud83e\udd70",
+			]);
 		});
 
 		test("should parse numeric enum from description", () => {
@@ -543,7 +548,8 @@ describe("Type Parser", () => {
 			const row: TableRow = {
 				name: "type",
 				type: { text: "String" },
-				description: "Type of the message origin, always \u201chidden_user\u201d",
+				description:
+					"Type of the message origin, always \u201chidden_user\u201d",
 			};
 
 			const result = tableRowToField(row);

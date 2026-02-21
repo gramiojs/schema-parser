@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import * as cheerio from "cheerio";
 import { parseAnchor } from "../src/parsers/archor.ts";
+import { tableRowToField } from "../src/parsers/types.ts";
 import { toCustomSchema } from "../src/to-custom-schema.ts";
 
 describe("Integration Tests", () => {
@@ -114,8 +115,7 @@ describe("Integration Tests", () => {
 					anchor: "#user",
 					title: "User",
 					type: "Object" as const,
-					description:
-						"<p>This object represents a Telegram user or bot.</p>",
+					description: "<p>This object represents a Telegram user or bot.</p>",
 					table: [
 						{
 							name: "id",
@@ -125,8 +125,7 @@ describe("Integration Tests", () => {
 						{
 							name: "is_bot",
 							type: { text: "Boolean" },
-							description:
-								"True, if this user is a bot",
+							description: "True, if this user is a bot",
 						},
 					],
 				},
@@ -231,6 +230,233 @@ describe("Integration Tests", () => {
 
 			const schema = toCustomSchema(version, sections);
 			expect(schema.objects[0].type).toBe("unknown");
+		});
+	});
+
+	describe("Semantic Markers", () => {
+		test("type: 'file' for InputFile references", () => {
+			const field = tableRowToField({
+				name: "photo",
+				type: { text: "InputFile", href: "#inputfile" },
+				required: "Yes",
+				description: "Photo to send",
+			});
+			expect(field.type).toBe("file");
+		});
+
+		test("type: 'file' in one_of (InputFile or String)", () => {
+			const field = tableRowToField({
+				name: "thumbnail",
+				type: {
+					text: '<a href="#inputfile">InputFile</a> or String',
+					href: "#inputfile",
+				},
+				required: "Optional",
+				description: "Thumbnail of the file",
+			});
+			expect(field.type).toBe("one_of");
+			if (field.type === "one_of") {
+				expect(field.variants[0].type).toBe("file");
+				expect(field.variants[1].type).toBe("string");
+			}
+		});
+
+		test("hasMultipart is true when a field has type: 'file'", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const sections = [
+				{
+					anchor: "#senddocument",
+					title: "sendDocument",
+					type: "Method" as const,
+					description:
+						'<p>Use this method to send files. On success, the sent <a href="#message">Message</a> is returned.</p>',
+					table: [
+						{
+							name: "document",
+							type: { text: "InputFile", href: "#inputfile" },
+							required: "Yes",
+							description: "File to send",
+						},
+					],
+				},
+			];
+			const schema = toCustomSchema(version, sections);
+			expect(schema.methods[0].hasMultipart).toBe(true);
+		});
+
+		test("semanticType: 'formattable' on string field with entities parsing description", () => {
+			const field = tableRowToField({
+				name: "text",
+				type: { text: "String" },
+				required: "Yes",
+				description:
+					"Text of the message, 1-4096 characters after entities parsing",
+			});
+			expect(field.type).toBe("string");
+			if (field.type === "string") {
+				expect(field.semanticType).toBe("formattable");
+			}
+		});
+
+		test("semanticType: 'updateType' on arrayOf string with 'update type' description", () => {
+			const field = tableRowToField({
+				name: "allowed_updates",
+				type: { text: "Array of String" },
+				required: "Optional",
+				description: "A JSON-serialized list of the update type to be received",
+			});
+			expect(field.type).toBe("array");
+			if (field.type === "array") {
+				expect(field.arrayOf.type).toBe("string");
+				if (field.arrayOf.type === "string") {
+					expect(field.arrayOf.semanticType).toBe("updateType");
+				}
+			}
+		});
+
+		test("Currency reference for ISO 4217 string fields", () => {
+			const field = tableRowToField({
+				name: "currency",
+				type: { text: "String" },
+				required: "Yes",
+				description: "Three-letter ISO 4217 currency code",
+			});
+			expect(field.type).toBe("reference");
+			if (field.type === "reference") {
+				expect(field.reference.name).toBe("Currencies");
+				expect(field.reference.anchor).toBe("#currencies");
+			}
+		});
+
+		test("semanticType: 'markup' on markup objects", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const sections = [
+				{
+					anchor: "#inlinekeyboardmarkup",
+					title: "InlineKeyboardMarkup",
+					type: "Object" as const,
+					description: "<p>Represents an inline keyboard.</p>",
+					table: [
+						{
+							name: "inline_keyboard",
+							type: { text: "Array of Array of InlineKeyboardButton" },
+							description: "Array of button rows",
+						},
+					],
+				},
+				{
+					anchor: "#replykeyboardmarkup",
+					title: "ReplyKeyboardMarkup",
+					type: "Object" as const,
+					description: "<p>Represents a custom keyboard.</p>",
+					table: [
+						{
+							name: "keyboard",
+							type: { text: "Array of Array of KeyboardButton" },
+							description: "Array of button rows",
+						},
+					],
+				},
+				{
+					anchor: "#replykeyboardremove",
+					title: "ReplyKeyboardRemove",
+					type: "Object" as const,
+					description: "<p>Removes the reply keyboard.</p>",
+					table: [
+						{
+							name: "remove_keyboard",
+							type: { text: "Boolean" },
+							description: "Requests clients to remove the custom keyboard",
+						},
+					],
+				},
+				{
+					anchor: "#forcereply",
+					title: "ForceReply",
+					type: "Object" as const,
+					description: "<p>Shows a reply interface.</p>",
+					table: [
+						{
+							name: "force_reply",
+							type: { text: "Boolean" },
+							description: "Shows reply interface to the user",
+						},
+					],
+				},
+				{
+					anchor: "#user",
+					title: "User",
+					type: "Object" as const,
+					description: "<p>Represents a user.</p>",
+					table: [
+						{
+							name: "id",
+							type: { text: "Integer" },
+							description: "Unique identifier",
+						},
+					],
+				},
+			];
+			const schema = toCustomSchema(version, sections);
+			const byName = (name: string) =>
+				schema.objects.find((o) => o.name === name);
+
+			expect(byName("InlineKeyboardMarkup")?.semanticType).toBe("markup");
+			expect(byName("ReplyKeyboardMarkup")?.semanticType).toBe("markup");
+			expect(byName("ReplyKeyboardRemove")?.semanticType).toBe("markup");
+			expect(byName("ForceReply")?.semanticType).toBe("markup");
+			expect(byName("User")?.semanticType).toBeUndefined();
+		});
+
+		test("Currencies enum object injected when currencies provided", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const currencies = ["USD", "EUR", "GBP"];
+			const schema = toCustomSchema(version, [], currencies);
+			const currenciesObj = schema.objects.find((o) => o.name === "Currencies");
+			expect(currenciesObj).toBeDefined();
+			expect(currenciesObj?.type).toBe("enum");
+			if (currenciesObj?.type === "enum") {
+				expect(currenciesObj.values).toEqual(["USD", "EUR", "GBP"]);
+				expect(currenciesObj.anchor).toBe("#currencies");
+			}
+		});
+
+		test("Currencies not injected when currencies array is empty", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const schema = toCustomSchema(version, [], []);
+			expect(
+				schema.objects.find((o) => o.name === "Currencies"),
+			).toBeUndefined();
+		});
+
+		test("emoji enum bug: integer field with emoji does not get enum", () => {
+			const field = tableRowToField({
+				name: "value",
+				type: { text: "Integer" },
+				required: "Yes",
+				description:
+					'Value of the dice, 1-6 for <img class="emoji" src="" alt="🎲"> and <img class="emoji" src="" alt="🎯"> base emoji',
+			});
+			expect(field.type).toBe("integer");
+			if (field.type === "integer") {
+				expect(field.enum).toBeUndefined();
+			}
 		});
 	});
 });

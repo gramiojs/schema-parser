@@ -61,7 +61,8 @@ const QUOTE_CHARS = new Set(['"', "\u201c", "\u201d"]);
 export function tokenize(text: string): Token[] {
 	const tokens: Token[] = [];
 	// Match: dots, quotes (ASCII + curly), parens, or word-runs (anything not separator)
-	const regex = /([.])|([""\u201c\u201d])|([(])|([)])|([^,\s.""\u201c\u201d()]+)/g;
+	const regex =
+		/([.])|([""\u201c\u201d])|([(])|([)])|([^,\s.""\u201c\u201d()]+)/g;
 	let m: RegExpExecArray | null;
 
 	// biome-ignore lint/suspicious/noAssignInExpressions: regex exec loop
@@ -202,16 +203,18 @@ export function parseDescriptionToSentences(html: string): Sentence[] {
 			case "img": {
 				const alt = $el.attr("alt") || "";
 				if (alt) {
-					const p: Part = { inner: alt, hasQuotes: quote === "left", kind: "word" };
+					const p: Part = {
+						inner: alt,
+						hasQuotes: quote === "left",
+						kind: "word",
+					};
 					parts.push(p);
 				}
 				break;
 			}
 			case "li": {
 				finalizeSentence();
-				const childSentences = parseDescriptionToSentences(
-					$el.html() || "",
-				);
+				const childSentences = parseDescriptionToSentences($el.html() || "");
 				sentences.push(...childSentences);
 				break;
 			}
@@ -293,15 +296,27 @@ function matchesPart(search: SearchBy, part: Part): boolean {
 
 // ── Pattern Definitions ─────────────────────────────────────────────────────
 
-export type PatternType = "ReturnType" | "Default" | "MinMax" | "OneOf" | "Const";
+export type PatternType =
+	| "ReturnType"
+	| "Default"
+	| "MinMax"
+	| "OneOf"
+	| "Const";
 
 function getPatterns(patternType: PatternType): SearcherPattern[] {
 	switch (patternType) {
 		case "ReturnType":
 			return [
-				pattern([word("Returns"), word("the"), word("bot's"), word("Telegram")], { exclude: true }),
-				pattern([word("Returns"), word("the"), word("list"), word("of")], { exclude: true }),
-				pattern([word("Returns"), word("the"), word("amount"), word("of")], { exclude: true }),
+				pattern(
+					[word("Returns"), word("the"), word("bot's"), word("Telegram")],
+					{ exclude: true },
+				),
+				pattern([word("Returns"), word("the"), word("list"), word("of")], {
+					exclude: true,
+				}),
+				pattern([word("Returns"), word("the"), word("amount"), word("of")], {
+					exclude: true,
+				}),
 				pattern([word("On"), word("success")]),
 				pattern([word("Returns")]),
 				pattern([word("returns")]),
@@ -385,17 +400,13 @@ export function matchPattern(
 
 // ── Extractors ──────────────────────────────────────────────────────────────
 
-export function extractDefault(
-	sentences: Sentence[],
-): string | undefined {
+export function extractDefault(sentences: Sentence[]): string | undefined {
 	const result = matchPattern("Default", sentences);
 	if (!result || result.length === 0) return undefined;
 	return result[0].inner;
 }
 
-export function extractConst(
-	sentences: Sentence[],
-): string | undefined {
+export function extractConst(sentences: Sentence[]): string | undefined {
 	const result = matchPattern("Const", sentences);
 	if (!result || result.length === 0) return undefined;
 	return result[0].inner;
@@ -438,9 +449,7 @@ function partToValue(part: Part): string {
 	return part.kind === "code" ? tryEvalSimpleExpr(part.inner) : part.inner;
 }
 
-export function extractOneOf(
-	sentences: Sentence[],
-): string[] | undefined {
+export function extractOneOf(sentences: Sentence[]): string[] | undefined {
 	const patterns = getPatterns("OneOf");
 
 	for (const sentence of sentences) {
@@ -460,18 +469,13 @@ export function extractOneOf(
 				if (!matches) continue;
 
 				// Collect values from the offset slice
-				const startIdx = Math.max(
-					0,
-					i + windowSize + searchPattern.offset,
-				);
+				const startIdx = Math.max(0, i + windowSize + searchPattern.offset);
 				const slice = sentence.slice(startIdx);
 				let values = slice.filter(isValuePart).map(partToValue);
 
 				// Also check the full sentence for values — handles cases like
 				// 'pass "a", "b", or "c"' where offset can't reach "a"
-				const fullValues = sentence
-					.filter(isValuePart)
-					.map(partToValue);
+				const fullValues = sentence.filter(isValuePart).map(partToValue);
 				if (fullValues.length > values.length) {
 					values = fullValues;
 				}
@@ -494,9 +498,7 @@ export function extractOneOf(
 	return undefined;
 }
 
-export function extractReturnType(
-	sentences: Sentence[],
-): Sentence | undefined {
+export function extractReturnType(sentences: Sentence[]): Sentence | undefined {
 	return matchPattern("ReturnType", sentences);
 }
 

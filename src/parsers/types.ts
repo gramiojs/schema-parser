@@ -24,7 +24,8 @@ export type TypeUnion =
 	| "boolean"
 	| "array"
 	| "reference"
-	| "one_of";
+	| "one_of"
+	| "file";
 
 /**
  * Properties shared by every field variant.
@@ -91,6 +92,12 @@ export interface FieldString extends FieldBasic {
 	minLen?: number;
 	/** Maximum allowed string length (from "X-Y characters" descriptions). */
 	maxLen?: number;
+	/**
+	 * Semantic subtype of the string value:
+	 * - `"formattable"` — supports Telegram formatting entities ("after entities parsing")
+	 * - `"updateType"` — is a Telegram update type name (e.g. "message", "callback_query")
+	 */
+	semanticType?: "formattable" | "updateType";
 }
 
 /** A boolean-valued field parsed from the Telegram Bot API docs. */
@@ -137,6 +144,11 @@ export interface FieldOneOf extends FieldBasic {
 	variants: Field[];
 }
 
+/** A field whose type is a file upload (replaces direct InputFile references). */
+export interface FieldFile extends FieldBasic {
+	type: "file";
+}
+
 /**
  * A discriminated union of all possible field types.
  * Narrow via the `type` property:
@@ -154,7 +166,8 @@ export type Field =
 	| FieldBoolean
 	| FieldArray
 	| FieldReference
-	| FieldOneOf;
+	| FieldOneOf
+	| FieldFile;
 
 function uniqueArray(array: (string | number)[]): (string | number)[] {
 	return [...new Set(array)];
@@ -173,7 +186,7 @@ function detectEnum(
 		.get()
 		.filter(Boolean);
 
-	if (emojiAlts.length > 0) {
+	if (emojiAlts.length > 0 && type !== "number") {
 		return uniqueArray(emojiAlts as string[]);
 	}
 
@@ -237,7 +250,9 @@ function extractAllTypeRefs(html: string): TypeInfo[] {
 function detectConst(description: string) {
 	const $ = cheerio.load(description);
 
-	const constMatch = $.text().match(/always\s+["\u201c\u201d]([^"\u201c\u201d]+)["\u201c\u201d]/i);
+	const constMatch = $.text().match(
+		/always\s+["\u201c\u201d]([^"\u201c\u201d]+)["\u201c\u201d]/i,
+	);
 	return constMatch ? constMatch[1] : undefined;
 }
 
@@ -305,9 +320,12 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 
 			return {
 				type: "integer",
-				...(details.min !== undefined && !Number.isNaN(details.min) && { min: details.min }),
-				...(details.max !== undefined && !Number.isNaN(details.max) && { max: details.max }),
-				...(details.default !== undefined && !Number.isNaN(details.default) && { default: details.default }),
+				...(details.min !== undefined &&
+					!Number.isNaN(details.min) && { min: details.min }),
+				...(details.max !== undefined &&
+					!Number.isNaN(details.max) && { max: details.max }),
+				...(details.default !== undefined &&
+					!Number.isNaN(details.default) && { default: details.default }),
 				...(enumValues?.length ? { enum: enumValues } : {}),
 			} as FieldInteger;
 		}
@@ -320,9 +338,12 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 
 			return {
 				type: "float",
-				...(details.min !== undefined && !Number.isNaN(details.min) && { min: details.min }),
-				...(details.max !== undefined && !Number.isNaN(details.max) && { max: details.max }),
-				...(details.default !== undefined && !Number.isNaN(details.default) && { default: details.default }),
+				...(details.min !== undefined &&
+					!Number.isNaN(details.min) && { min: details.min }),
+				...(details.max !== undefined &&
+					!Number.isNaN(details.max) && { max: details.max }),
+				...(details.default !== undefined &&
+					!Number.isNaN(details.default) && { default: details.default }),
 				...(enumValues?.length ? { enum: enumValues } : {}),
 			} as FieldFloat;
 		}
@@ -361,6 +382,9 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 			return { type: "boolean", const: false } as FieldBoolean;
 		default:
 			if (finalHref) {
+				if (text.trim() === "InputFile") {
+					return { type: "file" } as FieldFile;
+				}
 				return {
 					type: "reference",
 					reference: {
@@ -383,7 +407,7 @@ export function tableRowToField(tableRow: TableRow): Field {
 			? false
 			: !$.text().toLowerCase().startsWith("optional");
 
-	return {
+	const field: Field = {
 		...typeField,
 		key: tableRow.name,
 		required:
@@ -392,6 +416,33 @@ export function tableRowToField(tableRow: TableRow): Field {
 				: required,
 		description: htmlToMarkdown(tableRow.description),
 	};
+
+	const descText = $.text();
+
+	// Currency fields reference the synthetic Currencies enum object
+	if (descText.includes("ISO 4217") && field.type === "string") {
+		return {
+			...field,
+			type: "reference",
+			reference: { name: "Currencies", anchor: "#currencies" },
+		} as unknown as Field;
+	}
+
+	// semanticType on string fields
+	if (field.type === "string") {
+		if (descText.includes("after entities parsing")) {
+			(field as FieldString).semanticType = "formattable";
+		}
+	}
+
+	// semanticType on arrayOf string fields
+	if (field.type === "array" && field.arrayOf.type === "string") {
+		if (descText.includes("update type")) {
+			(field.arrayOf as FieldString).semanticType = "updateType";
+		}
+	}
+
+	return field;
 }
 
 function extractedTypeToField(extracted: ExtractedType): Omit<Field, "key"> {
@@ -490,6 +541,7 @@ export function resolveReturnType(description: string): Omit<Field, "key"> {
 }
 
 export function maybeFileToSend(field: Field): boolean {
+	if (field.type === "file") return true;
 	if (field.type === "reference") {
 		const name = field.reference.name;
 		if (name === "InputPollOption") return false;

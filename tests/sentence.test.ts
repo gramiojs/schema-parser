@@ -72,18 +72,14 @@ describe("Sentence Parser", () => {
 				"First sentence. Second sentence.",
 			);
 			expect(sentences.length).toBe(2);
-			expect(sentences[0].map((p) => p.inner).join(" ")).toBe(
-				"First sentence",
-			);
+			expect(sentences[0].map((p) => p.inner).join(" ")).toBe("First sentence");
 			expect(sentences[1].map((p) => p.inner).join(" ")).toBe(
 				"Second sentence",
 			);
 		});
 
 		test("should skip parenthesized content", () => {
-			const sentences = parseDescriptionToSentences(
-				"Hello (really?), world.",
-			);
+			const sentences = parseDescriptionToSentences("Hello (really?), world.");
 			expect(sentences.length).toBe(1);
 			const words = sentences[0].map((p) => p.inner);
 			expect(words).toContain("Hello");
@@ -173,7 +169,7 @@ describe("Sentence Parser", () => {
 			expect(result).toBeUndefined();
 		});
 
-		test('should NOT extract \'always "creator"\' as default', () => {
+		test("should NOT extract 'always \"creator\"' as default", () => {
 			const sentences = parseDescriptionToSentences(
 				'The status is always "creator".',
 			);
@@ -206,7 +202,9 @@ describe("Sentence Parser", () => {
 		});
 
 		test("should return undefined when no must-be pattern", () => {
-			const sentences = parseDescriptionToSentences("Some description without constraint.");
+			const sentences = parseDescriptionToSentences(
+				"Some description without constraint.",
+			);
 			const result = extractConst(sentences);
 			expect(result).toBeUndefined();
 		});
@@ -303,9 +301,7 @@ describe("Sentence Parser", () => {
 			);
 			const result = extractReturnType(sentences);
 			// Should skip the exclusion pattern and return undefined or fallback
-			expect(
-				result === undefined || result.length === 0 || true,
-			).toBeTruthy();
+			expect(result === undefined || result.length === 0 || true).toBeTruthy();
 		});
 
 		test("should exclude 'Returns the list of' sentences", () => {

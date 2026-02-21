@@ -14,9 +14,7 @@ describe("Return Type Resolver", () => {
 		});
 
 		test("should parse Returns True with emphasis", () => {
-			const result = resolveReturnType(
-				"Returns <em>True</em> on success.",
-			);
+			const result = resolveReturnType("Returns <em>True</em> on success.");
 			expect(result).toMatchObject({ type: "boolean", const: true });
 		});
 	});

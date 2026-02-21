@@ -88,7 +88,10 @@ export function parseAnchor(
 	let descriptionLastPText = "";
 
 	let currentNode = parentH4.next();
-	while (currentNode.length && currentNode.is("p, blockquote, div.blog_image_wrap")) {
+	while (
+		currentNode.length &&
+		currentNode.is("p, blockquote, div.blog_image_wrap")
+	) {
 		descriptionHtml += $.html(currentNode);
 		if (currentNode.is("p")) {
 			descriptionLastPText = currentNode.text();

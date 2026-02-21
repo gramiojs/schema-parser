@@ -41,6 +41,11 @@ export interface ObjectBasic {
 	anchor: string;
 	/** Markdown-formatted type description. */
 	description?: string;
+	/**
+	 * Semantic subtype of the object:
+	 * - `"markup"` — can be used as a reply_markup value
+	 */
+	semanticType?: "markup";
 }
 
 /**
@@ -74,12 +79,26 @@ export interface ObjectUnknown extends ObjectBasic {
 }
 
 /**
+ * A named string enum type (e.g. Currencies — all ISO 4217 codes).
+ * Represents `type Currency = "USD" | "EUR" | ...` in downstream generators.
+ */
+export interface ObjectWithEnum extends ObjectBasic {
+	type: "enum";
+	values: string[];
+}
+
+/**
  * A Telegram Bot API type. Discriminated union on the `type` property:
  * - `"fields"` — {@link ObjectWithFields}
  * - `"oneOf"` — {@link ObjectWithOneOf}
  * - `"unknown"` — {@link ObjectUnknown}
+ * - `"enum"` — {@link ObjectWithEnum}
  */
-export type Object = ObjectWithFields | ObjectWithOneOf | ObjectUnknown;
+export type Object =
+	| ObjectWithFields
+	| ObjectWithOneOf
+	| ObjectUnknown
+	| ObjectWithEnum;
 
 /**
  * The top-level schema produced by parsing the Telegram Bot API documentation.
@@ -94,9 +113,12 @@ export interface CustomSchema {
 	objects: Object[];
 }
 
+const MARKUP_NAMES = /Markup$|^ReplyKeyboardRemove$|^ForceReply$/;
+
 export function toCustomSchema(
 	version: Version,
 	sections: ParsedSection[],
+	currencies?: string[],
 ): CustomSchema {
 	const schema: CustomSchema = {
 		version,
@@ -136,10 +158,13 @@ export function toCustomSchema(
 					description: htmlToMarkdown(section.description),
 					type: "fields",
 					fields,
+					...(MARKUP_NAMES.test(section.title) && { semanticType: "markup" }),
 				});
 			} else if (section.oneOf?.length) {
 				const oneOfListHtml = `<ul>${section.oneOf
-					.map(({ text, href }) => `<li><a href="${href ?? ""}">${text}</a></li>`)
+					.map(
+						({ text, href }) => `<li><a href="${href ?? ""}">${text}</a></li>`,
+					)
 					.join("")}</ul>`;
 				const descriptionWithOneOf =
 					(section.description ?? "") + oneOfListHtml;
@@ -159,6 +184,15 @@ export function toCustomSchema(
 				});
 			}
 		}
+	}
+
+	if (currencies && currencies.length > 0) {
+		schema.objects.push({
+			name: "Currencies",
+			anchor: "#currencies",
+			type: "enum",
+			values: currencies,
+		});
 	}
 
 	return schema;
