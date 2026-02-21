@@ -85,6 +85,36 @@ if (chatMember?.type === "oneOf") {
 }
 ```
 
+## TypeScript types
+
+All types are exported directly — no wrapper interfaces needed:
+
+```ts
+import type {
+    CustomSchema,
+    Version,
+
+    // Methods
+    Method,          // includes hasMultipart: boolean
+
+    // Objects
+    ObjectBasic,
+    ObjectWithFields,
+    ObjectWithOneOf,
+    ObjectUnknown,
+
+    // Fields (discriminated union on `type`)
+    Field,
+    FieldInteger,    // includes min?, max?, default?, enum?
+    FieldFloat,      // includes min?, max?, default?, enum?
+    FieldString,     // includes const?, default?, enum?, minLen?, maxLen?
+    FieldBoolean,    // includes const?: boolean
+    FieldArray,
+    FieldReference,
+    FieldOneOf,
+} from "@gramio/schema-parser";
+```
+
 ## Schema structure
 
 The parser produces a `CustomSchema` object:
