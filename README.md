@@ -166,11 +166,13 @@ The core type describing a parameter or field. It is a discriminated union on th
 |--------|-------------|------------------|
 | `"integer"` | Integer number | `enum?`, `default?`, `min?`, `max?` |
 | `"float"` | Floating-point number | `enum?`, `default?`, `min?`, `max?` |
-| `"string"` | String value | `enum?`, `const?`, `default?`, `minLen?`, `maxLen?` |
+| `"string"` | String value | `enum?`, `const?`¹, `default?`, `minLen?`, `maxLen?` |
 | `"boolean"` | Boolean value | `const?` (`true` / `false` for literal types) |
 | `"array"` | Array of another type | `arrayOf: Field` |
 | `"reference"` | Reference to another API type | `reference: { name, anchor }` |
 | `"one_of"` | Union of multiple types | `variants: Field[]` |
+
+> ¹ **`const` vs `default` for strings**: `const` means the field *must* equal that exact value — it is always **required** (e.g. discriminator fields: `source: "unspecified"`, `status: "creator"`). `default` means the field is **optional** and falls back to that value when omitted.
 
 All field types share these base properties:
 
@@ -294,7 +296,8 @@ interface FieldBasic {
 2. Parses navigation structure to discover all sections
 3. Extracts methods and types from HTML tables and lists
 4. Uses a **sentence-based parser** (ported from [tg-bot-api](https://github.com/ENCRYPTEDFOREVER/tg-bot-api)) to extract metadata from descriptions:
-   - Default values (`"Defaults to 100"`, `"always \"creator\""`)
+   - Default values (`"Defaults to 100"`, `"always \"creator\""`) → sets `default`, makes field optional
+   - Const constraints (`"must be *unspecified*"`, `"always \"creator\""`) → sets `const`, field stays **required**
    - Numeric constraints (`"Values between 1-100"`, `"0-4096 characters"`)
    - Enum values (`"one of"`, `"Can be"`, `"either"` patterns, including `<code>` expressions)
    - Return types (`"Returns"`, `"On success"`, `"is returned"` patterns with exclusion rules)

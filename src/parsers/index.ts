@@ -1,15 +1,23 @@
 import type { CheerioAPI } from "cheerio";
 import { parseDateString } from "./date-parser.ts";
 
+/** Release date of a Telegram Bot API version. */
 export interface ReleaseDate {
+	/** Day of month (1–31). */
 	day: number;
+	/** Month number (1–12). */
 	month: number;
+	/** Full year (e.g. 2025). */
 	year: number;
 }
 
+/** Parsed Telegram Bot API version from the documentation page. */
 export interface Version {
+	/** Major version number (e.g. `9` in `9.0`). */
 	major: number;
+	/** Minor version number (e.g. `0` in `9.0`). */
 	minor: number;
+	/** Date when this version was released. */
 	release_date: ReleaseDate;
 }
 

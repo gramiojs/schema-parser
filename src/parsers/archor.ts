@@ -2,24 +2,49 @@ import type { Cheerio, CheerioAPI } from "cheerio";
 import type { Element } from "domhandler";
 import type { NavItem } from "./navbar.ts";
 
+/** A type reference extracted from an HTML cell — text plus an optional anchor href. */
 export interface TypeInfo {
+	/** The raw text content of the type cell (e.g. `"Integer"`, `"Array of PhotoSize"`). */
 	text: string;
+	/** Anchor href of the first link in the cell, if present (e.g. `"#photosize"`). */
 	href?: string;
 }
 
+/** A single row extracted from a Telegram Bot API HTML table. */
 export interface TableRow {
+	/** Parameter / field name (column 0). */
 	name: string;
+	/** Type info extracted from the type column (column 1). */
 	type: TypeInfo;
+	/**
+	 * Raw text of the "Required" column (column 2), only present for method tables.
+	 * Typical values: `"Yes"`, `"Optional"`.
+	 */
 	required?: string;
+	/** Inner HTML of the description column. */
 	description: string;
 }
 
+/**
+ * A single section parsed from a Telegram Bot API anchor (`<h4>` heading).
+ * Represents either a method or a type definition.
+ */
 export interface ParsedSection {
+	/** Anchor href to this section (e.g. `"#sendmessage"`). */
 	anchor: string;
+	/** Human-readable section title (e.g. `"sendMessage"`, `"Message"`). */
 	title: string;
+	/**
+	 * Whether the section is a Bot API method, type, or unknown.
+	 * Determined by the table header ("Parameter" → Method, "Field" → Object)
+	 * or by the case of the first letter of the title.
+	 */
 	type: "Method" | "Object" | "Unknown";
+	/** Inner HTML of all `<p>` and `<blockquote>` elements preceding the table/list. */
 	description?: string;
+	/** Rows from the parameter/field table, if present. */
 	table?: TableRow[];
+	/** Type references from the `<ul>` list, for union types (e.g. `ChatMember` variants). */
 	oneOf?: TypeInfo[];
 	descriptionAfterTable?: string;
 }

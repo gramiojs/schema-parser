@@ -13,6 +13,10 @@ import {
 } from "./sentence.ts";
 import { htmlToMarkdown } from "./utils.ts";
 
+/**
+ * Discriminant for the {@link Field} union — the value of the `type` property
+ * that identifies which concrete field interface is in use.
+ */
 export type TypeUnion =
 	| "integer"
 	| "float"
@@ -22,62 +26,127 @@ export type TypeUnion =
 	| "reference"
 	| "one_of";
 
+/**
+ * Properties shared by every field variant.
+ * Extended by all `Field*` interfaces.
+ */
 export interface FieldBasic {
+	/** The parameter / field name as it appears in the Telegram Bot API docs. */
 	key: string;
+	/**
+	 * Whether the field is required.
+	 * - `true` — must always be provided.
+	 * - `false` — optional (may have a {@link FieldInteger.default} / {@link FieldString.default}).
+	 * - `undefined` — not determined (treat as optional).
+	 */
 	required?: boolean;
+	/** Markdown-formatted field description converted from the API HTML. */
 	description?: string;
 }
 
+/** An integer-valued field parsed from the Telegram Bot API docs. */
 export interface FieldInteger extends FieldBasic {
 	type: "integer";
+	/** Allowed discrete values (e.g. icon colour palette integers). */
 	enum?: number[];
+	/** Default value applied when the field is omitted. Makes `required` false. */
 	default?: number;
+	/** Inclusive lower bound (from "Values between X-Y" descriptions). */
 	min?: number;
+	/** Inclusive upper bound (from "Values between X-Y" descriptions). */
 	max?: number;
 }
 
+/** A floating-point-valued field parsed from the Telegram Bot API docs. */
 export interface FieldFloat extends FieldBasic {
 	type: "float";
+	/** Default value applied when the field is omitted. Makes `required` false. */
 	default?: number;
+	/** Allowed discrete values. */
 	enum?: number[];
+	/** Inclusive lower bound. */
 	min?: number;
+	/** Inclusive upper bound. */
 	max?: number;
 }
 
+/** A string-valued field parsed from the Telegram Bot API docs. */
 export interface FieldString extends FieldBasic {
 	type: "string";
+	/**
+	 * A fixed constant the field must always equal.
+	 * Used for discriminator fields in union types (e.g. `source: "unspecified"`)
+	 * and for status fields (e.g. `status: "creator"`).
+	 * A `const` field is always **required** — it is never a default.
+	 */
 	const?: string;
+	/**
+	 * Allowed string values when the field is an enum
+	 * (extracted from description patterns like `"Can be one of"`, `"either"`, etc.).
+	 */
 	enum?: string[];
+	/** Default value applied when the field is omitted. Makes `required` false. */
 	default?: string;
+	/** Minimum allowed string length (from "X-Y characters" descriptions). */
 	minLen?: number;
+	/** Maximum allowed string length (from "X-Y characters" descriptions). */
 	maxLen?: number;
 }
 
+/** A boolean-valued field parsed from the Telegram Bot API docs. */
 export interface FieldBoolean extends FieldBasic {
 	type: "boolean";
+	/**
+	 * A literal boolean constant.
+	 * - `true` — the field is the `True` literal type (e.g. method return types).
+	 * - `false` — the field is the `False` literal type.
+	 * - `undefined` — any boolean value is accepted.
+	 */
 	const?: boolean;
 }
 
+/** An array-valued field parsed from the Telegram Bot API docs. */
 export interface FieldArray extends FieldBasic {
 	type: "array";
+	/** The type of each element in the array. May itself be a `one_of` for multi-type arrays. */
 	arrayOf: Field;
 }
 
+/** A named reference to another Telegram Bot API type. */
 export interface Reference {
+	/** The type name as it appears in the docs (e.g. `"Message"`, `"PhotoSize"`). */
 	name: string;
+	/** The anchor href pointing to the type definition (e.g. `"#message"`). */
 	anchor: string;
 }
 
+/** A field whose type is a reference to another named Telegram Bot API object. */
 export interface FieldReference extends FieldBasic {
 	type: "reference";
+	/** The referenced type. */
 	reference: Reference;
 }
 
+/**
+ * A field whose type is a union of multiple possible types
+ * (e.g. `InputFile or String`, `Array of InputMedia*`).
+ */
 export interface FieldOneOf extends FieldBasic {
 	type: "one_of";
+	/** The possible concrete types; at least two variants are always present. */
 	variants: Field[];
 }
 
+/**
+ * A discriminated union of all possible field types.
+ * Narrow via the `type` property:
+ *
+ * ```ts
+ * if (field.type === "string") {
+ *   field.const; // string | undefined
+ * }
+ * ```
+ */
 export type Field =
 	| FieldInteger
 	| FieldFloat

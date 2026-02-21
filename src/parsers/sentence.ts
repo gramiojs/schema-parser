@@ -3,15 +3,28 @@ import type { ChildNode, Element } from "domhandler";
 
 // ── Part Types ──────────────────────────────────────────────────────────────
 
+/** The syntactic role of a {@link Part} inside a parsed sentence. */
 export type PartKind = "word" | "link" | "bold" | "italic" | "code";
 
+/**
+ * A single token produced by the sentence parser after processing HTML nodes.
+ * Multiple parts form a {@link Sentence}.
+ */
 export interface Part {
+	/** Text content of this token (e.g. `"Returns"`, `"Message"`, `"100"`). */
 	inner: string;
+	/** `true` when the token was wrapped in quotes in the original HTML (becomes a collapsed single part). */
 	hasQuotes: boolean;
+	/** The syntactic role of this token. */
 	kind: PartKind;
+	/** Anchor href — only present when `kind === "link"`. */
 	href?: string;
 }
 
+/**
+ * A sequence of {@link Part}s representing one sentence from a field description.
+ * Sentences are split on unquoted `.` characters.
+ */
 export type Sentence = Part[];
 
 function partNew(inner: string): Part {
@@ -503,11 +516,24 @@ function isFirstLetterUppercase(s: string): boolean {
 	return first === first.toUpperCase() && first !== first.toLowerCase();
 }
 
+/**
+ * An intermediate representation of a type extracted from a return-type sentence.
+ * Used by {@link extractTypeFromParts} before being converted to a {@link Field}.
+ */
 export interface ExtractedType {
+	/**
+	 * - `"single"` — a named scalar or reference type (e.g. `Message`, `Integer`)
+	 * - `"array"` — an array of another type (wraps {@link ExtractedType.inner})
+	 * - `"or"` — a union of types (lists {@link ExtractedType.variants})
+	 */
 	kind: "single" | "array" | "or";
+	/** Type name for `"single"` kinds (e.g. `"Message"`, `"True"`). */
 	name?: string;
+	/** Anchor href for `"single"` reference types (e.g. `"#message"`). */
 	href?: string;
+	/** Element type for `"array"` kinds. */
 	inner?: ExtractedType;
+	/** Possible types for `"or"` kinds. */
 	variants?: ExtractedType[];
 }
 
