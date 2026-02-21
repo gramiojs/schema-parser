@@ -532,6 +532,24 @@ describe("Integration Tests", () => {
 			).toBeUndefined();
 		});
 
+		test("type: 'one_of' [InputFile, string] for String fields with Sending Files description", () => {
+			const field = tableRowToField({
+				name: "media",
+				type: { text: "String" },
+				description:
+					'File to send. Pass a file_id or HTTP URL, or "attach://" for multipart. <a href="https://core.telegram.org/bots/api/#sending-files">More information on Sending Files »</a>',
+			});
+			expect(field.type).toBe("one_of");
+			if (field.type === "one_of") {
+				expect(field.variants[0].type).toBe("reference");
+				if (field.variants[0].type === "reference") {
+					expect(field.variants[0].reference.name).toBe("InputFile");
+					expect(field.variants[0].reference.anchor).toBe("#inputfile");
+				}
+				expect(field.variants[1].type).toBe("string");
+			}
+		});
+
 		test("emoji enum bug: integer field with emoji does not get enum", () => {
 			const field = tableRowToField({
 				name: "value",

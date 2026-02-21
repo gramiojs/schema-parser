@@ -428,6 +428,24 @@ export function tableRowToField(tableRow: TableRow): Field {
 		} as unknown as Field;
 	}
 
+	// String fields that accept file uploads via attach:// (typed as String in the API,
+	// but described with the "More information on Sending Files" link) become one_of: [InputFile, string]
+	if (field.type === "string" && descText.includes("More information on Sending Files")) {
+		return {
+			key: field.key,
+			required: field.required,
+			description: field.description,
+			type: "one_of",
+			variants: [
+				{
+					type: "reference",
+					reference: { name: "InputFile", anchor: "#inputfile" },
+				} as FieldReference,
+				{ type: "string" } as FieldString,
+			],
+		} as FieldOneOf;
+	}
+
 	// semanticType on string fields
 	if (field.type === "string") {
 		if (descText.includes("after entities parsing")) {
