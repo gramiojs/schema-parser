@@ -205,10 +205,10 @@ describe("Integration Tests", () => {
 			const obj = schema.objects[0];
 			expect(obj.type).toBe("oneOf");
 			expect(obj.description).toContain(
-				"[Message](https://core.telegram.org/bots/api/#message)",
+				"[Message](https://core.telegram.org/bots/api#message)",
 			);
 			expect(obj.description).toContain(
-				"[InaccessibleMessage](https://core.telegram.org/bots/api/#inaccessiblemessage)",
+				"[InaccessibleMessage](https://core.telegram.org/bots/api#inaccessiblemessage)",
 			);
 		});
 

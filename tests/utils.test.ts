@@ -30,7 +30,7 @@ describe("htmlToMarkdown", () => {
 			const html = `<a href="#message">Message</a>`;
 			const result = htmlToMarkdown(html);
 			expect(result).toBe(
-				"[Message](https://core.telegram.org/bots/api/#message)",
+				"[Message](https://core.telegram.org/bots/api#message)",
 			);
 		});
 	});
