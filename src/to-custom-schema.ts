@@ -2,6 +2,7 @@ import type { ParsedSection } from "./parsers/archor.ts";
 import type { Version } from "./parsers/index.ts";
 import {
 	type Field,
+	type FieldString,
 	maybeFileToSend,
 	parseTypeText,
 	resolveReturnType,
@@ -115,6 +116,26 @@ export interface CustomSchema {
 
 const MARKUP_NAMES = /Markup$|^ReplyKeyboardRemove$|^ForceReply$/;
 
+/**
+ * Marks string fields as `semanticType: "formattable"` when they have a sibling
+ * field named `${key}_entities` or `${key}_parse_mode` in the same table.
+ * Runs after all fields are assembled so the full sibling set is available.
+ * Skips fields that already have a semanticType (set by the description-based check).
+ */
+function applyFormattableSiblings(fields: Field[]): void {
+	const keys = new Set(fields.map((f) => f.key));
+	for (const field of fields) {
+		if (
+			field.type === "string" &&
+			!field.semanticType &&
+			(keys.has(`${field.key}_entities`) ||
+				keys.has(`${field.key}_parse_mode`))
+		) {
+			field.semanticType = "formattable";
+		}
+	}
+}
+
 export function toCustomSchema(
 	version: Version,
 	sections: ParsedSection[],
@@ -134,6 +155,8 @@ export function toCustomSchema(
 				parameters.push(tableRowToField(row));
 			}
 
+			applyFormattableSiblings(parameters);
+
 			schema.methods.push({
 				name: section.title,
 				anchor: section.anchor,
@@ -150,6 +173,8 @@ export function toCustomSchema(
 			for (const row of section.table ?? []) {
 				fields.push(tableRowToField(row));
 			}
+
+			applyFormattableSiblings(fields);
 
 			if (fields.length > 0) {
 				schema.objects.push({

@@ -302,6 +302,93 @@ describe("Integration Tests", () => {
 			}
 		});
 
+		test("semanticType: 'formattable' via _entities sibling (InputPollOption pattern)", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const sections = [
+				{
+					anchor: "#inputpolloption",
+					title: "InputPollOption",
+					type: "Object" as const,
+					description: "<p>This object contains information about one answer option in a poll to be sent.</p>",
+					table: [
+						{
+							name: "text",
+							type: { text: "String" },
+							description: "Option text, 1-100 characters",
+						},
+						{
+							name: "text_parse_mode",
+							type: { text: "String" },
+							description: "Optional. Mode for parsing entities in the text.",
+						},
+						{
+							name: "text_entities",
+							type: { text: "Array of MessageEntity" },
+							description: "Optional. Special entities in the poll option text.",
+						},
+					],
+				},
+			];
+			const schema = toCustomSchema(version, sections);
+			const obj = schema.objects[0];
+			expect(obj.type).toBe("fields");
+			if (obj.type === "fields") {
+				const textField = obj.fields.find((f) => f.key === "text");
+				const parseModeField = obj.fields.find((f) => f.key === "text_parse_mode");
+				expect(textField?.type).toBe("string");
+				if (textField?.type === "string") {
+					expect(textField.semanticType).toBe("formattable");
+				}
+				// text_parse_mode itself must NOT be marked formattable
+				expect(parseModeField?.type).toBe("string");
+				if (parseModeField?.type === "string") {
+					expect(parseModeField.semanticType).toBeUndefined();
+				}
+			}
+		});
+
+		test("semanticType: 'formattable' via _parse_mode sibling only", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const sections = [
+				{
+					anchor: "#somemethod",
+					title: "someMethod",
+					type: "Method" as const,
+					description: "<p>Returns <a href=\"#message\">Message</a>.</p>",
+					table: [
+						{
+							name: "caption",
+							type: { text: "String" },
+							required: "Optional",
+							description: "Caption, 0-1024 characters",
+						},
+						{
+							name: "caption_parse_mode",
+							type: { text: "String" },
+							required: "Optional",
+							description: "Mode for parsing entities in the caption.",
+						},
+					],
+				},
+			];
+			const schema = toCustomSchema(version, sections);
+			const captionField = schema.methods[0].parameters.find(
+				(f) => f.key === "caption",
+			);
+			expect(captionField?.type).toBe("string");
+			if (captionField?.type === "string") {
+				expect(captionField.semanticType).toBe("formattable");
+			}
+		});
+
 		test("semanticType: 'updateType' on arrayOf string with 'update type' description", () => {
 			const field = tableRowToField({
 				name: "allowed_updates",
