@@ -180,6 +180,38 @@ describe("Integration Tests", () => {
 			expect(schema.methods[0].hasMultipart).toBe(true);
 		});
 
+		test("should include oneOf links in description", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+
+			const sections = [
+				{
+					anchor: "#maybeinaccessiblemessage",
+					title: "MaybeInaccessibleMessage",
+					type: "Object" as const,
+					description:
+						"<p>This object describes a message that can be inaccessible to the bot. It can be one of</p>",
+					oneOf: [
+						{ text: "Message", href: "#message" },
+						{ text: "InaccessibleMessage", href: "#inaccessiblemessage" },
+					],
+				},
+			];
+
+			const schema = toCustomSchema(version, sections);
+			const obj = schema.objects[0];
+			expect(obj.type).toBe("oneOf");
+			expect(obj.description).toContain(
+				"[Message](https://core.telegram.org/bots/api/#message)",
+			);
+			expect(obj.description).toContain(
+				"[InaccessibleMessage](https://core.telegram.org/bots/api/#inaccessiblemessage)",
+			);
+		});
+
 		test("should create unknown object type for empty objects", () => {
 			const version = {
 				major: 7,

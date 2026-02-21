@@ -138,10 +138,15 @@ export function toCustomSchema(
 					fields,
 				});
 			} else if (section.oneOf?.length) {
+				const oneOfListHtml = `<ul>${section.oneOf
+					.map(({ text, href }) => `<li><a href="${href ?? ""}">${text}</a></li>`)
+					.join("")}</ul>`;
+				const descriptionWithOneOf =
+					(section.description ?? "") + oneOfListHtml;
 				schema.objects.push({
 					name: section.title,
 					anchor: section.anchor,
-					description: htmlToMarkdown(section.description),
+					description: htmlToMarkdown(descriptionWithOneOf),
 					type: "oneOf",
 					oneOf: section.oneOf.map((typeInfo) => parseTypeText(typeInfo)),
 				});
