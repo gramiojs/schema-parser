@@ -173,12 +173,12 @@ describe("Sentence Parser", () => {
 			expect(result).toBeUndefined();
 		});
 
-		test('should extract \'always "creator"\'', () => {
+		test('should NOT extract \'always "creator"\' as default', () => {
 			const sentences = parseDescriptionToSentences(
 				'The status is always "creator".',
 			);
 			const result = extractDefault(sentences);
-			expect(result).toBe("creator");
+			expect(result).toBeUndefined();
 		});
 
 		test("should return undefined for no default", () => {

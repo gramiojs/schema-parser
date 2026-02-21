@@ -237,7 +237,7 @@ function extractAllTypeRefs(html: string): TypeInfo[] {
 function detectConst(description: string) {
 	const $ = cheerio.load(description);
 
-	const constMatch = $.text().match(/always\s+["""]([^"""]+)["""]/i);
+	const constMatch = $.text().match(/always\s+["\u201c\u201d]([^"\u201c\u201d]+)["\u201c\u201d]/i);
 	return constMatch ? constMatch[1] : undefined;
 }
 

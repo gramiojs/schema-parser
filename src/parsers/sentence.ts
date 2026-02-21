@@ -313,7 +313,6 @@ function getPatterns(patternType: PatternType): SearcherPattern[] {
 				pattern([word("Defaults"), word("to")]),
 				pattern([word("defaults"), word("to")], { exclude: true }),
 				pattern([word("defaults"), word("to")]),
-				pattern([word("always"), quotes()], { offset: -1 }),
 			];
 		case "Const":
 			return [

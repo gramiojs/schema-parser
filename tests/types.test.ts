@@ -505,7 +505,7 @@ describe("Type Parser", () => {
 	});
 
 	describe("Const Detection", () => {
-		test("should parse const from 'always X'", () => {
+		test("should parse const from 'always X' and keep required", () => {
 			const row: TableRow = {
 				name: "status",
 				type: {
@@ -518,7 +518,41 @@ describe("Type Parser", () => {
 			expect(result).toMatchObject({
 				type: "string",
 				const: "creator",
+				required: true,
 			});
+			expect(result).not.toHaveProperty("default");
+		});
+
+		test("should parse type discriminator from 'always X' and keep required", () => {
+			const row: TableRow = {
+				name: "type",
+				type: { text: "String" },
+				description: 'Type of the transaction partner, always "chat"',
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "chat",
+				required: true,
+			});
+			expect(result).not.toHaveProperty("default");
+		});
+
+		test("should parse type discriminator from 'always \u201cX\u201d' (curly quotes) and keep required", () => {
+			const row: TableRow = {
+				name: "type",
+				type: { text: "String" },
+				description: "Type of the message origin, always \u201chidden_user\u201d",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "hidden_user",
+				required: true,
+			});
+			expect(result).not.toHaveProperty("default");
 		});
 
 		test("should parse discriminator const from 'must be *italic*' and keep required", () => {
