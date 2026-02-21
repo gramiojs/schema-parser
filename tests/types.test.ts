@@ -128,7 +128,8 @@ describe("Type Parser", () => {
 				type: "one_of",
 				variants: [
 					{
-						type: "file",
+						type: "reference",
+						reference: { name: "InputFile" },
 					},
 					{
 						type: "string",
@@ -153,7 +154,8 @@ describe("Type Parser", () => {
 				type: "one_of",
 				variants: [
 					{
-						type: "file",
+						type: "reference",
+						reference: { name: "InputFile", anchor: "#inputfile" },
 					},
 					{
 						type: "string",
@@ -179,7 +181,8 @@ describe("Type Parser", () => {
 					type: "one_of",
 					variants: [
 						{
-							type: "file",
+							type: "reference",
+							reference: { name: "InputFile" },
 						},
 						{
 							type: "string",

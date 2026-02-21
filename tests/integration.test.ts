@@ -234,17 +234,21 @@ describe("Integration Tests", () => {
 	});
 
 	describe("Semantic Markers", () => {
-		test("type: 'file' for InputFile references", () => {
+		test("InputFile reference for explicit InputFile type", () => {
 			const field = tableRowToField({
 				name: "photo",
 				type: { text: "InputFile", href: "#inputfile" },
 				required: "Yes",
 				description: "Photo to send",
 			});
-			expect(field.type).toBe("file");
+			expect(field.type).toBe("reference");
+			if (field.type === "reference") {
+				expect(field.reference.name).toBe("InputFile");
+				expect(field.reference.anchor).toBe("#inputfile");
+			}
 		});
 
-		test("type: 'file' in one_of (InputFile or String)", () => {
+		test("one_of [InputFile, string] for InputFile or String type", () => {
 			const field = tableRowToField({
 				name: "thumbnail",
 				type: {
@@ -256,12 +260,15 @@ describe("Integration Tests", () => {
 			});
 			expect(field.type).toBe("one_of");
 			if (field.type === "one_of") {
-				expect(field.variants[0].type).toBe("file");
+				expect(field.variants[0].type).toBe("reference");
+				if (field.variants[0].type === "reference") {
+					expect(field.variants[0].reference.name).toBe("InputFile");
+				}
 				expect(field.variants[1].type).toBe("string");
 			}
 		});
 
-		test("hasMultipart is true when a field has type: 'file'", () => {
+		test("hasMultipart is true when a field references InputFile", () => {
 			const version = {
 				major: 7,
 				minor: 4,
@@ -302,7 +309,7 @@ describe("Integration Tests", () => {
 			}
 		});
 
-		test("semanticType: 'formattable' via _entities sibling (InputPollOption pattern)", () => {
+		test("semanticType: 'formattable' via _parse_mode sibling on input object (InputPollOption pattern)", () => {
 			const version = {
 				major: 7,
 				minor: 4,
@@ -347,6 +354,45 @@ describe("Integration Tests", () => {
 				expect(parseModeField?.type).toBe("string");
 				if (parseModeField?.type === "string") {
 					expect(parseModeField.semanticType).toBeUndefined();
+				}
+			}
+		});
+
+		test("response object (Message-style) with only _entities sibling must NOT be formattable", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const sections = [
+				{
+					anchor: "#message",
+					title: "Message",
+					type: "Object" as const,
+					description: "<p>This object represents a message.</p>",
+					table: [
+						{
+							name: "caption",
+							type: { text: "String" },
+							description: "Optional. Caption for the media.",
+						},
+						{
+							name: "caption_entities",
+							type: { text: "Array of MessageEntity" },
+							description: "Optional. Special entities in the caption.",
+						},
+					],
+				},
+			];
+			const schema = toCustomSchema(version, sections);
+			const obj = schema.objects[0];
+			expect(obj.type).toBe("fields");
+			if (obj.type === "fields") {
+				const captionField = obj.fields.find((f) => f.key === "caption");
+				expect(captionField?.type).toBe("string");
+				if (captionField?.type === "string") {
+					// No _parse_mode sibling → response object → must NOT be formattable
+					expect(captionField.semanticType).toBeUndefined();
 				}
 			}
 		});
@@ -501,6 +547,36 @@ describe("Integration Tests", () => {
 			expect(byName("ReplyKeyboardRemove")?.semanticType).toBe("markup");
 			expect(byName("ForceReply")?.semanticType).toBe("markup");
 			expect(byName("User")?.semanticType).toBeUndefined();
+		});
+
+		test("InputFile object gets type: 'file' not 'unknown'", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const sections = [
+				{
+					anchor: "#inputfile",
+					title: "InputFile",
+					type: "Object" as const,
+					description:
+						"<p>This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data.</p>",
+					table: [],
+				},
+				{
+					anchor: "#callbackgame",
+					title: "CallbackGame",
+					type: "Object" as const,
+					description: "<p>A placeholder, currently holds no information.</p>",
+					table: [],
+				},
+			];
+			const schema = toCustomSchema(version, sections);
+			const inputFile = schema.objects.find((o) => o.name === "InputFile");
+			const callbackGame = schema.objects.find((o) => o.name === "CallbackGame");
+			expect(inputFile?.type).toBe("file");
+			expect(callbackGame?.type).toBe("unknown");
 		});
 
 		test("Currencies enum object injected when currencies provided", () => {

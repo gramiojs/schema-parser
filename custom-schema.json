@@ -10414,8 +10414,7 @@
           "type": "string",
           "key": "caption",
           "required": false,
-          "description": "*Optional*. Caption for the animation, audio, document, paid media, photo, video or voice",
-          "semanticType": "formattable"
+          "description": "*Optional*. Caption for the animation, audio, document, paid media, photo, video or voice"
         },
         {
           "type": "array",
@@ -12394,8 +12393,7 @@
           "maxLen": 100,
           "key": "text",
           "required": true,
-          "description": "Option text, 1-100 characters",
-          "semanticType": "formattable"
+          "description": "Option text, 1-100 characters"
         },
         {
           "type": "array",
@@ -12515,8 +12513,7 @@
           "maxLen": 300,
           "key": "question",
           "required": true,
-          "description": "Poll question, 1-300 characters",
-          "semanticType": "formattable"
+          "description": "Poll question, 1-300 characters"
         },
         {
           "type": "array",
@@ -12590,8 +12587,7 @@
           "maxLen": 200,
           "key": "explanation",
           "required": false,
-          "description": "*Optional*. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters",
-          "semanticType": "formattable"
+          "description": "*Optional*. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters"
         },
         {
           "type": "array",
@@ -12636,8 +12632,7 @@
           "type": "string",
           "key": "text",
           "required": true,
-          "description": "Text of the task",
-          "semanticType": "formattable"
+          "description": "Text of the task"
         },
         {
           "type": "array",
@@ -12690,8 +12685,7 @@
           "type": "string",
           "key": "title",
           "required": true,
-          "description": "Title of the checklist",
-          "semanticType": "formattable"
+          "description": "Title of the checklist"
         },
         {
           "type": "array",
@@ -18452,7 +18446,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18521,7 +18519,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18535,7 +18537,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18549,7 +18555,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18648,7 +18658,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18662,7 +18676,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18749,7 +18767,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18763,7 +18785,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18838,7 +18864,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18852,7 +18882,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18899,7 +18933,7 @@
       "name": "InputFile",
       "anchor": "#inputfile",
       "description": "This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.",
-      "type": "unknown"
+      "type": "file"
     },
     {
       "name": "InputPaidMedia",
@@ -18943,7 +18977,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18972,7 +19010,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -18986,7 +19028,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -19000,7 +19046,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -19081,7 +19131,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -19110,7 +19164,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -19168,7 +19226,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -19197,7 +19259,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -19446,7 +19512,11 @@
           "type": "one_of",
           "variants": [
             {
-              "type": "file"
+              "type": "reference",
+              "reference": {
+                "name": "InputFile",
+                "anchor": "#inputfile"
+              }
             },
             {
               "type": "string"
@@ -23610,8 +23680,7 @@
           "maxLen": 4096,
           "key": "text",
           "required": false,
-          "description": "*Optional*. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls [setGameScore](https://core.telegram.org/bots/api/#setgamescore), or manually edited using [editMessageText](https://core.telegram.org/bots/api/#editmessagetext). 0-4096 characters.",
-          "semanticType": "formattable"
+          "description": "*Optional*. Brief description of the game or high scores included in the game message. Can be automatically edited to include current high scores for the game when the bot calls [setGameScore](https://core.telegram.org/bots/api/#setgamescore), or manually edited using [editMessageText](https://core.telegram.org/bots/api/#editmessagetext). 0-4096 characters."
         },
         {
           "type": "array",
@@ -23677,6 +23746,7 @@
     {
       "name": "Currencies",
       "anchor": "#currencies",
+      "description": "Telegram payments supported currencies. Source: [currencies.json](https://core.telegram.org/bots/payments/currencies.json). See also [supported currencies](https://core.telegram.org/bots/payments/#supported-currencies).",
       "type": "enum",
       "values": [
         "AED",
@@ -23772,7 +23842,8 @@
         "UZS",
         "VND",
         "YER",
-        "ZAR"
+        "ZAR",
+        "XTR"
       ]
     }
   ]

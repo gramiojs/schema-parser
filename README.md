@@ -35,11 +35,13 @@ console.log(schema.objects.length); // number of API types
 ### Parsing from a local file
 
 ```ts
-import { getTelegramBotAPIContentFromFile } from "@gramio/schema-parser";
-import { parseLastVersion } from "@gramio/schema-parser";
-import { parseNavigation } from "@gramio/schema-parser";
-import { parseSections } from "@gramio/schema-parser";
-import { toCustomSchema } from "@gramio/schema-parser";
+import {
+    getTelegramBotAPIContentFromFile,
+    parseLastVersion,
+    parseNavigation,
+    parseSections,
+    toCustomSchema,
+} from "@gramio/schema-parser";
 
 // Load from a cached api.html
 const $ = await getTelegramBotAPIContentFromFile();
@@ -84,6 +86,16 @@ if (chatMember?.type === "oneOf") {
     console.log(chatMember.oneOf.map((v) => v.type === "reference" ? v.reference.name : v.type));
     // ["ChatMemberOwner", "ChatMemberAdministrator", ...]
 }
+
+// The file-upload primitive
+const inputFile = schema.objects.find((o) => o.name === "InputFile");
+inputFile?.type; // "file" — generators emit Blob / Buffer here
+
+// Synthetic Currencies enum
+const currencies = schema.objects.find((o) => o.name === "Currencies");
+if (currencies?.type === "enum") {
+    currencies.values; // ["USD", "EUR", "GBP", ...]
+}
 ```
 
 ## TypeScript types
@@ -104,6 +116,7 @@ import type {
     ObjectWithOneOf,
     ObjectUnknown,
     ObjectWithEnum,  // synthetic enum objects (e.g. Currencies)
+    ObjectFile,      // the InputFile primitive (type: "file")
 
     // Fields (discriminated union on `type`)
     Field,
@@ -114,7 +127,6 @@ import type {
     FieldArray,
     FieldReference,
     FieldOneOf,
-    FieldFile,       // file upload (replaces InputFile references in field types)
 } from "@gramio/schema-parser";
 ```
 
@@ -155,13 +167,13 @@ interface Method {
     description?: string;  // Markdown description
     parameters: Field[];   // Method parameters
     returns: Field;        // Return type (without key)
-    hasMultipart: boolean; // true if any parameter accepts file upload (InputFile, InputMedia, etc.)
+    hasMultipart: boolean; // true if any parameter accepts file upload (InputFile, InputMedia*, etc.)
 }
 ```
 
 ### Object
 
-Represents a Telegram Bot API type. Can be one of four variants:
+Represents a Telegram Bot API type. Can be one of five variants:
 
 ```ts
 // Base properties shared by all object variants
@@ -193,11 +205,16 @@ interface ObjectUnknown extends ObjectBasic {
     type: "unknown";
 }
 
-// Named string enum — synthetic objects not present in the API docs HTML
+// Named string enum — synthetic objects injected by the parser
 // (e.g. Currencies — all ISO 4217 codes supported by Telegram Payments)
 interface ObjectWithEnum extends ObjectBasic {
     type: "enum";
     values: string[];
+}
+
+// The InputFile primitive — generators emit the concrete file type here (e.g. Blob, Buffer)
+interface ObjectFile extends ObjectBasic {
+    type: "file";
 }
 ```
 
@@ -214,15 +231,16 @@ The core type describing a parameter or field. It is a discriminated union on th
 | `"array"` | Array of another type | `arrayOf: Field` |
 | `"reference"` | Reference to another API type | `reference: { name, anchor }` |
 | `"one_of"` | Union of multiple types | `variants: Field[]` |
-| `"file"` | File upload (InputFile) | — |
 
 > ¹ **`const` vs `default` for strings**: `const` means the field *must* equal that exact value — it is always **required** (e.g. discriminator fields: `source: "unspecified"`, `status: "creator"`). `default` means the field is **optional** and falls back to that value when omitted.
 
 > ² **`semanticType` on string fields**:
-> - `"formattable"` — the string supports Telegram formatting entities (description contains "after entities parsing"), e.g. `text` in `sendMessage`
-> - `"updateType"` — the string (inside an array) is a Telegram update type name, e.g. elements of `allowed_updates` in `getUpdates`
+> - `"formattable"` — the string supports Telegram formatting entities. Detected by description containing `"after entities parsing"` **or** by a sibling `${key}_parse_mode` field (input objects) / `${key}_entities` or `${key}_parse_mode` field (method parameters). Response-only objects like `Message` are **not** marked — they have `*_entities` siblings but never `*_parse_mode`.
+> - `"updateType"` — the string (inside an array) is a Telegram update type name, e.g. elements of `allowed_updates` in `getUpdates`.
 >
-> Currency string fields (ISO 4217) are **not** `type: "string"` — they become `type: "reference"` pointing to the synthetic `Currencies` enum object.
+> Currency string fields (ISO 4217) become `type: "reference"` pointing to the synthetic `Currencies` enum object.
+
+> **InputFile in fields**: fields typed as `InputFile` in the API docs become `type: "reference"` with `reference.name === "InputFile"`. Fields typed as `InputFile or String` become `type: "one_of"` with `[reference(InputFile), string]`. String fields with "More information on Sending Files" in their description (e.g. `InputMediaPhoto.media`) also become `one_of: [reference(InputFile), string]`. The `InputFile` object itself in `schema.objects` has `type: "file"` — generators define the concrete upload type there.
 
 All field types share these base properties:
 
@@ -310,25 +328,25 @@ interface FieldBasic {
 }
 ```
 
-**File upload field:**
+**InputFile reference (explicit upload field):**
 ```json
 {
-    "type": "file",
-    "key": "document",
-    "required": true,
-    "description": "File to send."
+    "type": "reference",
+    "reference": { "name": "InputFile", "anchor": "#inputfile" },
+    "key": "sticker",
+    "required": true
 }
 ```
 
-**File upload or string union:**
+**File-or-string upload union (InputFile or String / Sending Files pattern):**
 ```json
 {
     "type": "one_of",
     "variants": [
-        { "type": "file" },
+        { "type": "reference", "reference": { "name": "InputFile", "anchor": "#inputfile" } },
         { "type": "string" }
     ],
-    "key": "photo",
+    "key": "media",
     "required": true
 }
 ```
@@ -381,11 +399,12 @@ interface FieldBasic {
    - Enum values (`"one of"`, `"Can be"`, `"either"` patterns, including `<code>` expressions)
    - Return types (`"Returns"`, `"On success"`, `"is returned"` patterns with exclusion rules)
 5. Injects **semantic markers** directly into the schema:
-   - `InputFile` links → `type: "file"` (first-class field type instead of a reference)
+   - `InputFile` links in field types → `type: "reference"` to `InputFile`; the `InputFile` object in `schema.objects` gets `type: "file"` so generators define the concrete upload type (e.g. `Blob`) there
+   - String fields with "More information on Sending Files" in description → `one_of: [reference(InputFile), string]`
    - ISO 4217 currency string fields → `type: "reference"` pointing to a synthetic `Currencies` enum object
-   - `"after entities parsing"` in description → `semanticType: "formattable"` on string fields
+   - `"after entities parsing"` in description **or** sibling `${key}_parse_mode` / `${key}_entities` field → `semanticType: "formattable"` on string fields (method params: both sibling types; object fields: only `_parse_mode` to avoid false positives on response types like `Message`)
    - `"update type"` in array-of-string description → `semanticType: "updateType"` on the array element
-   - Markup object names (`*Markup`, `ReplyKeyboardRemove`, `ForceReply`) → `semanticType: "markup"` on the object
+   - Object names matching `*Markup`, `ReplyKeyboardRemove`, `ForceReply` → `semanticType: "markup"`
    - A synthetic `{ type: "enum", values: string[] }` `Currencies` object appended to `schema.objects`
-6. Detects file upload parameters (`type: "file"`, `InputMedia*`, etc.) for `hasMultipart`
+6. Detects file upload parameters (`reference → InputFile`, `reference → InputMedia*`, etc.) for `hasMultipart`
 7. Outputs a strongly-typed `CustomSchema` JSON

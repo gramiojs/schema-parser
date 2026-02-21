@@ -24,8 +24,7 @@ export type TypeUnion =
 	| "boolean"
 	| "array"
 	| "reference"
-	| "one_of"
-	| "file";
+	| "one_of";
 
 /**
  * Properties shared by every field variant.
@@ -144,11 +143,6 @@ export interface FieldOneOf extends FieldBasic {
 	variants: Field[];
 }
 
-/** A field whose type is a file upload (replaces direct InputFile references). */
-export interface FieldFile extends FieldBasic {
-	type: "file";
-}
-
 /**
  * A discriminated union of all possible field types.
  * Narrow via the `type` property:
@@ -166,8 +160,7 @@ export type Field =
 	| FieldBoolean
 	| FieldArray
 	| FieldReference
-	| FieldOneOf
-	| FieldFile;
+	| FieldOneOf;
 
 function uniqueArray(array: (string | number)[]): (string | number)[] {
 	return [...new Set(array)];
@@ -382,13 +375,10 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 			return { type: "boolean", const: false } as FieldBoolean;
 		default:
 			if (finalHref) {
-				if (text.trim() === "InputFile") {
-					return { type: "file" } as FieldFile;
-				}
 				return {
 					type: "reference",
 					reference: {
-						name: text,
+						name: text.trim(),
 						anchor: finalHref,
 					},
 				} as FieldReference;
@@ -442,7 +432,7 @@ export function tableRowToField(tableRow: TableRow): Field {
 					reference: { name: "InputFile", anchor: "#inputfile" },
 				} as FieldReference,
 				{ type: "string" } as FieldString,
-			],
+			] as Field[],
 		} as FieldOneOf;
 	}
 
@@ -559,7 +549,6 @@ export function resolveReturnType(description: string): Omit<Field, "key"> {
 }
 
 export function maybeFileToSend(field: Field): boolean {
-	if (field.type === "file") return true;
 	if (field.type === "reference") {
 		const name = field.reference.name;
 		if (name === "InputPollOption") return false;

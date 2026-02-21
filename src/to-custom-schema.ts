@@ -89,17 +89,28 @@ export interface ObjectWithEnum extends ObjectBasic {
 }
 
 /**
+ * The `InputFile` object — the file-upload primitive of the Telegram Bot API.
+ * Fields that accept file uploads use `type: "file"` and reference this object.
+ * Generators should emit the concrete file type (e.g. `Blob`, `Buffer`) here.
+ */
+export interface ObjectFile extends ObjectBasic {
+	type: "file";
+}
+
+/**
  * A Telegram Bot API type. Discriminated union on the `type` property:
  * - `"fields"` — {@link ObjectWithFields}
  * - `"oneOf"` — {@link ObjectWithOneOf}
  * - `"unknown"` — {@link ObjectUnknown}
  * - `"enum"` — {@link ObjectWithEnum}
+ * - `"file"` — {@link ObjectFile}
  */
 export type Object =
 	| ObjectWithFields
 	| ObjectWithOneOf
 	| ObjectUnknown
-	| ObjectWithEnum;
+	| ObjectWithEnum
+	| ObjectFile;
 
 /**
  * The top-level schema produced by parsing the Telegram Bot API documentation.
@@ -117,21 +128,26 @@ export interface CustomSchema {
 const MARKUP_NAMES = /Markup$|^ReplyKeyboardRemove$|^ForceReply$/;
 
 /**
- * Marks string fields as `semanticType: "formattable"` when they have a sibling
- * field named `${key}_entities` or `${key}_parse_mode` in the same table.
+ * Marks string fields as `semanticType: "formattable"` using sibling-based detection.
  * Runs after all fields are assembled so the full sibling set is available.
  * Skips fields that already have a semanticType (set by the description-based check).
+ *
+ * Two modes:
+ * - `"method"`: checks `${key}_entities` OR `${key}_parse_mode` — both patterns are
+ *   reliable for method parameters, which are always input.
+ * - `"object"`: checks `${key}_parse_mode` ONLY — response objects (e.g. `Message`)
+ *   have `*_entities` siblings but never `*_parse_mode`, so the parse_mode sibling
+ *   is the safe discriminator for input objects (e.g. `InputPollOption`).
  */
-function applyFormattableSiblings(fields: Field[]): void {
+function applyFormattableSiblings(fields: Field[], mode: "method" | "object"): void {
 	const keys = new Set(fields.map((f) => f.key));
 	for (const field of fields) {
-		if (
-			field.type === "string" &&
-			!field.semanticType &&
-			(keys.has(`${field.key}_entities`) ||
-				keys.has(`${field.key}_parse_mode`))
-		) {
-			field.semanticType = "formattable";
+		if (field.type === "string" && !field.semanticType) {
+			const hasParseMode = keys.has(`${field.key}_parse_mode`);
+			const hasEntities = keys.has(`${field.key}_entities`);
+			if (mode === "method" ? hasParseMode || hasEntities : hasParseMode) {
+				field.semanticType = "formattable";
+			}
 		}
 	}
 }
@@ -155,7 +171,7 @@ export function toCustomSchema(
 				parameters.push(tableRowToField(row));
 			}
 
-			applyFormattableSiblings(parameters);
+			applyFormattableSiblings(parameters, "method");
 
 			schema.methods.push({
 				name: section.title,
@@ -174,7 +190,7 @@ export function toCustomSchema(
 				fields.push(tableRowToField(row));
 			}
 
-			applyFormattableSiblings(fields);
+			applyFormattableSiblings(fields, "object");
 
 			if (fields.length > 0) {
 				schema.objects.push({
@@ -199,6 +215,13 @@ export function toCustomSchema(
 					description: htmlToMarkdown(descriptionWithOneOf),
 					type: "oneOf",
 					oneOf: section.oneOf.map((typeInfo) => parseTypeText(typeInfo)),
+				});
+			} else if (section.title === "InputFile") {
+				schema.objects.push({
+					name: section.title,
+					anchor: section.anchor,
+					description: htmlToMarkdown(section.description),
+					type: "file",
 				});
 			} else {
 				schema.objects.push({
