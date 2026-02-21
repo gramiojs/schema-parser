@@ -30,5 +30,7 @@ export async function getCustomSchema() {
 
 	const currencies = Object.keys(currenciesRaw);
 
+	currencies.push('XTR'); // XTR is not in the currencies because it is not a real currency but is used in the schema
+
 	return toCustomSchema(lastVersion, sections, currencies);
 }

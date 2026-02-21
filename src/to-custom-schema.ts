@@ -215,6 +215,8 @@ export function toCustomSchema(
 		schema.objects.push({
 			name: "Currencies",
 			anchor: "#currencies",
+			description:
+				"Telegram payments supported currencies. Source: [currencies.json](https://core.telegram.org/bots/payments/currencies.json). See also [supported currencies](https://core.telegram.org/bots/payments/#supported-currencies).",
 			type: "enum",
 			values: currencies,
 		});
