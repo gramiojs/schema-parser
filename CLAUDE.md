@@ -8,6 +8,10 @@
 - **Type-check**: `bunx tsc --noEmit`
 - **Lint/format**: `bunx biome check --write .`
 
+## Testing
+
+Every new feature or bug fix must be covered by tests. Run `bun test` to verify before finishing.
+
 ## Code Style
 
 - Formatter: Biome with **tab** indentation, **double quotes**
