@@ -42,7 +42,7 @@ turndownService.addRule("link", {
 			href = `${TELEGRAM_URL}${href}`;
 		}
 
-		return `[${node.textContent}](${href})`;
+		return `[${content}](${href})`;
 	},
 });
 
