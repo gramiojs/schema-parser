@@ -23,7 +23,7 @@ describe("htmlToMarkdown", () => {
 		test("should expand anchor-only href to full Telegram Bot API URL", () => {
 			const html = `<a href="#message">Message</a>`;
 			const result = htmlToMarkdown(html);
-			expect(result).toBe("[Message](https://core.telegram.org/bots/api#message)");
+			expect(result).toBe("[Message](https://core.telegram.org/bots/api/#message)");
 		});
 	});
 
@@ -32,6 +32,21 @@ describe("htmlToMarkdown", () => {
 			const html = `<a href="/bots/api">API</a>`;
 			const result = htmlToMarkdown(html);
 			expect(result).toBe("[API](https://core.telegram.org/bots/api)");
+		});
+	});
+
+	describe("empty links", () => {
+		test("should skip anchor links with no text content", () => {
+			const html = `<a href="https://core.telegram.org/stickers#animation-requirements"></a>`;
+			const result = htmlToMarkdown(html);
+			expect(result).toBe("");
+		});
+
+		test("should not produce empty link before real link in description", () => {
+			const html = `see <a href="https://core.telegram.org/stickers#animation-requirements"></a><a href="https://core.telegram.org/stickers#animation-requirements">https://core.telegram.org/stickers#animation-requirements</a> for requirements`;
+			const result = htmlToMarkdown(html);
+			expect(result).not.toContain("[](");
+			expect(result).toContain("[https://core.telegram.org/stickers#animation-requirements](https://core.telegram.org/stickers#animation-requirements)");
 		});
 	});
 });

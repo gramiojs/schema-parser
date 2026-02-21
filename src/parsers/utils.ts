@@ -7,7 +7,7 @@ export const turndownService = new TurndownService({
 
 const TELEGRAM_URL = "https://core.telegram.org";
 
-const TELEGRAM_BOT_API_URL = `${TELEGRAM_URL}/bots/api`;
+const TELEGRAM_BOT_API_URL = `${TELEGRAM_URL}/bots/api/`;
 
 turndownService.addRule("emoji-img", {
 	filter: (node) =>
@@ -28,6 +28,10 @@ turndownService.addRule("link", {
 
 		if (!href) {
 			return content;
+		}
+
+		if (!node.textContent?.trim()) {
+			return "";
 		}
 
 		if (href.startsWith("#")) {
