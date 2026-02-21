@@ -2,6 +2,9 @@ import type { ParsedSection } from "./parsers/archor.ts";
 import type { Version } from "./parsers/index.ts";
 import {
 	type Field,
+	type FieldBoolean,
+	type FieldInteger,
+	type FieldReference,
 	type FieldString,
 	maybeFileToSend,
 	parseTypeText,
@@ -244,6 +247,90 @@ export function toCustomSchema(
 			values: currencies,
 		});
 	}
+
+	// Hardcoded objects from the "Making requests" section of the Telegram Bot API docs.
+	// These are not present in the HTML anchor/table structure, so they are injected manually.
+	schema.objects.push({
+		name: "APIResponseOk",
+		anchor: "#making-requests",
+		description:
+			"If 'ok' equals True, the request was successful and the result of the query can be found in the 'result' field.",
+		type: "fields",
+		fields: [
+			{
+				key: "ok",
+				type: "boolean",
+				const: true,
+				required: true,
+				description: "If 'ok' equals True, the request was successful",
+			} satisfies FieldBoolean,
+			{
+				key: "result",
+				type: "string",
+				required: true,
+				description:
+					"The result of the query. The actual type depends on the called method.",
+			} satisfies FieldString,
+		],
+	} satisfies ObjectWithFields);
+
+	schema.objects.push({
+		name: "APIResponseError",
+		anchor: "#making-requests",
+		description:
+			"In case of an unsuccessful request, 'ok' equals false and the error is explained in the 'description'.",
+		type: "fields",
+		fields: [
+			{
+				key: "ok",
+				type: "boolean",
+				const: false,
+				required: true,
+				description: "In case of an unsuccessful request, 'ok' equals false",
+			} satisfies FieldBoolean,
+			{
+				key: "description",
+				type: "string",
+				required: true,
+				description: "A human-readable description of the result",
+			} satisfies FieldString,
+			{
+				key: "error_code",
+				type: "integer",
+				required: true,
+				description:
+					"An Integer error code. Its contents are subject to change in the future.",
+			} satisfies FieldInteger,
+			{
+				key: "parameters",
+				type: "reference",
+				required: false,
+				description:
+					"Optional field which can help to automatically handle the error",
+				reference: { name: "ResponseParameters", anchor: "#responseparameters" },
+			} satisfies FieldReference,
+		],
+	} satisfies ObjectWithFields);
+
+	schema.objects.push({
+		name: "APIResponse",
+		anchor: "#making-requests",
+		description:
+			"The response contains a JSON object, which always has a Boolean field 'ok'.",
+		type: "oneOf",
+		oneOf: [
+			{
+				key: "",
+				type: "reference",
+				reference: { name: "APIResponseOk", anchor: "#making-requests" },
+			} satisfies FieldReference,
+			{
+				key: "",
+				type: "reference",
+				reference: { name: "APIResponseError", anchor: "#making-requests" },
+			} satisfies FieldReference,
+		],
+	} satisfies ObjectWithOneOf);
 
 	return schema;
 }

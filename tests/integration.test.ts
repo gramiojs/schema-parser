@@ -134,7 +134,8 @@ describe("Integration Tests", () => {
 			const schema = toCustomSchema(version, sections);
 			expect(schema.version).toEqual(version);
 			expect(schema.methods.length).toBe(1);
-			expect(schema.objects.length).toBe(1);
+			// 1 parsed object + 3 hardcoded APIResponse* objects always injected
+			expect(schema.objects.length).toBe(4);
 			expect(schema.methods[0].name).toBe("getMe");
 			expect(schema.methods[0].hasMultipart).toBe(false);
 			expect(schema.objects[0].name).toBe("User");
@@ -623,6 +624,85 @@ describe("Integration Tests", () => {
 					expect(field.variants[0].reference.anchor).toBe("#inputfile");
 				}
 				expect(field.variants[1].type).toBe("string");
+			}
+		});
+
+		test("APIResponseOk is always injected with ok and result fields", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const schema = toCustomSchema(version, []);
+			const obj = schema.objects.find((o) => o.name === "APIResponseOk");
+			expect(obj).toBeDefined();
+			expect(obj?.type).toBe("fields");
+			expect(obj?.anchor).toBe("#making-requests");
+			if (obj?.type === "fields") {
+				const ok = obj.fields.find((f) => f.key === "ok");
+				expect(ok?.type).toBe("boolean");
+				if (ok?.type === "boolean") {
+					expect(ok.const).toBe(true);
+					expect(ok.required).toBe(true);
+				}
+				const result = obj.fields.find((f) => f.key === "result");
+				expect(result?.type).toBe("string");
+				expect(result?.required).toBe(true);
+			}
+		});
+
+		test("APIResponseError is always injected with all error fields", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const schema = toCustomSchema(version, []);
+			const obj = schema.objects.find((o) => o.name === "APIResponseError");
+			expect(obj).toBeDefined();
+			expect(obj?.type).toBe("fields");
+			if (obj?.type === "fields") {
+				const ok = obj.fields.find((f) => f.key === "ok");
+				expect(ok?.type).toBe("boolean");
+				if (ok?.type === "boolean") expect(ok.const).toBe(false);
+
+				const description = obj.fields.find((f) => f.key === "description");
+				expect(description?.type).toBe("string");
+				expect(description?.required).toBe(true);
+
+				const errorCode = obj.fields.find((f) => f.key === "error_code");
+				expect(errorCode?.type).toBe("integer");
+				expect(errorCode?.required).toBe(true);
+
+				const parameters = obj.fields.find((f) => f.key === "parameters");
+				expect(parameters?.type).toBe("reference");
+				expect(parameters?.required).toBe(false);
+				if (parameters?.type === "reference") {
+					expect(parameters.reference.name).toBe("ResponseParameters");
+					expect(parameters.reference.anchor).toBe("#responseparameters");
+				}
+			}
+		});
+
+		test("APIResponse is always injected as oneOf [APIResponseOk, APIResponseError]", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const schema = toCustomSchema(version, []);
+			const obj = schema.objects.find((o) => o.name === "APIResponse");
+			expect(obj).toBeDefined();
+			expect(obj?.type).toBe("oneOf");
+			if (obj?.type === "oneOf") {
+				expect(obj.oneOf.length).toBe(2);
+				const [first, second] = obj.oneOf;
+				expect(first?.type).toBe("reference");
+				if (first?.type === "reference")
+					expect(first.reference.name).toBe("APIResponseOk");
+				expect(second?.type).toBe("reference");
+				if (second?.type === "reference")
+					expect(second.reference.name).toBe("APIResponseError");
 			}
 		});
 
