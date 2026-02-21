@@ -149,6 +149,21 @@ function extractTypeAndRef(html: string): { text: string; href?: string } {
 	return { text };
 }
 
+function extractAllTypeRefs(html: string): TypeInfo[] {
+	const $ = cheerio.load(html);
+	const links = $("a");
+	if (links.length <= 1) return [];
+
+	const types: TypeInfo[] = [];
+	links.each((_, a) => {
+		const link = $(a);
+		const text = link.text().trim();
+		const href = link.attr("href");
+		if (text) types.push({ text, href });
+	});
+	return types;
+}
+
 function detectConst(description: string) {
 	const $ = cheerio.load(description);
 
@@ -177,6 +192,16 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 	const arrayMatch = typeInfo.text.match(/^Array of (.+)$/i);
 	if (arrayMatch) {
 		const innerTypeText = arrayMatch[1];
+		const multiRefs = extractAllTypeRefs(innerTypeText);
+		if (multiRefs.length > 1) {
+			return {
+				type: "array",
+				arrayOf: {
+					type: "one_of",
+					variants: multiRefs.map((t) => parseTypeText(t)),
+				},
+			} as FieldArray;
+		}
 		return {
 			type: "array",
 			arrayOf: parseTypeText({ text: innerTypeText }),

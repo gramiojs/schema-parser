@@ -262,6 +262,48 @@ describe("Type Parser", () => {
 			});
 		});
 
+		test("should parse Array of multiple references as array of one_of (sendMediaGroup.media)", () => {
+			const row: TableRow = {
+				name: "media",
+				type: {
+					text: 'Array of <a href="#inputmediaaudio">InputMediaAudio</a>, <a href="#inputmediadocument">InputMediaDocument</a>, <a href="#inputmediaphoto">InputMediaPhoto</a> and <a href="#inputmediavideo">InputMediaVideo</a>',
+				},
+				required: "Yes",
+				description:
+					"A JSON-serialized array describing messages to be sent, must include 2-10 items",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				key: "media",
+				type: "array",
+				arrayOf: {
+					type: "one_of",
+					variants: [
+						{
+							type: "reference",
+							reference: { name: "InputMediaAudio", anchor: "#inputmediaaudio" },
+						},
+						{
+							type: "reference",
+							reference: {
+								name: "InputMediaDocument",
+								anchor: "#inputmediadocument",
+							},
+						},
+						{
+							type: "reference",
+							reference: { name: "InputMediaPhoto", anchor: "#inputmediaphoto" },
+						},
+						{
+							type: "reference",
+							reference: { name: "InputMediaVideo", anchor: "#inputmediavideo" },
+						},
+					],
+				},
+			});
+		});
+
 		test("should parse nested array in reply_markup", () => {
 			const row: TableRow = {
 				name: "keyboard",
