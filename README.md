@@ -50,7 +50,8 @@ const sections = parseSections($, navbar.slice(3)).filter(
     (x) => !x.title.includes(" "),
 );
 
-const schema = toCustomSchema(version, sections);
+// Optionally pass currency codes fetched from Telegram's currencies endpoint
+const schema = toCustomSchema(version, sections, ["USD", "EUR", "GBP"]);
 ```
 
 ### Working with the schema
@@ -98,20 +99,22 @@ import type {
     Method,          // includes hasMultipart: boolean
 
     // Objects
-    ObjectBasic,
+    ObjectBasic,     // includes semanticType?: "markup"
     ObjectWithFields,
     ObjectWithOneOf,
     ObjectUnknown,
+    ObjectWithEnum,  // synthetic enum objects (e.g. Currencies)
 
     // Fields (discriminated union on `type`)
     Field,
     FieldInteger,    // includes min?, max?, default?, enum?
     FieldFloat,      // includes min?, max?, default?, enum?
-    FieldString,     // includes const?, default?, enum?, minLen?, maxLen?
+    FieldString,     // includes const?, default?, enum?, minLen?, maxLen?, semanticType?
     FieldBoolean,    // includes const?: boolean
     FieldArray,
     FieldReference,
     FieldOneOf,
+    FieldFile,       // file upload (replaces InputFile references in field types)
 } from "@gramio/schema-parser";
 ```
 
@@ -158,33 +161,43 @@ interface Method {
 
 ### Object
 
-Represents a Telegram Bot API type. Can be one of three variants:
+Represents a Telegram Bot API type. Can be one of four variants:
 
 ```ts
-// Object with named fields (e.g. Message, User)
-interface ObjectWithFields {
+// Base properties shared by all object variants
+interface ObjectBasic {
     name: string;
     anchor: string;
     description?: string;
+    /**
+     * "markup" — the object can be used as a reply_markup value
+     * (InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply)
+     */
+    semanticType?: "markup";
+}
+
+// Object with named fields (e.g. Message, User)
+interface ObjectWithFields extends ObjectBasic {
     type: "fields";
     fields: Field[];
 }
 
 // Union type — one of several possible types (e.g. ChatMember, BotCommandScope)
-interface ObjectWithOneOf {
-    name: string;
-    anchor: string;
-    description?: string;
+interface ObjectWithOneOf extends ObjectBasic {
     type: "oneOf";
     oneOf: Field[];
 }
 
 // Marker type with no fields or variants (e.g. ForumTopicClosed, CallbackGame)
-interface ObjectUnknown {
-    name: string;
-    anchor: string;
-    description?: string;
+interface ObjectUnknown extends ObjectBasic {
     type: "unknown";
+}
+
+// Named string enum — synthetic objects not present in the API docs HTML
+// (e.g. Currencies — all ISO 4217 codes supported by Telegram Payments)
+interface ObjectWithEnum extends ObjectBasic {
+    type: "enum";
+    values: string[];
 }
 ```
 
@@ -196,13 +209,20 @@ The core type describing a parameter or field. It is a discriminated union on th
 |--------|-------------|------------------|
 | `"integer"` | Integer number | `enum?`, `default?`, `min?`, `max?` |
 | `"float"` | Floating-point number | `enum?`, `default?`, `min?`, `max?` |
-| `"string"` | String value | `enum?`, `const?`¹, `default?`, `minLen?`, `maxLen?` |
+| `"string"` | String value | `enum?`, `const?`¹, `default?`, `minLen?`, `maxLen?`, `semanticType?`² |
 | `"boolean"` | Boolean value | `const?` (`true` / `false` for literal types) |
 | `"array"` | Array of another type | `arrayOf: Field` |
 | `"reference"` | Reference to another API type | `reference: { name, anchor }` |
 | `"one_of"` | Union of multiple types | `variants: Field[]` |
+| `"file"` | File upload (InputFile) | — |
 
 > ¹ **`const` vs `default` for strings**: `const` means the field *must* equal that exact value — it is always **required** (e.g. discriminator fields: `source: "unspecified"`, `status: "creator"`). `default` means the field is **optional** and falls back to that value when omitted.
+
+> ² **`semanticType` on string fields**:
+> - `"formattable"` — the string supports Telegram formatting entities (description contains "after entities parsing"), e.g. `text` in `sendMessage`
+> - `"updateType"` — the string (inside an array) is a Telegram update type name, e.g. elements of `allowed_updates` in `getUpdates`
+>
+> Currency string fields (ISO 4217) are **not** `type: "string"` — they become `type: "reference"` pointing to the synthetic `Currencies` enum object.
 
 All field types share these base properties:
 
@@ -290,19 +310,48 @@ interface FieldBasic {
 }
 ```
 
-**Union type (one_of):**
+**File upload field:**
+```json
+{
+    "type": "file",
+    "key": "document",
+    "required": true,
+    "description": "File to send."
+}
+```
+
+**File upload or string union:**
 ```json
 {
     "type": "one_of",
     "variants": [
-        {
-            "type": "reference",
-            "reference": { "name": "InputFile", "anchor": "#inputfile" }
-        },
+        { "type": "file" },
         { "type": "string" }
     ],
     "key": "photo",
     "required": true
+}
+```
+
+**Formattable string field:**
+```json
+{
+    "type": "string",
+    "semanticType": "formattable",
+    "key": "text",
+    "required": true,
+    "description": "Text of the message, 1-4096 characters after entities parsing"
+}
+```
+
+**Currency reference field:**
+```json
+{
+    "type": "reference",
+    "reference": { "name": "Currencies", "anchor": "#currencies" },
+    "key": "currency",
+    "required": true,
+    "description": "Three-letter ISO 4217 currency code"
 }
 ```
 
@@ -322,7 +371,7 @@ interface FieldBasic {
 
 ## How it works
 
-1. Fetches the Telegram Bot API HTML page (or reads from a local `api.html` cache)
+1. Fetches the Telegram Bot API HTML page and the [currencies JSON](https://core.telegram.org/bots/payments/currencies.json) in parallel (or reads from a local `api.html` cache)
 2. Parses navigation structure to discover all sections
 3. Extracts methods and types from HTML tables and lists
 4. Uses a **sentence-based parser** (ported from [tg-bot-api](https://github.com/ENCRYPTEDFOREVER/tg-bot-api)) to extract metadata from descriptions:
@@ -331,5 +380,12 @@ interface FieldBasic {
    - Numeric constraints (`"Values between 1-100"`, `"0-4096 characters"`)
    - Enum values (`"one of"`, `"Can be"`, `"either"` patterns, including `<code>` expressions)
    - Return types (`"Returns"`, `"On success"`, `"is returned"` patterns with exclusion rules)
-5. Detects file upload parameters (`InputFile`, `InputMedia*`, etc.) for `hasMultipart`
-6. Outputs a strongly-typed `CustomSchema` JSON
+5. Injects **semantic markers** directly into the schema:
+   - `InputFile` links → `type: "file"` (first-class field type instead of a reference)
+   - ISO 4217 currency string fields → `type: "reference"` pointing to a synthetic `Currencies` enum object
+   - `"after entities parsing"` in description → `semanticType: "formattable"` on string fields
+   - `"update type"` in array-of-string description → `semanticType: "updateType"` on the array element
+   - Markup object names (`*Markup`, `ReplyKeyboardRemove`, `ForceReply`) → `semanticType: "markup"` on the object
+   - A synthetic `{ type: "enum", values: string[] }` `Currencies` object appended to `schema.objects`
+6. Detects file upload parameters (`type: "file"`, `InputMedia*`, etc.) for `hasMultipart`
+7. Outputs a strongly-typed `CustomSchema` JSON
