@@ -63,9 +63,11 @@ export function parseAnchor(
 	let descriptionLastPText = "";
 
 	let currentNode = parentH4.next();
-	while (currentNode.length && currentNode.is("p")) {
+	while (currentNode.length && currentNode.is("p, blockquote")) {
 		descriptionHtml += $.html(currentNode);
-		descriptionLastPText = currentNode.text();
+		if (currentNode.is("p")) {
+			descriptionLastPText = currentNode.text();
+		}
 		currentDescriptionNode = currentNode;
 		currentNode = currentNode.next();
 	}
