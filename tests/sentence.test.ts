@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import {
+	extractConst,
 	extractDefault,
 	extractMinMax,
 	extractOneOf,
@@ -164,12 +165,12 @@ describe("Sentence Parser", () => {
 			expect(result).toBe("100");
 		});
 
-		test("should extract 'must be *italic*'", () => {
+		test("should NOT extract 'must be *italic*' as default", () => {
 			const sentences = parseDescriptionToSentences(
 				"The format must be <em>HTML</em>.",
 			);
 			const result = extractDefault(sentences);
-			expect(result).toBe("HTML");
+			expect(result).toBeUndefined();
 		});
 
 		test('should extract \'always "creator"\'', () => {
@@ -183,6 +184,30 @@ describe("Sentence Parser", () => {
 		test("should return undefined for no default", () => {
 			const sentences = parseDescriptionToSentences("No default here.");
 			const result = extractDefault(sentences);
+			expect(result).toBeUndefined();
+		});
+	});
+
+	describe("Const Extraction", () => {
+		test("should extract 'must be *italic*' as const", () => {
+			const sentences = parseDescriptionToSentences(
+				"The format must be <em>HTML</em>.",
+			);
+			const result = extractConst(sentences);
+			expect(result).toBe("HTML");
+		});
+
+		test("should extract discriminator const value", () => {
+			const sentences = parseDescriptionToSentences(
+				"Error source, must be <em>unspecified</em>",
+			);
+			const result = extractConst(sentences);
+			expect(result).toBe("unspecified");
+		});
+
+		test("should return undefined when no must-be pattern", () => {
+			const sentences = parseDescriptionToSentences("Some description without constraint.");
+			const result = extractConst(sentences);
 			expect(result).toBeUndefined();
 		});
 	});

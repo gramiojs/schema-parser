@@ -505,7 +505,7 @@ describe("Type Parser", () => {
 	});
 
 	describe("Const Detection", () => {
-		test("should parse const", () => {
+		test("should parse const from 'always X'", () => {
 			const row: TableRow = {
 				name: "status",
 				type: {
@@ -519,6 +519,38 @@ describe("Type Parser", () => {
 				type: "string",
 				const: "creator",
 			});
+		});
+
+		test("should parse discriminator const from 'must be *italic*' and keep required", () => {
+			const row: TableRow = {
+				name: "source",
+				type: { text: "String" },
+				description: "Error source, must be <em>unspecified</em>",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "unspecified",
+				required: true,
+			});
+			expect(result).not.toHaveProperty("default");
+		});
+
+		test("should parse type discriminator from 'must be *italic*' and keep required", () => {
+			const row: TableRow = {
+				name: "type",
+				type: { text: "String" },
+				description: "Type of element, must be <em>personal_details</em>",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "personal_details",
+				required: true,
+			});
+			expect(result).not.toHaveProperty("default");
 		});
 	});
 

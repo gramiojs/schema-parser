@@ -280,7 +280,7 @@ function matchesPart(search: SearchBy, part: Part): boolean {
 
 // ── Pattern Definitions ─────────────────────────────────────────────────────
 
-export type PatternType = "ReturnType" | "Default" | "MinMax" | "OneOf";
+export type PatternType = "ReturnType" | "Default" | "MinMax" | "OneOf" | "Const";
 
 function getPatterns(patternType: PatternType): SearcherPattern[] {
 	switch (patternType) {
@@ -300,8 +300,11 @@ function getPatterns(patternType: PatternType): SearcherPattern[] {
 				pattern([word("Defaults"), word("to")]),
 				pattern([word("defaults"), word("to")], { exclude: true }),
 				pattern([word("defaults"), word("to")]),
-				pattern([word("must"), word("be"), kind("italic")], { offset: -1 }),
 				pattern([word("always"), quotes()], { offset: -1 }),
+			];
+		case "Const":
+			return [
+				pattern([word("must"), word("be"), kind("italic")], { offset: -1 }),
 			];
 		case "MinMax":
 			return [
@@ -374,6 +377,14 @@ export function extractDefault(
 	sentences: Sentence[],
 ): string | undefined {
 	const result = matchPattern("Default", sentences);
+	if (!result || result.length === 0) return undefined;
+	return result[0].inner;
+}
+
+export function extractConst(
+	sentences: Sentence[],
+): string | undefined {
+	const result = matchPattern("Const", sentences);
 	if (!result || result.length === 0) return undefined;
 	return result[0].inner;
 }

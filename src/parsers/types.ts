@@ -2,6 +2,7 @@ import * as cheerio from "cheerio";
 import type { TableRow, TypeInfo } from "./archor.ts";
 import {
 	type ExtractedType,
+	extractConst,
 	extractDefault,
 	extractMinMax,
 	extractOneOf,
@@ -267,12 +268,13 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 				? parseDescriptionToSentences(description)
 				: [];
 			const defaultStr = extractDefault(sentences);
+			const mustBeConst = extractConst(sentences);
 			const minMax = extractMinMax(sentences);
 
 			return {
 				type: "string",
 				enum: enumValues?.length ? enumValues : undefined,
-				const: constValue,
+				const: constValue ?? mustBeConst,
 				...(defaultStr !== undefined && { default: defaultStr }),
 				...(minMax
 					? {
