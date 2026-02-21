@@ -21,6 +21,18 @@ turndownService.addRule("emoji-img", {
 	},
 });
 
+turndownService.addRule("telegram-file-img", {
+	filter: (node) =>
+		node.nodeName === "IMG" &&
+		(node as HTMLElement).getAttribute("src")?.startsWith("/file/") === true,
+	replacement: (_content, node) => {
+		const el = node as HTMLElement;
+		const alt = el.getAttribute("alt") ?? "";
+		const src = el.getAttribute("src") ?? "";
+		return `![${alt}](${TELEGRAM_URL}${src})`;
+	},
+});
+
 turndownService.addRule("link", {
 	filter: ["a"],
 	replacement: (content, node, _options) => {
@@ -30,7 +42,7 @@ turndownService.addRule("link", {
 			return content;
 		}
 
-		if (!node.textContent?.trim()) {
+		if (!content.trim()) {
 			return "";
 		}
 

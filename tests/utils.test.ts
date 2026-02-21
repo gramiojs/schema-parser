@@ -49,4 +49,18 @@ describe("htmlToMarkdown", () => {
 			expect(result).toContain("[https://core.telegram.org/stickers#animation-requirements](https://core.telegram.org/stickers#animation-requirements)");
 		});
 	});
+
+	describe("Telegram file images", () => {
+		test("should convert /file/ img src to full Telegram URL", () => {
+			const html = `<img src="/file/811140909/1631/20k1Z53eiyY.23995/c541e89b74253623d9" alt="LoginUrl" title="LoginUrl">`;
+			const result = htmlToMarkdown(html);
+			expect(result).toBe("![LoginUrl](https://core.telegram.org/file/811140909/1631/20k1Z53eiyY.23995/c541e89b74253623d9)");
+		});
+
+		test("should convert blog_image_wrap with linked image to markdown image", () => {
+			const html = `<div class="blog_image_wrap"><a href="/file/811140015/1734/8VZFkwWXalM.97872/6127fa62d8a0bf2b3c" target="_blank"><img src="/file/811140909/1631/20k1Z53eiyY.23995/c541e89b74253623d9" title="LoginUrl" alt="LoginUrl"></a></div>`;
+			const result = htmlToMarkdown(html);
+			expect(result).toContain("![LoginUrl](https://core.telegram.org/file/811140909/1631/20k1Z53eiyY.23995/c541e89b74253623d9)");
+		});
+	});
 });
