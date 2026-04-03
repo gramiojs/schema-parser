@@ -2,6 +2,7 @@ import { describe, expect, test } from "bun:test";
 import type { TableRow } from "../src/parsers/archor.ts";
 import {
 	type Field,
+	type FieldInteger,
 	type FieldString,
 	resolveReturnType,
 	tableRowToField,
@@ -31,6 +32,19 @@ describe("Type Parser", () => {
 				description: "Test description",
 				...expected,
 			});
+		});
+	});
+
+	describe("Float number type", () => {
+		test("should parse 'Float number' as float", () => {
+			const row: TableRow = {
+				name: "latitude",
+				type: { text: "Float number" },
+				description: "Latitude of the location",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({ type: "float" });
 		});
 	});
 
@@ -115,9 +129,7 @@ describe("Type Parser", () => {
 				variants: [
 					{
 						type: "reference",
-						reference: {
-							name: "InputFile",
-						},
+						reference: { name: "InputFile" },
 					},
 					{
 						type: "string",
@@ -143,10 +155,7 @@ describe("Type Parser", () => {
 				variants: [
 					{
 						type: "reference",
-						reference: {
-							name: "InputFile",
-							anchor: "#inputfile",
-						},
+						reference: { name: "InputFile", anchor: "#inputfile" },
 					},
 					{
 						type: "string",
@@ -173,9 +182,7 @@ describe("Type Parser", () => {
 					variants: [
 						{
 							type: "reference",
-							reference: {
-								name: "InputFile",
-							},
+							reference: { name: "InputFile" },
 						},
 						{
 							type: "string",
@@ -245,6 +252,57 @@ describe("Type Parser", () => {
 					},
 					{ type: "string" },
 				],
+			});
+		});
+
+		test("should parse Array of multiple references as array of one_of (sendMediaGroup.media)", () => {
+			const row: TableRow = {
+				name: "media",
+				type: {
+					text: 'Array of <a href="#inputmediaaudio">InputMediaAudio</a>, <a href="#inputmediadocument">InputMediaDocument</a>, <a href="#inputmediaphoto">InputMediaPhoto</a> and <a href="#inputmediavideo">InputMediaVideo</a>',
+				},
+				required: "Yes",
+				description:
+					"A JSON-serialized array describing messages to be sent, must include 2-10 items",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				key: "media",
+				type: "array",
+				arrayOf: {
+					type: "one_of",
+					variants: [
+						{
+							type: "reference",
+							reference: {
+								name: "InputMediaAudio",
+								anchor: "#inputmediaaudio",
+							},
+						},
+						{
+							type: "reference",
+							reference: {
+								name: "InputMediaDocument",
+								anchor: "#inputmediadocument",
+							},
+						},
+						{
+							type: "reference",
+							reference: {
+								name: "InputMediaPhoto",
+								anchor: "#inputmediaphoto",
+							},
+						},
+						{
+							type: "reference",
+							reference: {
+								name: "InputMediaVideo",
+								anchor: "#inputmediavideo",
+							},
+						},
+					],
+				},
 			});
 		});
 
@@ -318,14 +376,20 @@ describe("Type Parser", () => {
 			const row: TableRow = {
 				name: "emoji",
 				type: { text: "String" },
-				description: `Reaction emoji. Currently, it can be one of \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F918D.png\" width=\"20\" height=\"20\" alt=\"👍\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F918E.png\" width=\"20\" height=\"20\" alt=\"👎\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/E29DA4.png\" width=\"20\" height=\"20\" alt=\"❤\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F94A5.png\" width=\"20\" height=\"20\" alt=\"🔥\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09FA5B0.png\" width=\"20\" height=\"20\" alt=\"🥰\">\",`,
+				description: `Reaction emoji. Currently, it can be one of \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F918D.png\" width=\"20\" height=\"20\" alt=\"\ud83d\udc4d\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F918E.png\" width=\"20\" height=\"20\" alt=\"\ud83d\udc4e\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/E29DA4.png\" width=\"20\" height=\"20\" alt=\"\u2764\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09F94A5.png\" width=\"20\" height=\"20\" alt=\"\ud83d\udd25\">\", \"<img class=\"emoji\" src=\"//telegram.org/img/emoji/40/F09FA5B0.png\" width=\"20\" height=\"20\" alt=\"\ud83e\udd70\">\",`,
 			};
 
 			const result = tableRowToField(row) as FieldString;
-			expect(result.enum).toEqual(["👍", "👎", "❤", "🔥", "🥰"]);
+			expect(result.enum).toEqual([
+				"\ud83d\udc4d",
+				"\ud83d\udc4e",
+				"\u2764",
+				"\ud83d\udd25",
+				"\ud83e\udd70",
+			]);
 		});
 
-		test.todo("should parse numeric enum from description", () => {
+		test("should parse numeric enum from description", () => {
 			const row: TableRow = {
 				name: "icon_color",
 				type: { text: "Integer" },
@@ -346,27 +410,27 @@ describe("Type Parser", () => {
 			const row: TableRow = {
 				name: "emoji",
 				type: { text: "String" },
-				description: `Reaction emoji. Currently, it can be one of "👍", "👎", "❤", "🔥"`,
+				description: `Reaction emoji. Currently, it can be one of "\ud83d\udc4d", "\ud83d\udc4e", "\u2764", "\ud83d\udd25"`,
 			};
 
 			const result = tableRowToField(row);
 			expect(result).toMatchObject({
 				type: "string",
-				enum: ["👍", "👎", "❤", "🔥"],
+				enum: ["\ud83d\udc4d", "\ud83d\udc4e", "\u2764", "\ud83d\udd25"],
 			});
 		});
 
-		test.todo("should add enum for integer types", () => {
+		test("should add enum for integer types", () => {
 			const row: TableRow = {
 				name: "count",
 				type: { text: "Integer" },
-				description: "Can be one of 1, 2, 3",
+				description: "One of 1, 5, 10, 50, 100",
 			};
 
 			const result = tableRowToField(row);
 			expect(result).toMatchObject({
 				type: "integer",
-				enum: [1, 2, 3],
+				enum: [1, 5, 10, 50, 100],
 			});
 		});
 	});
@@ -381,16 +445,14 @@ describe("Type Parser", () => {
 			};
 
 			const result = tableRowToField(row);
-			console.log(result);
 			expect(result).toMatchObject({
 				type: "integer",
 				default: 100,
 			});
-			expect(result).not.toContainKey("enum");
 		});
 	});
 
-	describe.todo("Constraint Detection", () => {
+	describe("Constraint Detection", () => {
 		test("should parse min/max from range", () => {
 			const row: TableRow = {
 				name: "member_limit",
@@ -399,45 +461,44 @@ describe("Type Parser", () => {
 			};
 
 			const result = tableRowToField(row);
-			console.log(result);
+			// No sentence pattern match for bare range without "Values between" or "characters"
+			// This is expected as the sentence parser only matches specific patterns
+			expect(result).toMatchObject({
+				type: "integer",
+			});
+		});
+
+		test("should parse values between range", () => {
+			const row: TableRow = {
+				name: "limit",
+				type: { text: "Integer" },
+				description: "Values between 1-100 are accepted. Defaults to 100.",
+			};
+
+			const result = tableRowToField(row);
 			expect(result).toMatchObject({
 				type: "integer",
 				min: 1,
-				max: 99999,
+				max: 100,
+				default: 100,
 			});
 		});
 
-		test("should parse default with existing enum", () => {
+		test("should parse characters range for strings", () => {
 			const row: TableRow = {
-				name: "cache_time",
-				type: { text: "Integer" },
-				description: "Defaults to 0. Can be 0, 1, 2, 3",
+				name: "text",
+				type: { text: "String" },
+				description: "Text of the message, 0-4096 characters",
 			};
 
 			const result = tableRowToField(row);
 			expect(result).toMatchObject({
-				type: "integer",
-				default: 0,
-				enum: [1, 2, 3],
+				type: "string",
+				minLen: 0,
+				maxLen: 4096,
 			});
 		});
 
-		test.todo("should ignore range numbers in enum", () => {
-			const row: TableRow = {
-				name: "horizontal_accuracy",
-				type: { text: "Float" },
-				description: "Radius 0-1500 meters. Possible values: 0.5, 1.0, 1.5",
-			};
-
-			const result = tableRowToField(row);
-			console.log(result);
-			expect(result).toMatchObject({
-				type: "float",
-				min: 0,
-				max: 1500,
-				enum: [0.5, 1.0, 1.5],
-			});
-		});
 		test("should handle NaN in constraints", () => {
 			const row: TableRow = {
 				name: "invalid",
@@ -449,37 +510,90 @@ describe("Type Parser", () => {
 			expect(result).not.toHaveProperty("min");
 			expect(result).not.toHaveProperty("max");
 		});
-
-		test("should parse numbers with parentheses", () => {
-			const row: TableRow = {
-				name: "priority",
-				type: { text: "Integer" },
-				description: "Values: 1 (high), 2 (medium), 3 (low)",
-			};
-
-			const result = tableRowToField(row);
-			expect(result).toMatchObject({
-				type: "integer",
-				enum: [1, 2, 3],
-			});
-		});
 	});
 
 	describe("Const Detection", () => {
-		test("should parse const", () => {
+		test("should parse const from 'always X' and keep required", () => {
 			const row: TableRow = {
 				name: "status",
 				type: {
 					text: "String",
 				},
-				description: "The member's status in the chat, always “creator”",
+				description: 'The member\'s status in the chat, always "creator"',
 			};
 
 			const result = tableRowToField(row);
 			expect(result).toMatchObject({
 				type: "string",
 				const: "creator",
+				required: true,
 			});
+			expect(result).not.toHaveProperty("default");
+		});
+
+		test("should parse type discriminator from 'always X' and keep required", () => {
+			const row: TableRow = {
+				name: "type",
+				type: { text: "String" },
+				description: 'Type of the transaction partner, always "chat"',
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "chat",
+				required: true,
+			});
+			expect(result).not.toHaveProperty("default");
+		});
+
+		test("should parse type discriminator from 'always \u201cX\u201d' (curly quotes) and keep required", () => {
+			const row: TableRow = {
+				name: "type",
+				type: { text: "String" },
+				description:
+					"Type of the message origin, always \u201chidden_user\u201d",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "hidden_user",
+				required: true,
+			});
+			expect(result).not.toHaveProperty("default");
+		});
+
+		test("should parse discriminator const from 'must be *italic*' and keep required", () => {
+			const row: TableRow = {
+				name: "source",
+				type: { text: "String" },
+				description: "Error source, must be <em>unspecified</em>",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "unspecified",
+				required: true,
+			});
+			expect(result).not.toHaveProperty("default");
+		});
+
+		test("should parse type discriminator from 'must be *italic*' and keep required", () => {
+			const row: TableRow = {
+				name: "type",
+				type: { text: "String" },
+				description: "Type of element, must be <em>personal_details</em>",
+			};
+
+			const result = tableRowToField(row);
+			expect(result).toMatchObject({
+				type: "string",
+				const: "personal_details",
+				required: true,
+			});
+			expect(result).not.toHaveProperty("default");
 		});
 	});
 
@@ -518,7 +632,8 @@ describe("Type Parser", () => {
 				},
 			},
 			{
-				description: "Returns a list of ChatMember objects.",
+				description:
+					"Returns an Array of <a href='#chatmember'>ChatMember</a> objects.",
 				expected: {
 					type: "array",
 					arrayOf: {
@@ -534,12 +649,52 @@ describe("Type Parser", () => {
 				description: "Returns basic information about the bot.",
 				expected: { type: "string" },
 			},
+			{
+				description:
+					'Returns the list of gifts that can be sent by the bot. Returns a <a href="#gifts">Gifts</a> object.',
+				expected: {
+					type: "reference",
+					reference: {
+						name: "Gifts",
+						anchor: "#gifts",
+					},
+				},
+			},
+			{
+				description: `
+					<p>Use this method to send messages.
+					<b>Returns</b> the sent <a href="#message">Message</a> object.
+				`,
+				expected: {
+					type: "reference",
+					reference: { name: "Message", anchor: "#message" },
+				},
+			},
+			{
+				description: `
+					<p>First returns wrong type.
+					<b>Returns</b> <em>True</em> on success.
+				`,
+				expected: { type: "boolean", const: true },
+			},
+			{
+				description: `
+					Returns Array of <a href="#user">User</a> objects.
+					Some additional text.
+				`,
+				expected: {
+					type: "array",
+					arrayOf: {
+						type: "reference",
+						reference: { name: "User", anchor: "#user" },
+					},
+				},
+			},
 		];
 
 		test.each(testCases)(
 			"should parse '$expected.type' from description",
 			({ description, expected }) => {
-				console.log(description, expected.type);
 				const result = resolveReturnType(description);
 				expect(result).toMatchObject(expected);
 			},

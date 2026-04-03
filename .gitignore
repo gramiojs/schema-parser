@@ -177,3 +177,4 @@ dist
 api.html
 sections.json
 last-version.json
+**/*.local.json

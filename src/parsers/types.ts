@@ -1,7 +1,22 @@
 import * as cheerio from "cheerio";
 import type { TableRow, TypeInfo } from "./archor.ts";
+import {
+	type ExtractedType,
+	extractConst,
+	extractDefault,
+	extractMinMax,
+	extractOneOf,
+	extractReturnType,
+	extractTypeFromParts,
+	parseDescriptionToSentences,
+	stripPluralEnding,
+} from "./sentence.ts";
 import { htmlToMarkdown } from "./utils.ts";
 
+/**
+ * Discriminant for the {@link Field} union — the value of the `type` property
+ * that identifies which concrete field interface is in use.
+ */
 export type TypeUnion =
 	| "integer"
 	| "float"
@@ -11,55 +26,133 @@ export type TypeUnion =
 	| "reference"
 	| "one_of";
 
+/**
+ * Properties shared by every field variant.
+ * Extended by all `Field*` interfaces.
+ */
 export interface FieldBasic {
+	/** The parameter / field name as it appears in the Telegram Bot API docs. */
 	key: string;
+	/**
+	 * Whether the field is required.
+	 * - `true` — must always be provided.
+	 * - `false` — optional (may have a {@link FieldInteger.default} / {@link FieldString.default}).
+	 * - `undefined` — not determined (treat as optional).
+	 */
 	required?: boolean;
+	/** Markdown-formatted field description converted from the API HTML. */
 	description?: string;
 }
 
+/** An integer-valued field parsed from the Telegram Bot API docs. */
 export interface FieldInteger extends FieldBasic {
 	type: "integer";
+	/** Allowed discrete values (e.g. icon colour palette integers). */
 	enum?: number[];
+	/** Default value applied when the field is omitted. Makes `required` false. */
 	default?: number;
+	/** Inclusive lower bound (from "Values between X-Y" descriptions). */
+	min?: number;
+	/** Inclusive upper bound (from "Values between X-Y" descriptions). */
+	max?: number;
 }
 
+/** A floating-point-valued field parsed from the Telegram Bot API docs. */
 export interface FieldFloat extends FieldBasic {
 	type: "float";
+	/** Default value applied when the field is omitted. Makes `required` false. */
 	default?: number;
+	/** Allowed discrete values. */
 	enum?: number[];
+	/** Inclusive lower bound. */
+	min?: number;
+	/** Inclusive upper bound. */
+	max?: number;
 }
 
+/** A string-valued field parsed from the Telegram Bot API docs. */
 export interface FieldString extends FieldBasic {
 	type: "string";
+	/**
+	 * A fixed constant the field must always equal.
+	 * Used for discriminator fields in union types (e.g. `source: "unspecified"`)
+	 * and for status fields (e.g. `status: "creator"`).
+	 * A `const` field is always **required** — it is never a default.
+	 */
 	const?: string;
+	/**
+	 * Allowed string values when the field is an enum
+	 * (extracted from description patterns like `"Can be one of"`, `"either"`, etc.).
+	 */
 	enum?: string[];
+	/** Default value applied when the field is omitted. Makes `required` false. */
+	default?: string;
+	/** Minimum allowed string length (from "X-Y characters" descriptions). */
+	minLen?: number;
+	/** Maximum allowed string length (from "X-Y characters" descriptions). */
+	maxLen?: number;
+	/**
+	 * Semantic subtype of the string value:
+	 * - `"formattable"` — supports Telegram formatting entities ("after entities parsing")
+	 * - `"updateType"` — is a Telegram update type name (e.g. "message", "callback_query")
+	 */
+	semanticType?: "formattable" | "updateType";
 }
 
+/** A boolean-valued field parsed from the Telegram Bot API docs. */
 export interface FieldBoolean extends FieldBasic {
 	type: "boolean";
+	/**
+	 * A literal boolean constant.
+	 * - `true` — the field is the `True` literal type (e.g. method return types).
+	 * - `false` — the field is the `False` literal type.
+	 * - `undefined` — any boolean value is accepted.
+	 */
 	const?: boolean;
 }
 
+/** An array-valued field parsed from the Telegram Bot API docs. */
 export interface FieldArray extends FieldBasic {
 	type: "array";
+	/** The type of each element in the array. May itself be a `one_of` for multi-type arrays. */
 	arrayOf: Field;
 }
 
+/** A named reference to another Telegram Bot API type. */
 export interface Reference {
+	/** The type name as it appears in the docs (e.g. `"Message"`, `"PhotoSize"`). */
 	name: string;
+	/** The anchor href pointing to the type definition (e.g. `"#message"`). */
 	anchor: string;
 }
 
+/** A field whose type is a reference to another named Telegram Bot API object. */
 export interface FieldReference extends FieldBasic {
 	type: "reference";
+	/** The referenced type. */
 	reference: Reference;
 }
 
+/**
+ * A field whose type is a union of multiple possible types
+ * (e.g. `InputFile or String`, `Array of InputMedia*`).
+ */
 export interface FieldOneOf extends FieldBasic {
 	type: "one_of";
+	/** The possible concrete types; at least two variants are always present. */
 	variants: Field[];
 }
 
+/**
+ * A discriminated union of all possible field types.
+ * Narrow via the `type` property:
+ *
+ * ```ts
+ * if (field.type === "string") {
+ *   field.const; // string | undefined
+ * }
+ * ```
+ */
 export type Field =
 	| FieldInteger
 	| FieldFloat
@@ -69,70 +162,8 @@ export type Field =
 	| FieldReference
 	| FieldOneOf;
 
-const PATTERNS = {
-	DEFAULT: [/defaults? to (\d+)/i, /always "([^"]+)"/gi],
-	MIN_MAX: [
-		/values? between (\d+)[-\s]+(?:and|to) (\d+)/gi,
-		/(\d+)\s*-\s*(\d+)/g,
-		/must be between (\d+) and (\d+)/gi,
-	],
-	ONE_OF: [
-		/can be (?:one of|either) ("[^"]+"(?:, ?"[^"]+")+)/g,
-		/possible values are ((?:\d+|"[^"]+")(?:, ?(?:\d+|"[^"]+"))+)/gi,
-	],
-};
-
-function detectPatterns(description: string) {
-	const result: {
-		min?: number;
-		max?: number;
-		default?: number;
-		enum?: (string | number)[];
-	} = {};
-
-	for (const pattern of PATTERNS.DEFAULT) {
-		const match = description.match(pattern);
-		if (match) {
-			result.default = Number.parseInt(match[1], 10);
-			break;
-		}
-	}
-
-	for (const pattern of PATTERNS.MIN_MAX) {
-		const match = description.match(pattern);
-		if (match) {
-			result.min = Number.parseInt(match[1], 10);
-			result.max = Number.parseInt(match[2], 10);
-			break;
-		}
-	}
-
-	for (const pattern of PATTERNS.ONE_OF) {
-		const match = description.match(pattern);
-		if (match) {
-			result.enum = match[1]
-				.split(/, ?/)
-				.map((v) => v.replace(/^"|"$/g, ""))
-				.map((v) => (Number.isNaN(Number(v)) ? v : Number(v)));
-			break;
-		}
-	}
-
-	return result;
-}
-
-function detectDefault(description: string): number | undefined {
-	const $ = cheerio.load(description);
-
-	const defaultMatch = $.text().match(
-		/(?:default(?:s to)?|default is)\D*(?<![-–])(\d+)(?!\s*[-–])/i,
-	);
-
-	if (defaultMatch) {
-		return Number(defaultMatch[1]);
-	}
-
-	return undefined;
+function uniqueArray(array: (string | number)[]): (string | number)[] {
+	return [...new Set(array)];
 }
 
 function detectEnum(
@@ -148,10 +179,22 @@ function detectEnum(
 		.get()
 		.filter(Boolean);
 
-	if (emojiAlts.length > 0) {
-		return emojiAlts as string[];
+	if (emojiAlts.length > 0 && type !== "number") {
+		return uniqueArray(emojiAlts as string[]);
 	}
 
+	// Try sentence-based oneOf extraction (require at least 2 values for enum)
+	const sentences = parseDescriptionToSentences(description);
+	const oneOfValues = extractOneOf(sentences);
+	if (oneOfValues && oneOfValues.length > 1) {
+		if (type === "number") {
+			const nums = oneOfValues.map(Number).filter((n) => !Number.isNaN(n));
+			return nums.length > 1 ? uniqueArray(nums) : undefined;
+		}
+		return uniqueArray(oneOfValues);
+	}
+
+	// Fallback: quoted strings from clean description
 	const cleanDescription = description
 		.replace(/<img[^>]+>/g, "")
 		.replace(/<[^>]+>/g, " ")
@@ -160,88 +203,10 @@ function detectEnum(
 
 	const quotedMatches = Array.from(cleanDescription.matchAll(/(["'])(.*?)\1/g));
 	if (quotedMatches.length > 1) {
-		return quotedMatches.map((m) => m[2]);
-	}
-
-	for (const pattern of PATTERNS.ONE_OF) {
-		const matches = Array.from(cleanDescription.matchAll(pattern));
-		if (matches.length > 0) {
-			return matches
-				.flatMap((m) => m.slice(1).filter(Boolean))
-				.map((v) => v.replace(/^["']+|["']+$/g, ""))
-				.filter((v) => v.length > 0);
-		}
-	}
-
-	if (type === "number") {
-		const numbers: number[] = [];
-		const numberRegex = /\b(\d+)\b/g;
-		let match: RegExpExecArray | null;
-
-		// biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
-		while ((match = numberRegex.exec(description)) !== null) {
-			const num = Number(match[1]);
-			if (!Number.isNaN(num)) numbers.push(num);
-		}
-
-		const constraints = detectConstraints(description);
-		const filtered = numbers.filter(
-			(n) =>
-				n !== constraints.min &&
-				n !== constraints.max &&
-				n !== constraints.default,
-		);
-
-		return filtered.length > 1 ? [...new Set(filtered)] : undefined;
+		return uniqueArray(quotedMatches.map((m) => m[2]));
 	}
 
 	return undefined;
-}
-
-function detectConstraints(description: string): {
-	min?: number;
-	max?: number;
-	default?: number;
-} {
-	const constraints: { min?: number; max?: number; default?: number } = {};
-
-	const rangeMatch = description.match(/(\d+)\s*[-–]\s*(\d+)(?=\D*$)/);
-	if (rangeMatch) {
-		const min = Number.parseInt(rangeMatch[1], 10);
-		const max = Number.parseInt(rangeMatch[2], 10);
-		if (!Number.isNaN(min)) constraints.min = min;
-		if (!Number.isNaN(max)) constraints.max = max;
-	}
-
-	const minMatch = description.match(/(?:\bmin(?:imum)?\D*)(\d+)/i);
-	const maxMatch = description.match(/(?:\bmax(?:imum)?\D*)(\d+)/i);
-	if (minMatch) constraints.min = Number.parseInt(minMatch[1], 10);
-	if (maxMatch) constraints.max = Number.parseInt(maxMatch[1], 10);
-
-	const defaultMatch = description.match(/(?:\bdefault(?:s to)?\D*)(\d+)/i);
-	if (defaultMatch) constraints.default = Number.parseInt(defaultMatch[1], 10);
-
-	return constraints;
-}
-
-function detectNumbers(description: string) {
-	const numbers: number[] = [];
-	const numberFormats = [
-		/(\d+\.?\d*)\s*\([^)]+\)/g,
-		/\b\d+\.?\d*\b/g,
-		/\\u\{\w+\}/g,
-	];
-
-	for (const format of numberFormats) {
-		let match: RegExpExecArray | null;
-		while ((match = format.exec(description)) !== null) {
-			const numValue = match[1] || match[0];
-			const num = Number.parseFloat(numValue);
-			if (!Number.isNaN(num)) numbers.push(num);
-		}
-	}
-
-	return [...new Set(numbers)];
 }
 
 function extractTypeAndRef(html: string): { text: string; href?: string } {
@@ -260,17 +225,61 @@ function extractTypeAndRef(html: string): { text: string; href?: string } {
 	return { text };
 }
 
+function extractAllTypeRefs(html: string): TypeInfo[] {
+	const $ = cheerio.load(html);
+	const links = $("a");
+	if (links.length <= 1) return [];
+
+	const types: TypeInfo[] = [];
+	links.each((_, a) => {
+		const link = $(a);
+		const text = link.text().trim();
+		const href = link.attr("href");
+		if (text) types.push({ text, href });
+	});
+	return types;
+}
+
 function detectConst(description: string) {
 	const $ = cheerio.load(description);
 
-	const constMatch = $.text().match(/always\s+["“]([^"”]+)["”]/i);
+	const constMatch = $.text().match(
+		/always\s+["\u201c\u201d]([^"\u201c\u201d]+)["\u201c\u201d]/i,
+	);
 	return constMatch ? constMatch[1] : undefined;
+}
+
+function parseFieldDetailsSentence(description: string): {
+	min?: number;
+	max?: number;
+	default?: number;
+} {
+	const sentences = parseDescriptionToSentences(description);
+
+	const defaultStr = extractDefault(sentences);
+	const minMax = extractMinMax(sentences);
+
+	return {
+		min: minMax ? Number(minMax.min) : undefined,
+		max: minMax ? Number(minMax.max) : undefined,
+		default: defaultStr !== undefined ? Number(defaultStr) : undefined,
+	};
 }
 
 export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 	const arrayMatch = typeInfo.text.match(/^Array of (.+)$/i);
 	if (arrayMatch) {
 		const innerTypeText = arrayMatch[1];
+		const multiRefs = extractAllTypeRefs(innerTypeText);
+		if (multiRefs.length > 1) {
+			return {
+				type: "array",
+				arrayOf: {
+					type: "one_of",
+					variants: multiRefs.map((t) => parseTypeText(t)),
+				},
+			} as FieldArray;
+		}
 		return {
 			type: "array",
 			arrayOf: parseTypeText({ text: innerTypeText }),
@@ -297,28 +306,38 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 
 	switch (text.trim()) {
 		case "Integer": {
-			const details = parseFieldDetails(description || "", "number");
-			return {
-				type: "integer",
-				...(details.min !== undefined && { min: details.min }),
-				...(details.max !== undefined && { max: details.max }),
-				...(details.default !== undefined && { default: details.default }),
-				...(details.enum?.length ? { enum: details.enum } : {}),
-			} as FieldInteger;
-		}
-		case "Float": {
+			const details = parseFieldDetailsSentence(description || "");
 			const enumValues = description
-				? detectEnum(description, "number")?.map(Number)
+				? (detectEnum(description, "number") as number[] | undefined)
 				: undefined;
 
-			const defaultNumber = description
-				? detectDefault(description)
+			return {
+				type: "integer",
+				...(details.min !== undefined &&
+					!Number.isNaN(details.min) && { min: details.min }),
+				...(details.max !== undefined &&
+					!Number.isNaN(details.max) && { max: details.max }),
+				...(details.default !== undefined &&
+					!Number.isNaN(details.default) && { default: details.default }),
+				...(enumValues?.length ? { enum: enumValues } : {}),
+			} as FieldInteger;
+		}
+		case "Float":
+		case "Float number": {
+			const details = parseFieldDetailsSentence(description || "");
+			const enumValues = description
+				? (detectEnum(description, "number") as number[] | undefined)
 				: undefined;
 
 			return {
 				type: "float",
+				...(details.min !== undefined &&
+					!Number.isNaN(details.min) && { min: details.min }),
+				...(details.max !== undefined &&
+					!Number.isNaN(details.max) && { max: details.max }),
+				...(details.default !== undefined &&
+					!Number.isNaN(details.default) && { default: details.default }),
 				...(enumValues?.length ? { enum: enumValues } : {}),
-				...(defaultNumber ? { default: defaultNumber } : {}),
 			} as FieldFloat;
 		}
 		case "String": {
@@ -328,10 +347,24 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 
 			const constValue = description ? detectConst(description) : undefined;
 
+			const sentences = description
+				? parseDescriptionToSentences(description)
+				: [];
+			const defaultStr = extractDefault(sentences);
+			const mustBeConst = extractConst(sentences);
+			const minMax = extractMinMax(sentences);
+
 			return {
 				type: "string",
 				enum: enumValues?.length ? enumValues : undefined,
-				const: constValue,
+				const: constValue ?? mustBeConst,
+				...(defaultStr !== undefined && { default: defaultStr }),
+				...(minMax
+					? {
+							...(minMax.min && { minLen: Number(minMax.min) }),
+							...(minMax.max && { maxLen: Number(minMax.max) }),
+						}
+					: {}),
 			} as FieldString;
 		}
 		case "Boolean":
@@ -345,7 +378,7 @@ export function parseTypeText(typeInfo: TypeInfo, description?: string): Field {
 				return {
 					type: "reference",
 					reference: {
-						name: text,
+						name: text.trim(),
 						anchor: finalHref,
 					},
 				} as FieldReference;
@@ -360,108 +393,172 @@ export function tableRowToField(tableRow: TableRow): Field {
 
 	const required = tableRow.required?.toLowerCase().includes("yes")
 		? true
-		: !$.text().toLowerCase().startsWith("optional");
+		: tableRow.required?.toLowerCase().includes("optional")
+			? false
+			: !$.text().toLowerCase().startsWith("optional");
 
-	return {
+	const field: Field = {
 		...typeField,
 		key: tableRow.name,
-		required,
+		required:
+			"default" in typeField && typeField.default !== undefined
+				? false
+				: required,
 		description: htmlToMarkdown(tableRow.description),
 	};
+
+	const descText = $.text();
+
+	// Currency fields reference the synthetic Currencies enum object
+	if (descText.includes("ISO 4217") && field.type === "string") {
+		return {
+			...field,
+			type: "reference",
+			reference: { name: "Currencies", anchor: "#currencies" },
+		} as unknown as Field;
+	}
+
+	// String fields that accept file uploads via attach:// (typed as String in the API,
+	// but described with the "More information on Sending Files" link) become one_of: [InputFile, string]
+	if (field.type === "string" && descText.includes("More information on Sending Files")) {
+		return {
+			key: field.key,
+			required: field.required,
+			description: field.description,
+			type: "one_of",
+			variants: [
+				{
+					type: "reference",
+					reference: { name: "InputFile", anchor: "#inputfile" },
+				} as FieldReference,
+				{ type: "string" } as FieldString,
+			] as Field[],
+		} as FieldOneOf;
+	}
+
+	// semanticType on string fields
+	if (field.type === "string") {
+		if (descText.includes("after entities parsing")) {
+			(field as FieldString).semanticType = "formattable";
+		}
+	}
+
+	// semanticType on arrayOf string fields
+	if (field.type === "array" && field.arrayOf.type === "string") {
+		if (descText.includes("update type")) {
+			(field.arrayOf as FieldString).semanticType = "updateType";
+		}
+	}
+
+	return field;
 }
 
-function parseFieldDetails(description: string, type: "number" | "string") {
-	const patterns = detectPatterns(description);
-	// const numbers = detectNumbers(description);
-	const numbers: number[] = [];
-	const constraints = detectConstraints(description);
+function extractedTypeToField(extracted: ExtractedType): Omit<Field, "key"> {
+	switch (extracted.kind) {
+		case "single": {
+			const name = extracted.name || "";
 
-	const filteredNumbers = numbers.filter(
-		(n) =>
-			n !== patterns.default && n !== constraints.min && n !== constraints.max,
-	);
+			if (name === "True")
+				return { type: "boolean", const: true } as Omit<FieldBoolean, "key">;
+			if (name === "False")
+				return { type: "boolean", const: false } as Omit<FieldBoolean, "key">;
+			if (name === "Int" || name === "Integer")
+				return { type: "integer" } as Omit<FieldInteger, "key">;
+			if (name === "String")
+				return { type: "string" } as Omit<FieldString, "key">;
+			if (name === "Boolean")
+				return { type: "boolean" } as Omit<FieldBoolean, "key">;
 
-	return {
-		min: constraints.min,
-		max: constraints.max,
-		default: patterns.default,
-		required: true,
-		enum:
-			patterns.enum?.length && type === "string"
-				? patterns.enum.filter((v) =>
-						typeof v === "number"
-							? v !== patterns.default &&
-								v !== constraints.min &&
-								v !== constraints.max
-							: true,
-					)
-				: filteredNumbers.length > 1
-					? filteredNumbers
-					: undefined,
-	};
+			const anchor =
+				extracted.href || `#${name.toLowerCase().replace(/ objects?/i, "")}`;
+			return {
+				type: "reference",
+				reference: {
+					name: name.replace(/ objects?/i, ""),
+					anchor,
+				},
+			} as Omit<FieldReference, "key">;
+		}
+		case "array": {
+			if (!extracted.inner)
+				return { type: "string" } as Omit<FieldString, "key">;
+			return {
+				type: "array",
+				arrayOf: extractedTypeToField(extracted.inner) as Field,
+			} as Omit<FieldArray, "key">;
+		}
+		case "or": {
+			if (!extracted.variants || extracted.variants.length === 0)
+				return { type: "string" } as Omit<FieldString, "key">;
+			return {
+				type: "one_of",
+				variants: extracted.variants.map(
+					(v) => extractedTypeToField(v) as Field,
+				),
+			} as Omit<FieldOneOf, "key">;
+		}
+	}
 }
 
 export function resolveReturnType(description: string): Omit<Field, "key"> {
 	const $ = cheerio.load(description);
-	const returnClause =
-		$.root()
-			.text()
-			.match(/Returns (.*?)(\.|$)/i)?.[1] || "";
-	const htmlReturnClause =
-		$.root()
-			.html()
-			?.match(/Returns (.*?)(\.|$)/i)?.[1] || "";
+	const text = $.text();
 
-	if (
-		returnClause.toLowerCase().includes("true") ||
-		returnClause.toLowerCase().includes("false")
-	) {
-		return {
-			type: "boolean",
-			const: returnClause.toLowerCase().includes("true"),
-		} as FieldBoolean;
+	// Check for simple True/False returns (only when no "otherwise" present)
+	if (!text.includes("otherwise")) {
+		if (
+			text.match(/Returns\s+(an\s+|the\s+)?(True|False)/i) ||
+			text.match(/(True|False)\s+is\s+returned/i)
+		) {
+			return {
+				type: "boolean",
+				const: text.includes("True"),
+			} as Omit<FieldBoolean, "key">;
+		}
 	}
 
-	const arrayMatch = returnClause.match(/(?:Array|list) of (.+)/i);
-	if (arrayMatch) {
-		const arrayContent = cheerio.load(htmlReturnClause);
-		const firstLink = arrayContent("a").first();
-		const rawInnerText = arrayContent.root().text().trim();
+	// Use sentence parser for structured extraction
+	const sentences = parseDescriptionToSentences(description);
+	const returnParts = extractReturnType(sentences);
 
-		const parts = rawInnerText.split(/ of /i);
-		const lastPart = parts[parts.length - 1].trim();
-		const typeNameMatch = lastPart.match(/^([A-Z][a-zA-Z]+)/);
-		const typeName = typeNameMatch ? typeNameMatch[1] : lastPart;
+	if (returnParts && returnParts.length > 0) {
+		// Check for Int/Integer in parts
+		if (returnParts.some((p) => p.inner === "Int" || p.inner === "Integer")) {
+			return { type: "integer" };
+		}
 
-		const innerType =
-			firstLink.length > 0
-				? {
-						text: firstLink.text().trim(),
-						href: firstLink.attr("href"),
-					}
-				: {
-						text: typeName,
-						href: `#${typeName.toLowerCase()}`,
-					};
-
-		return {
-			type: "array",
-			arrayOf: parseTypeText(innerType),
-		} as FieldArray;
+		const extracted = extractTypeFromParts(returnParts);
+		if (extracted) {
+			return extractedTypeToField(extracted);
+		}
 	}
 
-	const linkMatch = htmlReturnClause.match(
-		/<a href="([^"]+)"[^>]*>([^<]+)<\/a>/,
-	);
-	if (linkMatch) {
+	// Fallback: direct link
+	const directLink = $('a[href^="#"]').first();
+	if (directLink.length) {
 		return {
 			type: "reference",
 			reference: {
-				name: linkMatch[2],
-				anchor: linkMatch[1],
+				name: directLink.text().trim(),
+				anchor: directLink.attr("href") || "",
 			},
-		} as FieldReference;
+		} as Omit<FieldReference, "key">;
 	}
 
-	return { type: "string" } as FieldString;
+	return { type: "string" } as Omit<FieldString, "key">;
+}
+
+export function maybeFileToSend(field: Field): boolean {
+	if (field.type === "reference") {
+		const name = field.reference.name;
+		if (name === "InputPollOption") return false;
+		return name.startsWith("Input");
+	}
+	if (field.type === "array") {
+		return maybeFileToSend(field.arrayOf);
+	}
+	if (field.type === "one_of") {
+		return field.variants.some(maybeFileToSend);
+	}
+	return false;
 }

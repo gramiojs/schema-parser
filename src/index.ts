@@ -8,11 +8,17 @@ export * from "./parsers/index.ts";
 export * from "./parsers/archor.ts";
 export * from "./parsers/navbar.ts";
 export * from "./parsers/types.ts";
+export * from "./parsers/sentence.ts";
 export * from "./to-custom-schema.ts";
 export * from "./utils.ts";
 
 export async function getCustomSchema() {
-	const $ = await fetchTelegramBotAPIContent();
+	const [$, currenciesRaw] = await Promise.all([
+		fetchTelegramBotAPIContent(),
+		fetch("https://core.telegram.org/bots/payments/currencies.json")
+			.then((r) => r.json() as Promise<Record<string, unknown>>)
+			.catch(() => ({})),
+	]);
 
 	const lastVersion = parseLastVersion($);
 
@@ -22,7 +28,9 @@ export async function getCustomSchema() {
 		(x) => !x.title.includes(" "),
 	);
 
-	const customSchema = toCustomSchema(lastVersion, sections);
+	const currencies = Object.keys(currenciesRaw);
 
-	return customSchema;
+	currencies.push('XTR'); // XTR is not in the currencies because it is not a real currency but is used in the schema
+
+	return toCustomSchema(lastVersion, sections, currencies);
 }
