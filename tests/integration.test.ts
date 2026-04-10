@@ -436,6 +436,102 @@ describe("Integration Tests", () => {
 			}
 		});
 
+		test("semanticType: 'formattable' via shared bare parse_mode + entities siblings (InputTextMessageContent pattern)", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const sections = [
+				{
+					anchor: "#inputtextmessagecontent",
+					title: "InputTextMessageContent",
+					type: "Object" as const,
+					description: "<p>Represents the content of a text message to be sent.</p>",
+					table: [
+						{
+							name: "message_text",
+							type: { text: "String" },
+							description: "Text of the message to be sent, 1-4096 characters",
+						},
+						{
+							name: "parse_mode",
+							type: { text: "String" },
+							description: "Optional. Mode for parsing entities in the message text.",
+						},
+						{
+							name: "entities",
+							type: { text: 'Array of <a href="#messageentity">MessageEntity</a>' },
+							description: "Optional. List of special entities that appear in message text.",
+						},
+					],
+				},
+			];
+			const schema = toCustomSchema(version, sections);
+			const obj = schema.objects[0];
+			expect(obj.type).toBe("fields");
+			if (obj.type === "fields") {
+				const textField = obj.fields.find((f) => f.key === "message_text");
+				expect(textField?.type).toBe("string");
+				if (textField?.type === "string") {
+					expect(textField.semanticType).toBe("formattable");
+				}
+				// parse_mode itself must NOT be marked formattable
+				const parseModeField = obj.fields.find((f) => f.key === "parse_mode");
+				expect(parseModeField?.type).toBe("string");
+				if (parseModeField?.type === "string") {
+					expect(parseModeField.semanticType).toBeUndefined();
+				}
+			}
+		});
+
+		test("shared bare parse_mode + entities does NOT mark ambiguous objects with multiple unclaimed strings", () => {
+			const version = {
+				major: 7,
+				minor: 4,
+				release_date: { year: 2024, month: 6, day: 20 },
+			};
+			const sections = [
+				{
+					anchor: "#ambiguous",
+					title: "AmbiguousObject",
+					type: "Object" as const,
+					description: "<p>Hypothetical object with two string fields.</p>",
+					table: [
+						{
+							name: "title",
+							type: { text: "String" },
+							description: "Title",
+						},
+						{
+							name: "subtitle",
+							type: { text: "String" },
+							description: "Subtitle",
+						},
+						{
+							name: "parse_mode",
+							type: { text: "String" },
+							description: "Optional. Parse mode.",
+						},
+						{
+							name: "entities",
+							type: { text: 'Array of <a href="#messageentity">MessageEntity</a>' },
+							description: "Optional. Entities.",
+						},
+					],
+				},
+			];
+			const schema = toCustomSchema(version, sections);
+			const obj = schema.objects[0];
+			expect(obj.type).toBe("fields");
+			if (obj.type === "fields") {
+				const title = obj.fields.find((f) => f.key === "title");
+				const subtitle = obj.fields.find((f) => f.key === "subtitle");
+				if (title?.type === "string") expect(title.semanticType).toBeUndefined();
+				if (subtitle?.type === "string") expect(subtitle.semanticType).toBeUndefined();
+			}
+		});
+
 		test("semanticType: 'updateType' on arrayOf string with 'update type' description", () => {
 			const field = tableRowToField({
 				name: "allowed_updates",

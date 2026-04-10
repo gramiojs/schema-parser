@@ -141,6 +141,15 @@ const MARKUP_NAMES = /Markup$|^ReplyKeyboardRemove$|^ForceReply$/;
  * - `"object"`: checks `${key}_parse_mode` ONLY — response objects (e.g. `Message`)
  *   have `*_entities` siblings but never `*_parse_mode`, so the parse_mode sibling
  *   is the safe discriminator for input objects (e.g. `InputPollOption`).
+ *
+ * Shared-sibling fallback (object mode only): some input objects carry a single
+ * formattable text field and drop the key prefix from its siblings — using bare
+ * `parse_mode` + `entities` (MessageEntity[]) instead of `${key}_parse_mode` /
+ * `${key}_entities`. The only object in the current API that uses this shape is
+ * `InputTextMessageContent`, but the pattern is intentional: when there is no
+ * ambiguity, Telegram normalises the sibling names. We promote the sole unmarked
+ * string field when both bare siblings are present, which keeps the check safe
+ * for response objects (they never have bare `parse_mode`).
  */
 function applyFormattableSiblings(fields: Field[], mode: "method" | "object"): void {
 	const keys = new Set(fields.map((f) => f.key));
@@ -152,6 +161,26 @@ function applyFormattableSiblings(fields: Field[], mode: "method" | "object"): v
 				field.semanticType = "formattable";
 			}
 		}
+	}
+
+	if (mode !== "object") return;
+
+	const hasBareParseMode = keys.has("parse_mode");
+	const hasBareMessageEntities = fields.some(
+		(f) =>
+			f.key === "entities" &&
+			f.type === "array" &&
+			f.arrayOf.type === "reference" &&
+			f.arrayOf.reference.name === "MessageEntity",
+	);
+	if (!hasBareParseMode || !hasBareMessageEntities) return;
+
+	const unmarkedStrings = fields.filter(
+		(f): f is FieldString =>
+			f.type === "string" && f.key !== "parse_mode" && !f.semanticType,
+	);
+	if (unmarkedStrings.length === 1) {
+		unmarkedStrings[0].semanticType = "formattable";
 	}
 }
 
