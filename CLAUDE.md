@@ -8,6 +8,30 @@
 - **Type-check**: `bunx tsc --noEmit`
 - **Lint/format**: `bunx biome check --write .`
 
+## Release process
+
+Publishing is automated via the `publish.yml` GitHub Actions workflow — there is no local `npm publish` step. Trigger and monitor it with `gh`:
+
+```bash
+# 1. bump package.json version, commit, push to origin/main
+git push origin main
+
+# 2. kick off the workflow (workflow_dispatch)
+gh workflow run publish.yml --repo gramiojs/schema-parser --ref main
+
+# 3. find the run id and watch it until it exits
+gh run list --repo gramiojs/schema-parser --workflow=publish.yml --limit 1
+gh run watch <run-id> --repo gramiojs/schema-parser --exit-status
+
+# on failure, pull the error lines only (don't dump the full log)
+gh run view <run-id> --repo gramiojs/schema-parser --log-failed | grep "error TS"
+
+# confirm the new version landed on npm
+curl -s https://registry.npmjs.org/@gramio/schema-parser/latest | jq -r .version
+```
+
+The workflow runs `tsc --noEmit` against `tsconfig.json` with `"types": ["bun"]` — if you remove that, CI breaks because `bun:test` is only discoverable through an explicit `@types/bun` reference. The workflow also publishes a GitHub Release tagged `v${version}` and (optionally) JSR; `prepare-jsr.ts` swallows `slow-types-compiler` failures so JSR hiccups don't block npm publish.
+
 ## Testing
 
 Every new feature or bug fix must be covered by tests. Run `bun test` to verify before finishing.
